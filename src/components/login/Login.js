@@ -14,7 +14,7 @@ function Login() {
                         <div>
                             PASSWORD<input type="text" />
                         </div>
-                        <div id="sendbutton"><Link to="/createroom">SEND</Link></div>
+                        <div class="sendbutton"><Link to="/createroom">SEND</Link></div>
                         <div>
                             <p>play as a guest</p>
                             <p>register</p>

@@ -7,3 +7,12 @@
     border: black solid 1px;
     justify-items:auto;
 }
+#okbutton{
+    border: solid 1px black;
+    background-color: rgb(255, 195, 121);
+    float: right;
+    display: flex;
+    align-items: center;
+    word-break:break-all;
+    margin: 0 0 1em 1em;
+}

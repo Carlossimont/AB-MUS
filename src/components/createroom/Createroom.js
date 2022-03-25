@@ -12,14 +12,10 @@ function CreateRoom() {
                     <div class="loginbox">
                         <div class="border">CREAR TAPETE</div>
                         <input type="text" />
-                        <div class="button">
-                            Ok
-                        </div>
+                        <div class="okbutton"><Link to="/teams">OK</Link></div>
                         <div class="border">UNIRSE A TAPETE</div>
                         <input type="text" />
-                        <div class="button">
-                            ok
-                        </div>
+                        <div class="okbutton"><Link to="/teams">OK</Link></div>
                         
                         
                     </div>

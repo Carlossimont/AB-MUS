@@ -1,0 +1,22 @@
+#flex1{
+    display:flex;
+}
+#imagen img{
+    max-width: 200px;
+}
+#players{
+    width: 150px;
+
+}
+#players div{
+    padding :15px;
+}
+#row{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+.center{
+    display: flex;
+    justify-content: center;
+}
