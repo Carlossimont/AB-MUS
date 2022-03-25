@@ -2,37 +2,3 @@
     height: 100vh;
     background-size: 100%;
 }
-#set{
-    cursor: pointer;
-    position: absolute;
-    bottom: 50px;
-    left:50px;
-    display: flex;
-    flex-direction: column;
-    font-size: 50px;
-    color: white;
-}
-.set1{
-    text-shadow:5px 5px 10px black;
-    transition: text-shadow ease-in .2s;
-}
-.set a{
-    text-decoration: none;
-}
-.set1:hover{
-
-    text-shadow:5px 5px 10px goldenrod;
-}
-#logo img{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-}
-a:-webkit-any-link {
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-  }

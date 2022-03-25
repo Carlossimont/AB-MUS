@@ -6,33 +6,18 @@ import './Createroom.scss'
 function CreateRoom() {
 
     return (
-        <div style={{backgroundImage: `url(${fondo_login})`}} id="background">
-            <div>
-                <div class="loginboxcontainer">
-                    <div class="loginbox">
-                        <div class="border">CREAR TAPETE</div>
-                        <input type="text" />
-                        <div class="okbutton"><Link to="/teams">OK</Link></div>
-                        <div class="border">UNIRSE A TAPETE</div>
-                        <input type="text" />
-                        <div class="okbutton"><Link to="/teams">OK</Link></div>
-                        
-                        
-                    </div>
-                    
-                </div> 
-                    
-                
-                <div id="set">
-                    <div class="set1"><Link to="/login">BACK TO LOGIN</Link></div>
-                    <div class="set1"><Link to="/">BACK TO LOBBY</Link></div>
+        <div>
+            <div class="loginboxcontainer">
+                <div class="loginbox">
+                    <div class="border">CREAR TAPETE</div>
+                    <input type="text" />
+                    <div class="okbutton"><Link to="/teams">OK</Link></div>
+                    <div class="border">UNIRSE A TAPETE</div>
+                    <input type="text" />
+                    <div class="okbutton"><Link to="/teams">OK</Link></div> 
                 </div>
-            </div>
-            
-           
+            </div>  
         </div>
-
-
     )
 }
 export default CreateRoom;
