@@ -9,6 +9,9 @@ function CreateRoom() {
         <div>
             <div class="loginboxcontainer">
                 <div class="loginbox">
+                    <div class="border">ALIAS EN PARTIDA</div>
+                    <input type="text" />
+                    <div class="okbutton"><Link to="/teams">OK</Link></div>
                     <div class="border">CREAR TAPETE</div>
                     <input type="text" />
                     <div class="okbutton"><Link to="/teams">OK</Link></div>

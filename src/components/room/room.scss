@@ -2,8 +2,7 @@
     background-size: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-        
+    align-items: center;     
 }
 #room{
     background-color: chocolate;
@@ -11,4 +10,5 @@
 }
 .cuadro{
     border: black solid 1px;
+    box-sizing: content-box;
 }
