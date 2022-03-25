@@ -5,8 +5,7 @@ import './Teams.scss'
 function Teams() {
 
     return (
-        <div style={{backgroundImage: `url(${fondo_login})`}} id="background">
-            <div class="loginboxcontainer">
+        <div class="loginboxcontainer">
                 <div class="loginbox">
                         <div id="flex1">
                             <div id="players">
@@ -28,16 +27,6 @@ function Teams() {
                         </div>
                 </div>
             </div>
-                <div id="set">
-                    <div class="set1"><Link to="/">BACK TO LOBBY</Link></div>
-
-                </div>
-            
-            
-           
-        </div>
-
-
     )
 }
 export default Teams;
