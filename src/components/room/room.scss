@@ -1,14 +1,65 @@
 #tapete{
-    background-size: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;     
+
+    background-size: 100%;    
 }
 #room{
     background-color: chocolate;
 
 }
-.cuadro{
-    border: black solid 1px;
-    box-sizing: content-box;
+.avatar{
+    background-color: azure;
+    padding: 1rem;
+    text-align: center;
+    align-items: center;
 }
+.card{
+    background-color: burlywood;
+    padding: 1rem;
+
+}
+.buttons{
+    background-color: darkolivegreen;
+    border: 1PX SOLID black;
+    padding: .5rem;
+}
+
+.flex{
+max-width: 80%;
+
+    // display: grid;
+    // grid-template-columns: [x0]1fr [x1]1fr [x2]1fr [x3]120px [x4]1fr [x5]1fr [x6]1fr [x7]200px;
+    // grid-template-rows:[y0]120px [y1]120px [y2]120px [y3]120px [y4]120px ;
+    // grid-gap: 1rem;
+
+}
+.grid div{
+    border: 1px solid black;
+    width: 9rem;
+    height: 3rem;
+}
+.cards1{
+    display: flex;
+
+}
+.cards2{
+
+}
+.player1{
+
+}
+.player2{
+    display: flex;
+
+    
+}
+.team1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.team2{
+    display: flex;
+    justify-content: space-between;
+}
+
