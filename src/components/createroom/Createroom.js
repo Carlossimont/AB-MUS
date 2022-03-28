@@ -4,20 +4,18 @@ import './Createroom.scss'
 
 
 function CreateRoom() {
-
     return (
         <div>
-            <div class="loginboxcontainer">
-                <div class="loginbox">
-                    <div class="border">ALIAS EN PARTIDA</div>
+            <div className="loginboxcontainer">
+                <div className="loginbox">
+                    <div className="border">ALIAS EN PARTIDA</div>
                     <input type="text" />
-                    <div class="okbutton"><Link to="/teams">OK</Link></div>
-                    <div class="border">CREAR TAPETE</div>
+                    <div className="border">CREAR TAPETE</div>
                     <input type="text" />
-                    <div class="okbutton"><Link to="/teams">OK</Link></div>
-                    <div class="border">UNIRSE A TAPETE</div>
+                    <div className="okbutton"><Link to="/room">OK</Link></div>
+                    <div className="border">UNIRSE A TAPETE</div>
                     <input type="text" />
-                    <div class="okbutton"><Link to="/teams">OK</Link></div> 
+                    <div className="okbutton"><Link to="/room">OK</Link></div> 
                 </div>
             </div>  
         </div>
