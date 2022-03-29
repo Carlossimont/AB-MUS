@@ -40,7 +40,7 @@ function Teams({setMyChair,setPlayer,setReady,ready,connection,users,players}) {
                     </div>
                     <div className="center" onClick={()=>assignChair(3)}>{players[3]}</div>
                 </div>
-                {users.length==4 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
+                {users.length>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
             </div>
         </div>
     )

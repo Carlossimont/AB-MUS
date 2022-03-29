@@ -5,15 +5,35 @@
     background-color: chocolate;
 }
 .avatar{
+    display: flex;
     background-color: azure;
-    padding: 1rem;
+    // padding: 1rem;
+    justify-content: center;
     text-align: center;
     align-items: center;
 }
+.avatar img{
+    max-width: 50%; 
+}
+
 .card{
     background-color: burlywood;
     padding: 1rem;
+}
 
+.p1{
+    text-shadow:5px 5px 10px black;
+    transition: text-shadow ease-in .2s;
+}
+
+.p1:hover{
+    text-shadow:5px 5px 10px goldenrod;
+}
+
+
+.centralcards{
+    display: flex;
+    justify-content: space-between;
 }
 .buttons{
     background-color: darkolivegreen;
@@ -37,10 +57,10 @@ max-width: 80%;
 }
 .cards1{
     display: flex;
-
 }
 .cards2{
-
+    display: flex;
+    flex-direction: column;
 }
 .player1{
 
