@@ -32,11 +32,7 @@ function Room({user,room}) {
       setPlayers(playersAux);
     },[number])
 
-    useEffect(()=>{//ngOnInit
-        console.log(user);
-        console.log(room);
-        joinRoom(user,room);
-    },[])
+    
     
   
     const joinRoom = async (user, room) => {
@@ -116,8 +112,19 @@ function Room({user,room}) {
     return (
 
         <div style={{ backgroundImage: `url(${tapete})` }} id="background">
-            {!ready ? 
-                <Teams setMyChair={setMyChair} setPlayer={setPlayer} connection={connection} users={users} setReady={setReady} ready={ready} players={players}/> 
+            {!game ? 
+                <Teams 
+                joinRoom={joinRoom} 
+                user={user} 
+                room={room} 
+                setMyChair={setMyChair} 
+                myChair={myChair}
+                setPlayer={setPlayer} 
+                connection={connection} 
+                users={users} 
+                setReady={setReady} 
+                ready={ready} 
+                players={players}/> 
             :
                 <div className="flex">
                     <div className="team1">
