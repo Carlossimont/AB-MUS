@@ -1,10 +1,8 @@
 #tapete{
-
     background-size: 100%;    
 }
 #room{
     background-color: chocolate;
-
 }
 .avatar{
     background-color: azure;
@@ -26,16 +24,16 @@
 .flex{
 max-width: 80%;
 
+
     // display: grid;
     // grid-template-columns: [x0]1fr [x1]1fr [x2]1fr [x3]120px [x4]1fr [x5]1fr [x6]1fr [x7]200px;
     // grid-template-rows:[y0]120px [y1]120px [y2]120px [y3]120px [y4]120px ;
     // grid-gap: 1rem;
 
 }
-.grid div{
-    border: 1px solid black;
-    width: 9rem;
-    height: 3rem;
+.flex div{
+    border: .1rem solid black;
+
 }
 .cards1{
     display: flex;
@@ -46,6 +44,9 @@ max-width: 80%;
 }
 .player1{
 
+}
+.player3{
+    display: flex;
 }
 .player2{
     display: flex;
