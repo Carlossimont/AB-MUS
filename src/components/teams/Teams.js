@@ -34,9 +34,9 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     <div id="row">
                         <div onClick={()=>assignChair(1)}>{players[1]}</div>
                         <div id="imagen"><img src={tapete} alt="" /></div>
-                        <div onClick={()=>assignChair(2)}>{players[2]}</div>
+                        <div onClick={()=>assignChair(3)}>{players[3]}</div>
                     </div>
-                    <div className="center" onClick={()=>assignChair(3)}>{players[3]}</div>
+                    <div className="center" onClick={()=>assignChair(2)}>{players[2]}</div>
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
                 </div> : <></>}
             </div>
