@@ -147,88 +147,103 @@ function Room({user,room}) {
                 players={players}/> 
             :
             <div className="flex">
-            
-
-            <div className="team2">
-                
-                <div className='tablero'>
-                        <div className="jugador-activo">
-                          <div className="avatar j1 avatar-activo">
-                            <img src={erlang} alt="" />
-                            <p>{deskPlayers[0]}</p>
-                          </div>
-                          <div>
-                              <div className="buttons">Mus</div>
-                              <div className="buttons">No hay mus</div>
-                              <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
-                          </div>
-                        </div>
-
-                        <div className="avatar j2 avatar-oponente-dr">
-                          <img src={erlang} alt="" />
-                          <p>{deskPlayers[1]}</p>
-                        </div>
-                        
-                        <div className="avatar j3 avatar-compa">
+            <div className="team1">
+                <div className="player1">
+                    <div>
+                        <div className="avatar j3">
                           <img src={erlang} alt="" />
                           <p>{deskPlayers[2]}</p>
                         </div>
+                        
+                    </div>
 
-                        <div className="avatar j4 avatar-oponente-iz">
-                          <img src={erlang} alt="" />
-                          <p>{deskPlayers[3]}</p>
-                        </div>
+                </div>
+            </div>
 
-                        <div className="cards2 cartas-oponente-iz">
+            <div className="team2">
+                <div className="player2">
+                    <div className="avatar j4">
+                      <img src={erlang} alt="" />
+                      <p>{deskPlayers[3]}</p>
+                    </div>
+                    
+                </div>
+                <div className='tablero'>
+                        <div className="cards2">
                           <div className="card1">1card4p</div>
                           <div className="card1">2card4p</div>
                           <div className="card1">3card4p</div>
                           <div className="card1">4card4p</div>
                         </div>
 
-                          <div className="cards3 cartas-compa">
-                            <div className="card1">1card3p</div>
-                            <div className="card1">2card3p</div>
-                            <div className="card1">3card3p</div>
-                            <div className="card1">4card3p</div>
-                          </div>
-
-                          <div className="info">Twitch</div>
-                          
-                          <div className="cards1 cartas-activo">
-                              <div className="card p1"><img src={B1} alt="" /></div>
-                              <div className="card p1"><img src={B1} alt="" /></div>
-                              <div className="card p1"><img src={B1} alt="" /></div>
-                              <div className="card p1"><img src={B1} alt="" /></div>
-                          </div>
+                        <div className='centralcards'>
+                        <div className="cards3">
+                          <div className="card1">1card3p</div>
+                          <div className="card1">2card3p</div>
+                          <div className="card1">3card3p</div>
+                          <div className="card1">4card3p</div>
+                        </div>
+                        <div>Twitch</div>
+                        <div className="cards1">
+                            <div className="card p1"><img src={B1} alt="" /></div>
+                            <div className="card p1"><img src={B1} alt="" /></div>
+                            <div className="card p1"><img src={B1} alt="" /></div>
+                            <div className="card p1"><img src={B1} alt="" /></div>
+                        </div>
+                        </div>
                         
-                        <div className="cards2  cartas-oponente-dr">
+                        <div className="cards2">
                             <div className="card1">1card2p</div>
                             <div className="card1">2card2p</div>
                             <div className="card1">3card2p</div>
                             <div className="card1">4card2p</div>
                         </div>
-
-                        <Chat 
-                          closeConnection={closeConnection} 
-                          sendMessage={sendMessage} 
-                          messages={messages}
-                          setMessage={setMessage}
-                          message={message}
-                        ></Chat>
                 </div>
 
 
 
+                <div className="player2">
+
+
+                    <div className="avatar j2">
+                      <img src={erlang} alt="" />
+                      <p>{deskPlayers[1]}</p>
+                    </div>
+                </div>
             </div>
 
-            
+            <div className="team1">
+                <div className="player3">
+                    
+                      
+                    
+                      <div className="avatar j1">
+                          <img src={erlang} alt="" />
+                          <p>{deskPlayers[0]}</p>
+                      </div>
+                    
+                    <div>
+                        <div className="buttons">Mus</div>
+                        <div className="buttons">No hay mus</div>
+                        <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+
         </div>
 
     }
 
             
-            
+            <Chat 
+            closeConnection={closeConnection} 
+            sendMessage={sendMessage} 
+            messages={messages}
+            setMessage={setMessage}
+            message={message}
+            ></Chat>
 
         </div>
 
