@@ -10,8 +10,13 @@ import LobbyOptions from '../lobbyOptions/LobbyOptions';
 import Logo from '../logo/Logo';
 import ReturnLobbyOption from '../returnLobbyOption/ReturnLobbyOption';
 import Chat from '../chat/Chat';
+import { useState } from 'react';
 
 function App() {
+let [user,setUser] = useState('');
+let [room,setRoom] = useState('');
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -19,9 +24,10 @@ function App() {
 
         <Route path="/login" element={<Lobby content={<Login/>} options={<ReturnLobbyOption/>}/>} />
 
-        <Route path="/room" element={<><Room/><Chat/></>} />
+        <Route path="/createroom" element={<Lobby content={<CreateRoom user={user} room={room} setUser={setUser} setRoom={setRoom}/>} options={<ReturnLobbyOption/>} />} />
+
+        <Route path="/room" element={<Room user={user} room={room}/>} />
         
-        <Route path="/createroom" element={<Lobby content={<CreateRoom/>} options={<ReturnLobbyOption/>} />} />
         {/* <Route path="/room" element={<Room />} /> */}
       </Routes>
     </BrowserRouter>
