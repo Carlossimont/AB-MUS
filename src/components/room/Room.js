@@ -10,7 +10,7 @@ function Room({user,room}) {
     let [ready, setReady] = useState(false);
     let [alias,setAlias] = useState();
     let [lobbyId,setLobbyId] = useState();
-    let [players,setPlayers] = useState(['one','two','three','four']);
+    let [players,setPlayers] = useState(['Player1','Player2','Player3','Player4']);
     let [player,setOnePlayer] = useState('');
     let [myChair,setMyChair] = useState(-1);
     let [number,setNumber] = useState('');
@@ -18,7 +18,6 @@ function Room({user,room}) {
     let [game,setGame] = useState(false);
     let [playerThree,setPlayerThree] = useState('');
     let [myCards,setMyCards] = useState([]);
-  
   
     const [connection, setConnection] = useState();
     const [messages, setMessages] = useState([]);
@@ -36,7 +35,7 @@ function Room({user,room}) {
         console.log(user);
         console.log(room);
         joinRoom(user,room);
-    })
+    },[])
     
   
     const joinRoom = async (user, room) => {
@@ -117,7 +116,7 @@ function Room({user,room}) {
 
         <div style={{ backgroundImage: `url(${tapete})` }} id="background">
             {!ready ? 
-                <Teams connection={connection} users={users} setReady={setReady} ready={ready} players={players}/> 
+                <Teams setMyChair={setMyChair} setPlayer={setPlayer} connection={connection} users={users} setReady={setReady} ready={ready} players={players}/> 
             :
                 <div className="flex">
                     <div className="team1">
