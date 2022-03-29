@@ -1,3 +1,9 @@
+.flex{
+max-width: 80%;
+}
+.flex div{
+    // border: .1rem solid black;
+}
 #tapete{
     background-size: 100%;    
 }
@@ -6,8 +12,6 @@
 }
 .avatar{
     display: flex;
-    // background-color: azure;
-    // padding: 1rem;
     justify-content: center;
     text-align: center;
     align-items: center;
@@ -17,11 +21,11 @@
     max-width: 50%; 
 }
 .card{
-    background-color: burlywood;
-    padding: 1rem;
+    // background-color: burlywood;
+
     margin: .3rem;
-    height: 5rem;
-    width: 3rem;
+    // height: 5rem;
+    // width: 3rem;
 }
 .card1{
     background-color: burlywood;
@@ -30,11 +34,11 @@
     height: 3rem;
     width: 5rem;
 }
-
 .centralcards{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     height: 28rem;
 }
 .buttons{
@@ -42,20 +46,16 @@
     border: 1PX SOLID black;
     padding: .5rem;
 }
-.flex{
-max-width: 80%;
-}
-.flex div{
-    // border: .1rem solid black;
 
-}
 .cards1{
+    width: 60%;
     display: flex;
-    padding: 1rem;
+    justify-content: space-between;
     transition: transform .2s; 
 }
 .cards1:hover{
-    transform: scale(1.5); 
+    transform: scale(1.5);
+    padding: 0rem;
 }
 
 .cards2{
@@ -97,16 +97,8 @@ max-width: 80%;
 .tablero{
     display: flex;
 }
-.cards1 img{
-    max-width: 70%;
-    max-height: 70%;
-}
-.cards2 img{
-    max-width: 70%;
-    max-height: 70%;
-}
-.cards3 img{
-    max-width: 70%;
-    max-height: 70%;
+.card img{
+ width: 100%;
+
 }
 
