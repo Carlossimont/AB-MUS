@@ -149,20 +149,21 @@ function Room({user,room}) {
                             
                         </div>
                         <div className='tablero'>
-                              <div className="cards2">
-                                  <div className="card 4p1">1card4p</div>
-                                  <div className="card 4p2">2card4p</div>
-                                  <div className="card 4p3">3card4p</div>
-                                  <div className="card 4p4">4card4p</div>
-                              </div>
+                                <div className="cards2">
+                                  <div className="card1">1card4p</div>
+                                  <div className="card1">2card4p</div>
+                                  <div className="card1">3card4p</div>
+                                  <div className="card1">4card4p</div>
+                                </div>
 
-                              <div className='centralcards'>
-                                <div className="cards1">
+                                <div className='centralcards'>
+                                <div className="cards3">
                                   <div className="card">1card3p</div>
                                   <div className="card">2card3p</div>
                                   <div className="card">3card3p</div>
                                   <div className="card">4card3p</div>
-                              </div>
+                                </div>
+                                <div>Twitch</div>
                                 <div className="cards1">
                                     <div className="card p1">1card1p</div>
                                     <div className="card p1">2card1p</div>
@@ -172,10 +173,10 @@ function Room({user,room}) {
                                 </div>
                                 
                                 <div className="cards2">
-                                    <div className="card 2p1">1card2p</div>
-                                    <div className="card 2p2">2card2p</div>
-                                    <div className="card 2p3">3card2p</div>
-                                    <div className="card 2p4">4card2p</div>
+                                    <div className="card1">1card2p</div>
+                                    <div className="card1">2card2p</div>
+                                    <div className="card1">3card2p</div>
+                                    <div className="card1">4card2p</div>
                                 </div>
                         </div>
 
