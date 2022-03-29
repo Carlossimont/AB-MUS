@@ -23,18 +23,18 @@ const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=>
         <div className="message-container">
             {messages.map((m,index)=>
              <div key={index} className="user-message">
-             <div className="message bg-primary">{m.message}</div>
-             <div className="from-user">{m.user}</div>   
+                <div className="message bg-primary">{m.message}</div>
+                <div className="from-user">{m.user}</div>   
              </div>
             )}
-            <div ref={messagesEndRef}/>
+            { <div ref={messagesEndRef}/> /*No entiendo este cierre de div */}
            
         </div>
         <div>
             <input type="text" name="" id="" onChange={(m)=>setMessage(m.target.value)} value={message} />
+            <button onClick={()=>functionSend()}>Send</button> 
         </div>
-        <button onClick={()=>functionSend()}>Send</button> 
-        </div>
+    </div>
 
     
     )
