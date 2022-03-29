@@ -10,6 +10,7 @@ function Room({user,room}) {
 
     let [ready, setReady] = useState(false);
     let [alias,setAlias] = useState();
+    let [message,setMessage] = useState('');
     let [lobbyId,setLobbyId] = useState();
     let [players,setPlayers] = useState(['Player1','Player2','Player3','Player4']);
     let [player,setOnePlayer] = useState('');
@@ -19,11 +20,27 @@ function Room({user,room}) {
     let [game,setGame] = useState(false);
     let [playerThree,setPlayerThree] = useState('');
     let [myCards,setMyCards] = useState([]);
+    let [deskPlayers,setDeskPlayers] = useState([]);
+    
   
     const [connection, setConnection] = useState();
     const [messages, setMessages] = useState([]);
     const [users, setUsers] = useState([]);
     let playersAux = [];
+
+    useEffect(()=>{
+      let  deskPlayersAux = [];
+      let pos = myChair;
+      for (let i = 0; i < 4; i++) {
+        if (pos==4) {
+          pos=0;
+        }
+        deskPlayersAux[i]=(players[pos]);
+        pos++;
+        console.log(deskPlayersAux);
+      }
+      setDeskPlayers(deskPlayersAux);
+    },[game])
   
     useEffect(()=>{
       console.log(players);
@@ -82,8 +99,6 @@ function Room({user,room}) {
       }
     };
   
-    
-  
     const sendMessage = async (message) => {
       try {
         await connection.invoke("SendMessage", message);
@@ -109,10 +124,14 @@ function Room({user,room}) {
       }
     };
 
+    useEffect(()=>{
+
+    },[myChair])
+
     return (
 
         <div style={{ backgroundImage: `url(${tapete})` }} id="background">
-            {game ? 
+            {!game ? 
                 <Teams 
                 joinRoom={joinRoom} 
                 user={user} 
@@ -132,7 +151,7 @@ function Room({user,room}) {
                             <div>
                                 <div className="avatar j3">
                                   <img src={erlang} alt="" />
-                                  <p>Player4</p>
+                                  <p>{deskPlayers[2]}</p>
                                 </div>
                                 
                             </div>
@@ -144,39 +163,37 @@ function Room({user,room}) {
                         <div className="player2">
                             <div className="avatar j4">
                               <img src={erlang} alt="" />
-                              <p>Player4</p>
+                              <p>{deskPlayers[3]}</p>
                             </div>
                             
                         </div>
-                        <div className='tablero'>
+                        <div>
+                                <div className="cards1">
+                                    <div className="card ">1card3p</div>
+                                    <div className="card">2card3p</div>
+                                    <div className="card">3card3p</div>
+                                    <div className="card">4card3p</div>
+                                </div>
+                                
                                 <div className="cards2">
-                                  <div className="card1">1card4p</div>
-                                  <div className="card1">2card4p</div>
-                                  <div className="card1">3card4p</div>
-                                  <div className="card1">4card4p</div>
+                                    <div className="card 4p1">1card4p</div>
+                                    <div className="card 4p2">2card4p</div>
+                                    <div className="card 4p3">3card4p</div>
+                                    <div className="card 4p4">4card4p</div>
                                 </div>
 
-                                <div className='centralcards'>
-                                <div className="cards3">
-                                  <div className="card">1card3p</div>
-                                  <div className="card">2card3p</div>
-                                  <div className="card">3card3p</div>
-                                  <div className="card">4card3p</div>
+                                <div className="cards2">
+                                    <div className="card 2p1">1card2p</div>
+                                    <div className="card 2p2">2card2p</div>
+                                    <div className="card 2p3">3card2p</div>
+                                    <div className="card 2p4">4card2p</div>
                                 </div>
-                                <div>Twitch</div>
+                                
                                 <div className="cards1">
                                     <div className="card p1">1card1p</div>
                                     <div className="card p1">2card1p</div>
                                     <div className="card p1">3card1p</div>
                                     <div className="card p1">4card1p</div>
-                                </div>
-                                </div>
-                                
-                                <div className="cards2">
-                                    <div className="card1">1card2p</div>
-                                    <div className="card1">2card2p</div>
-                                    <div className="card1">3card2p</div>
-                                    <div className="card1">4card2p</div>
                                 </div>
                         </div>
 
@@ -187,7 +204,7 @@ function Room({user,room}) {
 
                             <div className="avatar j2">
                               <img src={erlang} alt="" />
-                              <p>Player2</p>
+                              <p>{deskPlayers[1]}</p>
                             </div>
                         </div>
                     </div>
@@ -199,7 +216,7 @@ function Room({user,room}) {
                             
                               <div className="avatar j1">
                                   <img src={erlang} alt="" />
-                                  <p>Player1</p>
+                                  <p>{deskPlayers[0]}</p>
                               </div>
                             
                             <div>
@@ -207,15 +224,20 @@ function Room({user,room}) {
                                 <div className="buttons">No hay mus</div>
                                 <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
                             </div>
-                            
-                            
+
                         </div>
                     </div>
 
                 </div>
 
             }
-            <Chat closeConnection={closeConnection} sendMessage={sendMessage} messages={messages}></Chat>
+            <Chat 
+            closeConnection={closeConnection} 
+            sendMessage={sendMessage} 
+            messages={messages}
+            setMessage={setMessage}
+            message={message}
+            ></Chat>
 
         </div>
 

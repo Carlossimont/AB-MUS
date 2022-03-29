@@ -27,7 +27,7 @@ const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=>
                 <div className="from-user">{m.user}</div>   
              </div>
             )}
-            { <div ref={messagesEndRef}/> /*No entiendo este cierre de div */}
+            <div ref={messagesEndRef}/>
            
         </div>
         <div>
