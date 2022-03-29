@@ -112,7 +112,7 @@ function Room({user,room}) {
     return (
 
         <div style={{ backgroundImage: `url(${tapete})` }} id="background">
-            {!game ? 
+            {game ? 
                 <Teams 
                 joinRoom={joinRoom} 
                 user={user} 
@@ -132,6 +132,7 @@ function Room({user,room}) {
                             <div>
                                 <div className="avatar j3">
                                   <img src={erlang} alt="" />
+                                  <p>Player4</p>
                                 </div>
                                 
                             </div>
@@ -143,36 +144,38 @@ function Room({user,room}) {
                         <div className="player2">
                             <div className="avatar j4">
                               <img src={erlang} alt="" />
+                              <p>Player4</p>
                             </div>
                             
                         </div>
-                        <div>
-                                <div className="cards1">
-                                    <div className="card ">1card3p</div>
-                                    <div className="card">2card3p</div>
-                                    <div className="card">3card3p</div>
-                                    <div className="card">4card3p</div>
-                                </div>
-                                
-                                <div className="cards2">
-                                    <div className="card 4p1">1card4p</div>
-                                    <div className="card 4p2">2card4p</div>
-                                    <div className="card 4p3">3card4p</div>
-                                    <div className="card 4p4">4card4p</div>
-                                </div>
+                        <div className='tablero'>
+                              <div className="cards2">
+                                  <div className="card 4p1">1card4p</div>
+                                  <div className="card 4p2">2card4p</div>
+                                  <div className="card 4p3">3card4p</div>
+                                  <div className="card 4p4">4card4p</div>
+                              </div>
 
-                                <div className="cards2">
-                                    <div className="card 2p1">1card2p</div>
-                                    <div className="card 2p2">2card2p</div>
-                                    <div className="card 2p3">3card2p</div>
-                                    <div className="card 2p4">4card2p</div>
-                                </div>
-                                
+                              <div className='centralcards'>
+                                <div className="cards1">
+                                  <div className="card">1card3p</div>
+                                  <div className="card">2card3p</div>
+                                  <div className="card">3card3p</div>
+                                  <div className="card">4card3p</div>
+                              </div>
                                 <div className="cards1">
                                     <div className="card p1">1card1p</div>
                                     <div className="card p1">2card1p</div>
                                     <div className="card p1">3card1p</div>
                                     <div className="card p1">4card1p</div>
+                                </div>
+                                </div>
+                                
+                                <div className="cards2">
+                                    <div className="card 2p1">1card2p</div>
+                                    <div className="card 2p2">2card2p</div>
+                                    <div className="card 2p3">3card2p</div>
+                                    <div className="card 2p4">4card2p</div>
                                 </div>
                         </div>
 
@@ -183,6 +186,7 @@ function Room({user,room}) {
 
                             <div className="avatar j2">
                               <img src={erlang} alt="" />
+                              <p>Player2</p>
                             </div>
                         </div>
                     </div>
@@ -194,6 +198,7 @@ function Room({user,room}) {
                             
                               <div className="avatar j1">
                                   <img src={erlang} alt="" />
+                                  <p>Player1</p>
                               </div>
                             
                             <div>
