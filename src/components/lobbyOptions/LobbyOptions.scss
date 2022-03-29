@@ -12,12 +12,12 @@
     text-shadow:5px 5px 10px black;
     transition: text-shadow ease-in .2s;
 }
+
+.set1:hover{
+    text-shadow:5px 5px 10px goldenrod;
+}
 .set a{
     text-decoration: none;
-}
-.set1:hover{
-
-    text-shadow:5px 5px 10px goldenrod;
 }
 a:-webkit-any-link {
     text-decoration: none;
