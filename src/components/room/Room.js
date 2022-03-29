@@ -5,6 +5,7 @@ import { useState,useEffect } from 'react';
 import Chat from '../chat/Chat';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import erlang from './img/erlang.png';
+import B1 from './img/B1.png';
 
 function Room({user,room}) {
 
@@ -132,7 +133,7 @@ function Room({user,room}) {
                             <div>
                                 <div className="avatar j3">
                                   <img src={erlang} alt="" />
-                                  <p>Player4</p>
+                                  <p>Player3</p>
                                 </div>
                                 
                             </div>
@@ -165,10 +166,10 @@ function Room({user,room}) {
                                 </div>
                                 <div>Twitch</div>
                                 <div className="cards1">
-                                    <div className="card p1">1card1p</div>
-                                    <div className="card p1">2card1p</div>
-                                    <div className="card p1">3card1p</div>
-                                    <div className="card p1">4card1p</div>
+                                    <div className="card p1"><img src={B1} alt="" /></div>
+                                    <div className="card p1"><img src={B1} alt="" /></div>
+                                    <div className="card p1"><img src={B1} alt="" /></div>
+                                    <div className="card p1"><img src={B1} alt="" /></div>
                                 </div>
                                 </div>
                                 
