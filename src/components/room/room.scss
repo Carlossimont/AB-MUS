@@ -1,103 +1,205 @@
 .flex{
     max-width: 80%;
-    }
-    .flex div{
-        // border: .1rem solid black;
-    }
-    #tapete{
-        background-size: 100%;
-    }
-    #room{
-        background-color: chocolate;
-    }
-    .avatar{
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    .avatar img{
-        max-width: 50%; 
-    }
-    .card{
-        // background-color: burlywood;
-    
-        margin: .3rem;
-        // height: 5rem;
-        // width: 3rem;
-    }
-    .card1{
-        background-color: burlywood;
-        padding: .5rem;
-        margin: .3rem;
-        height: 3rem;
-        width: 5rem;
-    }
-    .centralcards{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 28rem;
-    }
-    .buttons{
-        background-color: darkolivegreen;
-        border: 1PX SOLID black;
-        padding: .5rem;
-    }
-    
-    .cards1{
-        width: 60%;
-        display: flex;
-        justify-content: space-between;
-        transition: transform .2s; 
-    }
-    .cards1:hover{
-        transform: scale(1.5);
-        padding: 0rem;
-    }
-    
-    .cards2{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .cards3{
-        display: flex;
-        padding: 1rem;
-    }
-    .p1{
-        transition: transform .2s;
+}
+.flex div{
+    // border: .1rem solid black;
+}
+#tapete{
+    background-size: 100%;
+}
+#room{
+    background-color: chocolate;
+}
+.avatar{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+ 
+ 
+}
+.avatar img{
+max-width: 100px;
+max-height: 100px;
+border: 10px ridge rgb(233, 18, 11);
+background-color: rgb(226, 176, 110);
+border-radius: 6px;
+}
+.card{
+    display: block;
+    margin: -.5rem;
+}
+.card img{
+    display: block;
+    height: 100%;
+    object-fit:contain;
+}
+.card1{
+    background-color: burlywood;
+    padding: .5rem;
+    margin: .3rem;
+    height: 3rem;
+    width: 5rem;
+}
+.centralcards{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 28rem;
+}
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem 1.25rem;
+    max-width: 30ch;
+    text-align: center;
+    white-space: normal;
+    color: white;
+    background-color: darkolivegreen;
+    border: 1px solid black;
+    border-radius: .25rem
+}
+
+.cards1{
+    display: flex;
+    justify-content: center;
+    gap:.25rem;
+    transition: transform .2s; 
+}
+.cards1:hover{
+    transform: scale(1.5);
+    padding: 0rem;
+}
+
+.cards2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.cards3{
+    display: flex;
+    padding: 1rem;
+}
+
+.p1:hover{
+    transform: scale(1.5); 
+}
+.player1{
+
+}
+.player3{
+    display: flex;
+}
+.player2{
+    display: flex;
+
+
+}
+.team1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.team2{
+    display: flex;
+    justify-content: space-between;
+}
+.tablero{
+    display: flex;
+}
+
+.tablero {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: minmax(100px,15vw) 20vw 1fr 20vw minmax(100px,15vw);
+    grid-template-rows: 20vh 15vh 1fr 15vh 20vh;
+    grid-template-areas: ". . avatar-compa . ."
+                        ". . cartas-compa . ."
+                        "avatar-oponente-iz cartas-oponente-iz info cartas-oponente-dr avatar-oponente-dr"
+                        ". . cartas-activo . ."
+                        ". jugador-activo jugador-activo jugador-activo ."
+    ;
+    width: 100%;
+    max-width: 100%;
+}
+.avatar-compa {
+    grid-area: avatar-compa;
+}
+.cartas-compa {
+    grid-area: cartas-compa;
+}
+.avatar-oponente-iz {
+    grid-area: avatar-oponente-iz;
+}
+.cartas-oponente-iz {
+    grid-area: cartas-oponente-iz;
+}
+.info {
+    grid-area: info;
+    display: block;
+    padding: 1rem 2rem;
+    background-color: rgba(200,200,200,.4);
+    border-radius: 1rem;
+    box-shadow: 0 0 2px 4px rgba(50,50,50,.3);
+}
+.cartas-oponente-dr {
+    grid-area: cartas-oponente-dr;
+}
+.avatar-oponente-dr {
+    grid-area: avatar-oponente-dr;
+}
+.cartas-activo {
+    grid-area: cartas-activo;
+
+    .card {
+        transform-origin: bottom center;
+        transition: transform .2s ease-in-out;
+        &:first-child {
+            margin-right: -30px;
+            transform: rotateZ( -15deg );
+            &:hover {
+                transform: translateY(-60%) rotateZ( -15deg ) scale(1.5);
+            }
+        }
+        &:nth-child(2) {
+            margin-right: -15px;
+            transform: translateY(-20px) rotateZ( -5deg );
+            &:hover {
+                transform: translateY(-60%) rotateZ( -5deg ) scale(1.5);
+            }
+        }
+        &:nth-child(3) {
+            margin-left: -15px;
+            transform: translateY(-20px) rotateZ( 5deg );
+            &:hover {
+                transform: translateY(-60%) rotateZ( 5deg ) scale(1.5);
+            }
+        }
+        &:last-child {
+            margin-left: -30px;
+            transform: rotateZ( 15deg );
+            &:hover {
+                transform: translateY(-60%) rotateZ( 15deg ) scale(1.5);
+            }
+        }
+
     }
     .p1:hover{
+        // order: 1;
         transform: scale(1.5); 
     }
-    .player1{
-    
-    }
-    .player3{
-        display: flex;
-    }
-    .player2{
-        display: flex;
-    
-    
-    }
-    .team1{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    
-    }
-    .team2{
-        display: flex;
-        justify-content: space-between;
-    }
-    .tablero{
-        display: flex;
-    }
-    .card img{
-     width: 100%;
-    
-    }
+}
+.jugador-activo {
+    grid-area: jugador-activo;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.moverchat {
+    opacity: .9;
+}
