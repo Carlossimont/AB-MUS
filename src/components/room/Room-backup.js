@@ -1,4 +1,5 @@
 import tapete from './img/tapete.jpg';
+
 import './Room.scss'
 import Teams from '../teams/Teams'
 import { useState,useEffect } from 'react';
@@ -131,7 +132,7 @@ function Room({user,room}) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${tapete})` }} id="background">
+        <div style={{ backgroundImage: `url(${tapetepixel})` }} id="background">
             {game ? 
                 <Teams 
                 joinRoom={joinRoom} 
