@@ -1,5 +1,5 @@
 import tapete from './img/tapete.jpg';
-
+import tapetepixel from './img/tapetepixel.png';
 import './Room.scss'
 import Teams from '../teams/Teams'
 import { useState,useEffect } from 'react';
@@ -7,6 +7,7 @@ import Chat from '../chat/Chat';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import erlang from './img/erlang.png';
 import B1 from './img/B1.png';
+import suelo from './img/suelo.png';
 
 function Room({user,room}) {
 
@@ -132,7 +133,7 @@ function Room({user,room}) {
 
     return (
 
-        <div style={{ backgroundImage: `url(${tapetepixel})` }} id="background">
+        <div style={{ backgroundImage: `url(${suelo})` }} id="background">
             {game ? 
                 <Teams 
                 joinRoom={joinRoom} 
@@ -148,103 +149,89 @@ function Room({user,room}) {
                 players={players}/> 
             :
             <div className="flex">
-            <div className="team1">
-                <div className="player1">
-                    <div>
-                        <div className="avatar j3">
+            
+
+            <div className="team2">
+                
+                <div className='tablero'>
+                        <div className="jugador-activo">
+                          <div className="avatar j1 avatar-activo">
+                            <img src={erlang} alt="" />
+                            <p>{deskPlayers[0]}</p>
+                          </div>
+                          <div>
+                              <div className="buttons">Mus</div>
+                              <div className="buttons">No hay mus</div>
+                              <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
+                          </div>
+                        </div>
+
+                        <div className="avatar j2 avatar-oponente-dr">
+                          <img src={erlang} alt="" />
+                          <p>{deskPlayers[1]}</p>
+                        </div>
+                        
+                        <div className="avatar j3 avatar-compa">
                           <img src={erlang} alt="" />
                           <p>{deskPlayers[2]}</p>
                         </div>
-                        
-                    </div>
 
-                </div>
-            </div>
-
-            <div className="team2">
-                <div className="player2">
-                    <div className="avatar j4">
-                      <img src={erlang} alt="" />
-                      <p>{deskPlayers[3]}</p>
-                    </div>
-                    
-                </div>
-                <div className='tablero'>
-                        <div className="cards2">
-                          <div className="card1">1card4p</div>
-                          <div className="card1">2card4p</div>
-                          <div className="card1">3card4p</div>
-                          <div className="card1">4card4p</div>
-                        </div>
-
-                        <div className='centralcards'>
-                        <div className="cards3">
-                          <div className="card1">1card3p</div>
-                          <div className="card1">2card3p</div>
-                          <div className="card1">3card3p</div>
-                          <div className="card1">4card3p</div>
-                        </div>
-                        <div>Twitch</div>
-                        <div className="cards1">
-                            <div className="card p1"><img src={B1} alt="" /></div>
-                            <div className="card p1"><img src={B1} alt="" /></div>
-                            <div className="card p1"><img src={B1} alt="" /></div>
-                            <div className="card p1"><img src={B1} alt="" /></div>
-                        </div>
-                        </div>
-                        
-                        <div className="cards2">
-                            <div className="card1">1card2p</div>
-                            <div className="card1">2card2p</div>
-                            <div className="card1">3card2p</div>
-                            <div className="card1">4card2p</div>
-                        </div>
-                </div>
-
-
-
-                <div className="player2">
-
-
-                    <div className="avatar j2">
-                      <img src={erlang} alt="" />
-                      <p>{deskPlayers[1]}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="team1">
-                <div className="player3">
-                    
-                      
-                    
-                      <div className="avatar j1">
+                        <div className="avatar j4 avatar-oponente-iz">
                           <img src={erlang} alt="" />
-                          <p>{deskPlayers[0]}</p>
-                      </div>
-                    
-                    <div>
-                        <div className="buttons">Mus</div>
-                        <div className="buttons">No hay mus</div>
-                        <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
-                    </div>
-                    
-                    
+                          <p>{deskPlayers[3]}</p>
+                        </div>
+
+                        <div className="cards2 cartas-oponente-iz">
+                          <div className="card-contri"><img src={B1} alt="" /></div>
+                          <div className="card-contri"><img src={B1} alt="" /></div>
+                          <div className="card-contri"><img src={B1} alt="" /></div>
+                          <div className="card-contri"><img src={B1} alt="" /></div>
+                        </div>
+
+                          <div className="cards3 cartas-compa">
+                            <div className="card-compa"><img src={B1} alt="" /></div>
+                            <div className="card-compa"><img src={B1} alt="" /></div>
+                            <div className="card-compa"><img src={B1} alt="" /></div>
+                            <div className="card-compa"><img src={B1} alt="" /></div>
+                          </div>
+
+                          <div className="info">Twitch</div>
+                          <div className='mesa'><img src={tapetepixel} alt="" /></div>
+                          
+                          <div className="cards1 cartas-activo">
+                              <div className="card p1"><img src={B1} alt="" /></div>
+                              <div className="card p1"><img src={B1} alt="" /></div>
+                              <div className="card p1"><img src={B1} alt="" /></div>
+                              <div className="card p1"><img src={B1} alt="" /></div>
+                          </div>
+                        
+                        <div className="cards2  cartas-oponente-dr">
+                            <div className="card-contrd"><img src={B1} alt="" /></div>
+                            <div className="card-contrd"><img src={B1} alt="" /></div>
+                            <div className="card-contrd"><img src={B1} alt="" /></div>
+                            <div className="card-contrd"><img src={B1} alt="" /></div>
+                        </div>
+
+                        <Chat 
+                          closeConnection={closeConnection} 
+                          sendMessage={sendMessage} 
+                          messages={messages}
+                          setMessage={setMessage}
+                          message={message}
+                        ></Chat>
                 </div>
+
+
+
             </div>
 
+            
         </div>
 
     }
 
             
-            <Chat 
-            closeConnection={closeConnection} 
-            sendMessage={sendMessage} 
-            messages={messages}
-            setMessage={setMessage}
-            message={message}
-            ></Chat>
+            
 
         </div>
 
