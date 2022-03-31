@@ -443,21 +443,50 @@ function Room({ user, room }) {
         <div className="team2">
             
             <div className='tablero'>
-                    <div className="jugador-activo">
+            <div className="jugador-activo">
                       <div className="avatar j1 avatar-activo">
                         <img src={erlang} alt="" />
                         <p>{deskPlayers[0]}</p>
                       </div>
-                      {turno===myChair ? 
-                      <div>
+                        {myChair===turno ?
+                      <div className='flexbuttons'>
+                        {myChair===playerThree && round===-1 ? 
+                          <div className='prenohaymus'>
+                            <div onClick={()=>barajar()}>barajar</div>
+                            <div onClick={()=>repartir()}>repartir</div>
+                          </div> : <></>}
+                        {round === 0 ?
+                        <div className='prenohaymus'>
                           <div className="buttons" onClick={()=>changeTurn(playerThree)}>Mus</div>
                           <div className="buttons" onClick={()=>noMus()}>No hay mus</div>
-                          <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
-                          <div onClick={()=>barajar()}>barqjar</div>
-                          <div onClick={()=>repartir()}>repartir</div>
-                      </div>
-                    : <></>}
-                    </div>
+                        </div> : <></>
+                        }
+
+                        {round === 1 ?//meter condicion de que se haya descartado de una carta minimo
+                        <div className="buttons">Descartar</div>
+                        :<></>}
+                         
+                         
+                    
+                        {round > 1 ?
+                        <div className='postnohaymus'>
+                            <div>
+                              <div><h1>+1</h1></div>
+                              <div><h1>+5</h1></div>
+                            </div>
+                            <div>
+                              <div>
+                                <h2>Envite</h2>
+                                <p className='suma'>suma</p>
+                              </div>
+                              <div><h2>BORRAR</h2></div>
+                            </div>
+
+                        </div>
+                        : <></>}
+                      
+                        </div> : <></>}
+                        </div>
 
                     <div className="avatar j2 avatar-oponente-dr">
                       <img src={erlang} alt="" />
@@ -537,11 +566,11 @@ function Room({ user, room }) {
     </div>
 
 }
-
-        
-        
-
     </div>
+
+        
+        
+
 
 )
 }
