@@ -20,7 +20,7 @@ let [room,setRoom] = useState('');
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Lobby content={<Logo/>} options={<LobbyOptions/>}/>} />
+        <Route path="/" element={<Lobby content={<Logo/>} options={<LobbyOptions/>} header={<Header/>} />} />
 
         <Route path="/login" element={<Lobby content={<Login/>} options={<ReturnLobbyOption/>}/>} />
 

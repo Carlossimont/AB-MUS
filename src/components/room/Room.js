@@ -344,10 +344,12 @@ function Room({ user, room }) {
                         <p>{deskPlayers[0]}</p>
                       </div>
                       <div className='flexbuttons'>
+
                         <div className='prenohaymus'>
                           <div className="buttons">Mus</div>
                           <div className="buttons">No hay mus</div>
                         </div>
+
                         <div className='postnohaymus'>
                             <div>
                               <div><h1>+1</h1></div>
@@ -356,11 +358,10 @@ function Room({ user, room }) {
                             <div>
                               <div>
                                 <h2>Envite</h2>
-                                <p>suma</p>
+                                <p className='suma'>suma</p>
                               </div>
                               <div><h2>BORRAR</h2></div>
-                            </div>
-                            
+                            </div>    
                         </div>
 
                       </div>

@@ -5,7 +5,7 @@ function Header() {
   return (
     <header>
       <div>
-          <p>NHM</p>
+          <h2>NHM</h2>
       </div>
       <div> 
           <p>Login</p>
