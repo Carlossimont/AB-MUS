@@ -465,9 +465,7 @@ function Room({ user, room }) {
                         {round === 1 ?//meter condicion de que se haya descartado de una carta minimo
                         <div className="buttons">Descartar</div>
                         :<></>}
-                         
-                         
-                    
+                 
                         {round > 1 ?
                         <div className='postnohaymus'>
                             <div>
