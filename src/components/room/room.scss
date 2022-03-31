@@ -178,14 +178,64 @@ z-index:0;
     grid-template-columns: 5vw minmax(100px,10vw) 10vw 31fr 10vw minmax(100px,10vw);
     grid-template-rows: 15vh 15vh 30vh 15vh 20vh;
     grid-template-areas: ". . . avatar-compa . ."
-                        ". . . cartas-compa . ."
+                        ". . mazo3 cartas-compa mazo2 ."
                         ". avatar-oponente-iz cartas-oponente-iz info cartas-oponente-dr avatar-oponente-dr"
-                        ". . . cartas-activo . ."
+                        ". . mazo4 cartas-activo mazo1 ."
                         ". . jugador-activo jugador-activo jugador-activo ."
     ;
     width: 100%;
     max-width: 100%;
 }
+.mazo1{
+    z-index:1;
+    grid-area: mazo1;
+}
+.mazo1 img{
+    margin-top: 1.5rem;
+    margin-right: 20rem;
+    display: block;
+    height: 100%;
+    object-fit:contain;
+    transform:rotate(-20deg);
+}
+.mazo2{
+    z-index:1;
+    grid-area: mazo2;
+}
+.mazo2 img{
+    margin-bottom: 1.5rem;
+    margin-left: 2rem;
+    display: block;
+    height: 100%;
+    object-fit:contain;
+    transform:rotate(90deg);
+}
+.mazo3{
+    z-index:1;
+    grid-area: mazo3;
+}
+.mazo3 img{
+    margin-bottom: 1.5rem;
+    margin-left: 5rem;
+    display: block;
+    height: 100%;
+    object-fit:contain;
+    // transform:rotate(90deg);
+}
+.mazo4{
+    z-index:1;
+    grid-area: mazo4;
+}
+.mazo4 img{
+
+    margin-left: 3rem;
+    display: block;
+    height: 100%;
+    object-fit:contain;
+    transform:rotate(90deg);
+}
+
+
 .avatar-compa {
     grid-area: avatar-compa;
 }
@@ -267,4 +317,26 @@ z-index:0;
 .avatar p{
     border: 0;
     margin:0;
+}
+.flexbuttons{
+    display: flex;
+}
+.prenohaymus{
+    display:flex;
+}
+.postnohaymus{
+    // background-color: brown;
+    // display: flex;
+    z-index:1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem 1.25rem;
+    max-width: 30ch;
+    text-align: center;
+    white-space: normal;
+    color: white;
+    background-color: rgb(107, 54, 47);
+    border: 1px solid black;
+    border-radius: .25rem
 }     

@@ -7,7 +7,9 @@ import Chat from '../chat/Chat';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import erlang from './img/erlang.png';
 import B1 from './img/B1.png';
+import F000 from './img/F000.png';
 import suelo from './img/suelo.png';
+
 
 function Room({ user, room }) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
@@ -36,12 +38,12 @@ function Room({ user, room }) {
   let [ordenRonda, setOrdenRonda] = useState([]);
   
   let [check,setCheck] = useState('nada');
-  let [arrayPrueba, setArrayPrueba] = useState([
-    [O5, C10, B3, C10],
-    [C10, C10, C10, C10],
-    [C10, C10, C10, C10],
-    [C10, C10, C10, O1],
-  ]);
+  // let [arrayPrueba, setArrayPrueba] = useState([
+  //   [O5, C10, B3, C10],
+  //   [C10, C10, C10, C10],
+  //   [C10, C10, C10, C10],
+  //   [C10, C10, C10, O1],
+  // ]);
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
@@ -341,10 +343,26 @@ function Room({ user, room }) {
                         <img src={erlang} alt="" />
                         <p>{deskPlayers[0]}</p>
                       </div>
-                      <div>
+                      <div className='flexbuttons'>
+                        <div className='prenohaymus'>
                           <div className="buttons">Mus</div>
                           <div className="buttons">No hay mus</div>
-                          <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
+                        </div>
+                        <div className='postnohaymus'>
+                            <div>
+                              <div><h1>+1</h1></div>
+                              <div><h1>+5</h1></div>
+                            </div>
+                            <div>
+                              <div>
+                                <h2>Envite</h2>
+                                <p>suma</p>
+                              </div>
+                              <div><h2>BORRAR</h2></div>
+                            </div>
+                            
+                        </div>
+
                       </div>
                     </div>
 
@@ -382,16 +400,16 @@ function Room({ user, room }) {
                       
                       <div className="cards1 cartas-activo">
                 <div className="card p1">
-                  <img src={"/img/"+myCards[0]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[1]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[2]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[3]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
               </div>
                     
@@ -401,6 +419,11 @@ function Room({ user, room }) {
                         <div className="card-contrd"><img src={B1} alt="" /></div>
                         <div className="card-contrd"><img src={B1} alt="" /></div>
                     </div>
+
+                    <div className='mazo1'><img src={F000} alt=""/></div>
+                    <div className='mazo2'><img src={F000} alt=""/></div>
+                    <div className='mazo3'><img src={F000} alt=""/></div>
+                    <div className='mazo4'><img src={F000} alt=""/></div>
 
                     <Chat 
                       closeConnection={closeConnection} 
