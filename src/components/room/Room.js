@@ -34,14 +34,12 @@ function Room({ user, room }) {
   let [barajaDescartes, setBarajaDescartes] = useState([]);
   let [deckHands, setDeckHands] = useState([], [], [], []);
   let [ordenRonda, setOrdenRonda] = useState([]);
+  let [turno,setTurno] = useState(-1);
+  let [changeRepartir,setChangeRepartir] = useState(false);
+  let [round,setRound] = useState(-1);
+  let [roundName,setRoundName] = useState('Mus');
   
   let [check,setCheck] = useState('nada');
-  let [arrayPrueba, setArrayPrueba] = useState([
-    [O5, C10, B3, C10],
-    [C10, C10, C10, C10],
-    [C10, C10, C10, C10],
-    [C10, C10, C10, O1],
-  ]);
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
@@ -77,6 +75,70 @@ function Room({ user, room }) {
     playersAux[number] = name;
     setPlayers(playersAux);
   }, [number]);
+
+  useEffect(()=>{
+    switch (round) {
+      case -1:
+        setRoundName('Repartiendo...');
+      setTurno(playerThree+1);
+        break;
+
+        case 0:
+        setRoundName('Mus');
+      setTurno(playerThree+1);
+        break;
+
+        case 1:
+        setRoundName('Descartes');
+      setTurno(playerThree+1);
+        break;
+
+        case 2:
+        setRoundName('Mayor');
+      setTurno(playerThree+1);
+        break;
+
+        case 3:
+        setRoundName('Pequeña');
+      setTurno(playerThree+1);
+        break;
+
+        case 4:
+        setRoundName('Hay pares');
+      setTurno(playerThree+1);
+        break;
+
+        case 5:
+        setRoundName('Pares');
+      setTurno(playerThree+1);
+        break;
+
+        case 6:
+        setRoundName('Hay Juego');
+      setTurno(playerThree+1);
+        break;
+
+        case 7:
+        setRoundName('Juego');
+      setTurno(playerThree+1);
+        break;
+
+        case 8:
+        setRoundName('Punto');
+      setTurno(playerThree+1);
+        break;
+
+        case 9:
+        setRoundName('Contando...');
+      setTurno(playerThree+1);
+        break;
+    
+      default:
+        alert('Ha entrado default en switch de ronda')
+        break;
+    }
+    
+  },[round])
 
   // useEffect(() => {
   //   let barajaAux = [];
@@ -149,6 +211,8 @@ function Room({ user, room }) {
     setBaraja(barajaAux);
     console.log('baraja restante');
     console.log(barajaAux);
+    changeTurn(turno);
+    setChangeRepartir(true);
   
   }
 
@@ -157,6 +221,12 @@ function Room({ user, room }) {
       sendDeckHands(deckHands);
     }
   },[deckHands])
+
+  useEffect(()=>{
+    if (turno===4) {
+      setTurno(0);
+    }
+  },[turno])
 
   function seleccionarDescarte() {
     let deckHandsAux = [...deckHands];
@@ -222,6 +292,23 @@ function Room({ user, room }) {
         setNumber(playerNumber);
       });
 
+      connection.on("NewTurn", (num) => {//ddddddddddddhdhdedvbeifvbefbvebrvibewrbivewirb
+        setTurno(num);
+      });
+
+      connection.on("NextRound", () => {
+        let ronda = round;
+        ronda++;
+        console.log('entra nextround desde signalr');
+        console.log(ronda);
+        setRound(ronda);
+      });
+
+      connection.on("NoMus", () => {
+        setRound(2);
+        console.log(playerThree+1);
+      });
+
       connection.on("ReceiveHandCards", (handCards) => {
         setMyCards(handCards);
         console.log(handCards);
@@ -229,8 +316,10 @@ function Room({ user, room }) {
 
       connection.on("StartGame", (player3) => {
         setGame(true);
+        setRound(-1);
         setPlayerThree(player3);
         console.log(player3);
+        setTurno(player3);
       });
 
       connection.onclose((e) => {
@@ -286,6 +375,24 @@ function Room({ user, room }) {
     }
   };
 
+  const noMus = async () => {
+    console.log("entra nomus");
+    try {
+      await connection.invoke("NoMus");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const changeTurn = async (postre) => {
+    console.log("entra changeturn");
+    try {
+      await connection.invoke("ChangeTurn",postre);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const sendMessage = async (message) => {
     try {
       await connection.invoke("SendMessage", message);
@@ -316,7 +423,7 @@ function Room({ user, room }) {
   return (
 
     <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-        {game ? 
+        {!game ? 
             <Teams 
             joinRoom={joinRoom} 
             user={user} 
@@ -341,11 +448,15 @@ function Room({ user, room }) {
                         <img src={erlang} alt="" />
                         <p>{deskPlayers[0]}</p>
                       </div>
+                      {turno===myChair ? 
                       <div>
-                          <div className="buttons">Mus</div>
-                          <div className="buttons">No hay mus</div>
+                          <div className="buttons" onClick={()=>changeTurn(playerThree)}>Mus</div>
+                          <div className="buttons" onClick={()=>noMus()}>No hay mus</div>
                           <div className="buttons">ÓRDAGO ME CAGO EN DIOS</div>
+                          <div onClick={()=>barajar()}>barqjar</div>
+                          <div onClick={()=>repartir()}>repartir</div>
                       </div>
+                    : <></>}
                     </div>
 
                     <div className="avatar j2 avatar-oponente-dr">
@@ -364,20 +475,26 @@ function Room({ user, room }) {
                     </div>
 
                     <div className="cards2 cartas-oponente-iz">
-                      <div className="card-contri"><img src={B1} alt="" /></div>
-                      <div className="card-contri"><img src={B1} alt="" /></div>
-                      <div className="card-contri"><img src={B1} alt="" /></div>
-                      <div className="card-contri"><img src={B1} alt="" /></div>
+                      {round>-1 ? <>
+                      <div className="card-contri"><img src={"/img/000.png"} /></div>
+                      <div className="card-contri"><img src={"/img/000.png"} /></div>
+                      <div className="card-contri"><img src={"/img/000.png"} /></div>
+                      <div className="card-contri"><img src={"/img/000.png"} /></div>
+                      </>
+                      : <></>}
                     </div>
 
                       <div className="cards3 cartas-compa">
-                        <div className="card-compa"><img src={B1} alt="" /></div>
-                        <div className="card-compa"><img src={B1} alt="" /></div>
-                        <div className="card-compa"><img src={B1} alt="" /></div>
-                        <div className="card-compa"><img src={B1} alt="" /></div>
+                      {round>-1 ? <>
+                        <div className="card-compa"><img src={"/img/000.png"} /></div>
+                        <div className="card-compa"><img src={"/img/000.png"} /></div>
+                        <div className="card-compa"><img src={"/img/000.png"} /></div>
+                        <div className="card-compa"><img src={"/img/000.png"} /></div>
+                        </>
+                      : <></>}
                       </div>
 
-                      <div className="info">Twitch</div>
+                      <div className="info">{roundName}</div>
                       <div className='mesa'><img src={tapetepixel} alt="" /></div>
                       
                       <div className="cards1 cartas-activo">
@@ -396,10 +513,13 @@ function Room({ user, room }) {
               </div>
                     
                     <div className="cards2  cartas-oponente-dr">
-                        <div className="card-contrd"><img src={B1} alt="" /></div>
-                        <div className="card-contrd"><img src={B1} alt="" /></div>
-                        <div className="card-contrd"><img src={B1} alt="" /></div>
-                        <div className="card-contrd"><img src={B1} alt="" /></div>
+                      {round>-1 ? <>
+                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
+                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
+                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
+                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
+                        </>
+                      : <></>}
                     </div>
 
                     <Chat 
@@ -410,8 +530,6 @@ function Room({ user, room }) {
                       message={message}
                     ></Chat>
             </div>
-
-
 
         </div>
 
