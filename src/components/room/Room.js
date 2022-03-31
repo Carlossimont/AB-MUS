@@ -473,15 +473,19 @@ function Room({ user, room }) {
                             <div>
                               <div><h1>+1</h1></div>
                               <div><h1>+5</h1></div>
+                             
+
                             </div>
                             <div>
                               <div>
-                                <h2>Envite</h2>
+                                <h2>Envido</h2>
                                 <p className='suma'>suma</p>
                               </div>
                               <div><h2>BORRAR</h2></div>
+                             
                             </div>
-
+                             <div><h1>PASAR</h1></div>
+                            <div><h2>ÓRDAGO</h2></div>
                         </div>
                         : <></>}
                       
@@ -540,6 +544,7 @@ function Room({ user, room }) {
                   <img src={B1} alt="" />
                 </div>
               </div>
+              
                     
                     <div className="cards2  cartas-oponente-dr">
                       {round>-1 ? <>
@@ -550,6 +555,11 @@ function Room({ user, room }) {
                         </>
                       : <></>}
                     </div>
+                        
+                    <div className='mazo1'><img src={"/img/000.png"} alt=""/></div>
+                    <div className='mazo2'><img src={"/img/000.png"} alt=""/></div>
+                    <div className='mazo3'><img src={"/img/000.png"} alt=""/></div>
+                    <div className='mazo4'><img src={"/img/000.png"} alt=""/></div>
 
                     <div className='mazo1'><img src={F000} alt=""/></div>
                     <div className='mazo2'><img src={F000} alt=""/></div>
