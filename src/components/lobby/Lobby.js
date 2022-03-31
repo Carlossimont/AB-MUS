@@ -8,17 +8,6 @@ function Lobby({content, options, chat}) {
     return (
         
         <div style={{backgroundImage: `url(${fondogif2})`}} id="background">
-            <header>
-                <div>
-                    <p>NHM</p>
-                </div>
-                <div> 
-                    <p>Login</p>
-                    <p>Register</p>
-                </div>
-               
-            </header>
-
             <div>
                 {content}
                 {options}
