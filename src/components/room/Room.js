@@ -7,7 +7,9 @@ import Chat from '../chat/Chat';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import erlang from './img/erlang.png';
 import B1 from './img/B1.png';
+import F000 from './img/F000.png';
 import suelo from './img/suelo.png';
+
 
 function Room({ user, room }) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
@@ -642,16 +644,16 @@ function Room({ user, room }) {
                 </> : 
                 <>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[0]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[1]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[2]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 <div className="card p1">
-                  <img src={"/img/"+myCards[3]+".png"} alt="" />
+                  <img src={B1} alt="" />
                 </div>
                 </>
                 
@@ -675,6 +677,11 @@ function Room({ user, room }) {
                     <div className='mazo2'><img src={"/img/000.png"} alt=""/></div>
                     <div className='mazo3'><img src={"/img/000.png"} alt=""/></div>
                     <div className='mazo4'><img src={"/img/000.png"} alt=""/></div>
+
+                    <div className='mazo1'><img src={F000} alt=""/></div>
+                    <div className='mazo2'><img src={F000} alt=""/></div>
+                    <div className='mazo3'><img src={F000} alt=""/></div>
+                    <div className='mazo4'><img src={F000} alt=""/></div>
 
                     <Chat 
                       closeConnection={closeConnection} 
