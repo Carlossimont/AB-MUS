@@ -2,6 +2,10 @@ import tapete from './img/tapete.jpg';
 import { useState,useEffect } from 'react';
 import './Teams.scss'
 import Chat from '../chat/Chat';
+import avatar1 from './img/1_Normal_pj1.png'
+import avatar2 from './img/1_Normal_pj2.png'
+import avatar3 from './img/1_Normal_pj3.png'
+import avatar4 from './img/1_Normal_pj4.png'
 
 function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users,players}) {
     //ngOnInit
@@ -43,7 +47,16 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     <div className="center" onClick={()=>assignChair(2)}>{players[2]}</div>
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
                     </div>
-                    <div className='avatares'>Avatares</div>    
+                    <div className='avatares'>
+                        <p>Avatares</p>
+                        <div>
+                            <div><img src={avatar1} alt="" /></div>
+                            <div><img src={avatar2} alt="" /></div>
+                            <div><img src={avatar3} alt="" /></div>
+                            <div><img src={avatar4} alt="" /></div>
+                        </div>
+
+                    </div>    
                     </div> : <div>
                             <p>CARGANDO JUGADORES</p>
                         
