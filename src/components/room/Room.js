@@ -1,6 +1,6 @@
 import tapete from './img/tapete.jpg';
 import tapetepixel from './img/tapetepixel.png';
-import './Room.scss'
+import './room.scss'
 import Teams from '../teams/Teams'
 import { useState,useEffect } from 'react';
 import Chat from '../chat/Chat';
@@ -45,7 +45,7 @@ function Room({ user, room }) {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(['Edu']);
   let playersAux = [];
 
   useEffect(() => {
@@ -446,7 +446,7 @@ function Room({ user, room }) {
             
             <div className='tablero'>
             <div className="jugador-activo">
-                      <div className="avatar j1 avatar-activo">
+                      <div className="avatar t1 avatar-activo">
                         <img src={erlang} alt="" />
                         <p>{deskPlayers[0]}</p>
                       </div>
@@ -488,17 +488,17 @@ function Room({ user, room }) {
                         </div> : <></>}
                         </div>
 
-                    <div className="avatar j2 avatar-oponente-dr">
+                    <div className="avatar t2 avatar-oponente-dr">
                       <img src={erlang} alt="" />
                       <p>{deskPlayers[1]}</p>
                     </div>
                     
-                    <div className="avatar j3 avatar-compa">
+                    <div className="avatar t1 avatar-compa">
                       <img src={erlang} alt="" />
                       <p>{deskPlayers[2]}</p>
                     </div>
 
-                    <div className="avatar j4 avatar-oponente-iz">
+                    <div className="avatar t2 avatar-oponente-iz">
                       <img src={erlang} alt="" />
                       <p>{deskPlayers[3]}</p>
                     </div>
@@ -556,13 +556,7 @@ function Room({ user, room }) {
                     <div className='mazo3'><img src={F000} alt=""/></div>
                     <div className='mazo4'><img src={F000} alt=""/></div>
 
-                    <Chat 
-                      closeConnection={closeConnection} 
-                      sendMessage={sendMessage} 
-                      messages={messages}
-                      setMessage={setMessage}
-                      message={message}
-                    ></Chat>
+
             </div>
 
         </div>
@@ -571,6 +565,13 @@ function Room({ user, room }) {
     </div>
 
 }
+<Chat 
+                      closeConnection={closeConnection} 
+                      sendMessage={sendMessage} 
+                      messages={messages}
+                      setMessage={setMessage}
+                      message={message}
+                    ></Chat>
     </div>
 
         

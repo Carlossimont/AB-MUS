@@ -4,7 +4,7 @@ import fondogif2 from './img/fondogif2.gif';
 import './Lobby.scss'
 import Header from '../header/Header'
 
-function Lobby({content, options, chat}) {
+function Lobby({content, options, chat, infobox}) {
 
     return (
         
@@ -13,8 +13,8 @@ function Lobby({content, options, chat}) {
             <div>
                 {content}
                 {options}
-
-                {chat != undefined ? chat : <></>}
+                {infobox}
+                {chat}
      
             </div>
         </div>

@@ -1,17 +1,39 @@
-#flex1{
+.teambox{
+    position: absolute;
+    left:25vw;
+    top:25vh;
+    border:solid  rgb(89, 41, 9) 7px;
+    box-shadow: 5px 5px 25px rgb(89, 41, 9) ;
+    background-color: bisque;
+    padding:0px 30px 30px 30px;
+    margin: 0;
+}
+.flex1{
     display:flex;
 }
-#imagen img{
+.imagen img{
     max-width: 200px;
 }
-#players{
+.players{
+    text-align: center;
+    font-size: 20px;
+    margin: 2rem 5rem 0rem 0rem;
     width: 150px;
+    background-color: grey;
+    box-shadow: 3px 3px 3px rgb(89, 41, 9) ;
+    border: solid black 3px;
 
+    p{
+        margin:0px;
+    }
 }
-#players div{
-    padding :15px;
+.players div{
+    text-align: left;
+    padding :10px;
+    background-color:rgb(179, 179, 179);
+    font-size:30px;
 }
-#row{
+.row{
     display:flex;
     flex-direction: row;
     align-items: center;

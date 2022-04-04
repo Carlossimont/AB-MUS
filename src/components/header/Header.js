@@ -1,11 +1,13 @@
 import {Link} from 'react-router-dom'
+import './Header.scss'
+
 
 function Header() {
 
   return (
     <header>
       <div>
-          <h2>NHM</h2>
+          <h1>AB MUS</h1>
       </div>
       <div> 
           <p>Login</p>

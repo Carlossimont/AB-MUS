@@ -39,8 +39,15 @@ z-index:0;
 .avatar img{
     max-width: 100px;
     max-height: 100px;
-    border: 10px ridge rgb(233, 18, 11);
+}
+.t1 img{
+    border: 10px ridge rgb(37, 11, 233);
     background-color: rgb(226, 176, 110);
+    border-radius: 6px;
+}
+.t2 img{
+    border: 10px ridge rgb(233, 18, 11);
+    background-color: rgb(156, 226, 110);
     border-radius: 6px;
 }
 .card-compa{
