@@ -199,6 +199,7 @@ function Room({ user, room }) {
     console.log("acaba barajar");
     setCheck("barajar");
   }
+  function fold(){} //HAY QUE QUITAR ESTO CUANDO TERMINE LAS PRUEBAS
 
   useEffect(() => {
     if (check == "nada") {
@@ -603,7 +604,7 @@ function Room({ user, room }) {
             <div className="tablero">
               <div className="jugador-activo">
                 <div className="avatar t1 avatar-activo">
-                  <img src={"/img/pj1_normal.png"} alt="" />
+                  <img src="" alt="" />
                   <p>{deskPlayers[0]}</p>
                 </div>
                 {true ? (
@@ -646,60 +647,51 @@ function Room({ user, room }) {
 
                     {round > 1 && !flagBet  ? (
                       <div className="postnohaymus">
-                        <div>
-                          <div onClick={() => sumBet(1)}>
-                            <h1>+1</h1>
-                          </div>
-                          <div onClick={() => sumBet(5)}>
-                            <h1>+5</h1>
-                          </div>
-                        </div>
-                        <div>
+                        <div className="superflex">
                           <div>
-                            <div onClick={() => envido()}>
-                              <h2>Envido</h2>
+                            <div className="flex_buttons_up">
+                              <div onClick={() => sumBet(1)}><p>+1</p></div>
+                              <div onClick={() => sumBet(5)}><p>+5</p></div>
+                              <div  className="flex_buttons_up" onClick={() => envido()}>
+                                <p>Envido</p>
+                                <p className="suma">{bet}</p>
+                              </div>
                             </div>
-                            <p className="suma">{bet}</p>
+                            <div  className="flex_buttons_down">
+                              <div onClick={() => sumBet(-1)}><p>BORRAR</p></div>
+                              <div onClick={() => changeTurn(playerThree, round)}><p>PASAR</p></div>
+                            </div>
                           </div>
-                          <div onClick={() => sumBet(-1)}>
-                            <h2>BORRAR</h2>
+                          <div className="ordago">
+                            <div><p>ÓRDAGO</p></div>
                           </div>
                         </div>
-                        <div onClick={() => changeTurn(playerThree, round)}>
-                          <h1>PASAR</h1>
-                        </div>
-                        <div>
-                          <h2>ÓRDAGO</h2>
-                        </div>
+                          
                       </div>
                     ) : round>1 && flagBet ? (
                       <>
                         <div className="postnohaymus">
-                        <div>
-                          <div onClick={() => sumBet(1)}>
-                            <h1>+1</h1>
-                          </div>
-                          <div onClick={() => sumBet(5)}>
-                            <h1>+5</h1>
-                          </div>
-                        </div>
-                        <div>
+                        <div className="superflex">
                           <div>
-                            <div onClick={() => envido()}>
-                              <h2>Quiero</h2>
+                            <div className="flex_buttons_up">
+                              <div onClick={() => sumBet(1)}><p>+1</p></div>
+                              <div onClick={() => sumBet(5)}><p>+5</p></div>
+                              <div  className="flex_buttons_up" onClick={() => envido()}>
+                                <p>Subo</p>
+                                <p className="suma">{bet}</p>
+                              </div>
                             </div>
-                            <p className="suma">{bet}</p>
+                            <div  className="flex_buttons_down">
+                              <div onClick={() => sumBet(-1)}><p>BORRAR</p></div>
+                              <div><p>Quiero</p></div>
+                              <div onClick={() => changeTurn(playerThree, round)}><p>No quiero</p></div>
+                            </div>
                           </div>
-                          <div onClick={() => sumBet(-1)}>
-                            <h2>BORRAR</h2>
+                          <div className="ordago">
+                            <div><p>ÓRDAGO</p></div>
                           </div>
                         </div>
-                        <div onClick={() => fold()}>
-                          <h1>NO QUIERO</h1>
-                        </div>
-                        <div>
-                          <h2>ÓRDAGO</h2>
-                        </div>
+                          
                       </div>
                       </>
                     ): <></>}
