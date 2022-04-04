@@ -11,6 +11,7 @@ import Logo from '../logo/Logo';
 import ReturnLobbyOption from '../returnLobbyOption/ReturnLobbyOption';
 import Chat from '../chat/Chat';
 import { useState } from 'react';
+import Infobox from '../infobox/Infobox'
 
 function App() {
 let [user,setUser] = useState('');
@@ -20,18 +21,17 @@ let [room,setRoom] = useState('');
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Lobby content={<Logo/>} options={<LobbyOptions/>}/>} />
+        <Route path="/" element={<Lobby content={<Logo/>} options={<LobbyOptions/>} header={<Header/>} />} />
 
         <Route path="/login" element={<Lobby content={<Login/>} options={<ReturnLobbyOption/>}/>} />
 
-        <Route path="/createroom" element={<Lobby content={<CreateRoom user={user} room={room} setUser={setUser} setRoom={setRoom}/>} options={<ReturnLobbyOption/>} />} />
+        <Route path="/createroom" element={<Lobby content={<CreateRoom user={user} room={room} setUser={setUser} setRoom={setRoom}/>} options={<ReturnLobbyOption/>} infobox={<Infobox />}/>} />
 
         <Route path="/room" element={<Room user={user} room={room}/>} />
         
         {/* <Route path="/room" element={<Room />} /> */}
       </Routes>
     </BrowserRouter>
-    //se pisan los background?
   )
 }
 
