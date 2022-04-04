@@ -43,9 +43,9 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
                 </div> : <div>
                             <p>CARGANDO JUGADORES</p>
-                            {users.length == 1 ? <div>
-                                <progress class="nes-progress" value="25" max="100"></progress>
-                            </div> : <></>}
+                             <div>
+                                <progress class="nes-progress" value={`${users.length * 25}`} max="100"></progress>
+                            </div>
                     
                     
                         </div>}
