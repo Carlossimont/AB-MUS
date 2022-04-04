@@ -8,10 +8,16 @@ function CreateRoom({user,setUser,room,setRoom}) {
         <div>
            <div className="loginboxcontainer">
                 <div className="loginbox">
-                    <div className="border">ALIAS EN PARTIDA</div>
-                    <input type="text" onChange={(e)=>setUser(e.target.value)} value={user} />
-                    <div className="border">TAPETE</div>
+                    <h1>CREAR SALA</h1>
+                    <div className="border">
+                        <p>ALIAS EN PARTIDA</p>
+                        <input type="text" onChange={(e)=>setUser(e.target.value)} value={user} />
+                    </div>
+                    <div className="border">
+                    <p>TAPETE</p>
                     <input type="text" onChange={(b)=>setRoom(b.target.value)} value={room}/>
+                    </div>
+                    
                     <div className="okbutton"><Link to="/room">OK</Link></div>
                 </div>
             </div>  

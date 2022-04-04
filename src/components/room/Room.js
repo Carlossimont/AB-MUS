@@ -64,7 +64,7 @@ function Room({ user, room }) {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(['Edu']);
   let playersAux = [];
 
   useEffect(() => {

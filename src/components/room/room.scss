@@ -50,7 +50,6 @@ z-index:0;
     background-color: rgb(156, 226, 110);
     border-radius: 6px;
 }
-
 .card-compa{
     z-index:1;
     display: block;
@@ -112,20 +111,7 @@ z-index:0;
     align-items: center;
     height: 28rem;
 }
-.buttons{
-    z-index:1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: .5rem 1.25rem;
-    max-width: 30ch;
-    text-align: center;
-    white-space: normal;
-    color: white;
-    background-color: darkolivegreen;
-    border: 1px solid black;
-    border-radius: .25rem
-}
+
 .cards1{
     z-index:1;
     display: flex;
@@ -235,14 +221,12 @@ z-index:0;
     grid-area: mazo4;
 }
 .mazo4 img{
-
     margin-left: 3rem;
     display: block;
     height: 100%;
     object-fit:contain;
     transform:rotate(90deg);
 }
-
 .avatar-compa {
     grid-area: avatar-compa;
 }

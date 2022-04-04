@@ -1,6 +1,8 @@
 import tapete from './img/tapete.jpg';
 import { useState,useEffect } from 'react';
 import './Teams.scss'
+import Chat from '../chat/Chat';
+
 function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users,players}) {
     //ngOnInit
     useEffect(()=>{
@@ -22,25 +24,35 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
 
     return (
 
-        <div className="loginbox">
-            <div id="flex1">
-                <div id="players">
+        <div className="teambox">
+            <div className="flex1">
+                <div className="players">
+                    <p>JUGADORES CONECTADOS</p>
                 {users.map((user,i)=>(
                     <div key={i}>{user}</div>
                     ))}
                 </div>
                 {users.length == 4 ? <div>
                     <div className="center" onClick={()=>assignChair(0)}>{players[0]}</div>
-                    <div id="row">
+                    <div className="row">
                         <div onClick={()=>assignChair(1)}>{players[1]}</div>
-                        <div id="imagen"><img src={tapete} alt="" /></div>
+                        <div className="imagen"><img src={tapete} alt="" /></div>
                         <div onClick={()=>assignChair(3)}>{players[3]}</div>
                     </div>
                     <div className="center" onClick={()=>assignChair(2)}>{players[2]}</div>
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
-                </div> : <></>}
+                </div> : <div>
+                            <p>CARGANDO JUGADORES</p>
+                            {users.length == 1 ? <div>
+                                <progress class="nes-progress" value="25" max="100"></progress>
+                            </div> : <></>}
+                    
+                    
+                        </div>}
             </div>
         </div>
+
+        
     )
 
 }

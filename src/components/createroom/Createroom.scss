@@ -1,6 +1,6 @@
-.border {
-    border: black solid 1px;
-    margin-bottom:  15px;
+.pitote{
+position: fixed;
+
 }
 .button{
     margin: 2px;
@@ -15,4 +15,13 @@
     align-items: center;
     word-break:break-all;
     margin: 0 0 1em 1em;
+}
+.transparence{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    background-color: aqua;
+    opacity: 0.5;
+    z-index: -1;
 }
