@@ -40,17 +40,22 @@ function Room({ user, room }) {
   let [round, setRound] = useState(-1);
   let [roundName, setRoundName] = useState("Mus");
   let [bet, setBet] = useState(2);
-  let [arrayPruebas,setArrayPruebas] = useState([['E11,O12,C1,E12'],['E1,O2,C1,E10'],['E6,O4,C5,E7'],['E10,O10,C10,E7']])
-  
+  let [arrayPruebas, setArrayPruebas] = useState([
+    ["E11,O12,C1,E12"],
+    ["E1,O2,C1,E10"],
+    ["E6,O4,C5,E7"],
+    ["E10,O10,C10,E7"],
+  ]);
+
   let [contadorMayor, setContadorMayor] = useState(1);
   let [contadorPeque, setContadorPeque] = useState(1);
   let [contadorPares, setContadorPares] = useState(0);
   let [contadorJuego, setContadorJuego] = useState(0);
   let [contadorPunto, setContadorPunto] = useState(1);
-  let [contadorOddTeam, setContadorOddTeam] = useState(0);
-  let [contadorParTeam, setContadorParTeam] = useState(0);
-  let [contadorGamesOddTeam, setContadorGamesOddTeam] = useState(0);
-  let [contadorGamesParTeam, setContadorGamesParTeam] = useState(0);
+  let [contadorRedTeam, setContadorRedTeam] = useState(0);
+  let [contadorBlueTeam, setContadorBlueTeam] = useState(0);
+  let [contadorGamesRedTeam, setContadorGamesRedTeam] = useState(0);
+  let [contadorGamesBlueTeam, setContadorGamesBlueTeam] = useState(0);
 
   let [answer, setAnswer] = useState(false);
   let [faseApuesta, setFaseApuesta] = useState(0);
@@ -59,8 +64,8 @@ function Room({ user, room }) {
   let [droppedCards, setDroppedCards] = useState([]);
   let [othersDiscards, setOthersDiscards] = useState([]);
   let [arrayDescartes, setArrayDescartes] = useState([]);
-  let [flagBet,setFlagBet] = useState(false);
-  let [myTeam,setMyTeam] = useState();
+  let [flagBet, setFlagBet] = useState(false);
+  let [myTeam, setMyTeam] = useState();
 
   let [check, setCheck] = useState("nada");
 
@@ -99,7 +104,6 @@ function Room({ user, room }) {
     playersAux[number] = name;
     setPlayers(playersAux);
   }, [number]);
-
 
   useEffect(() => {
     switch (round) {
@@ -253,11 +257,12 @@ function Room({ user, room }) {
     othersDiscards.forEach((jugador, i) => {
       jugador.forEach((carta, j) => {
         if (carta === "F000") {
-          console.log('carta coincide con F000');
+          console.log("carta coincide con F000");
           deckHandsAux[i][j] = barajaAux[0];
           barajaAux.splice(0, 1);
-          if (!barajaAux.length) {//esto nunca va  a entrar por AHORA
-            console.log('espero que no entre');
+          if (!barajaAux.length) {
+            //esto nunca va  a entrar por AHORA
+            console.log("espero que no entre");
             barajaAux = [...barajaDescartes];
             setBaraja(barajaAux); //TODO: barajar los descartes al meterlos en la baraja
             setBarajaDescartes([]);
@@ -269,7 +274,7 @@ function Room({ user, room }) {
     console.log(deckHandsAux);
     setDeckHands(deckHandsAux);
     sendDeckHands(deckHandsAux);
-    changeTurn(playerThree, -1);//TODO: cambio turno cuando el postre reparte los descartes
+    changeTurn(playerThree, -1); //TODO: cambio turno cuando el postre reparte los descartes
   }
 
   useEffect(() => {
@@ -291,11 +296,11 @@ function Room({ user, room }) {
   }
 
   useEffect(() => {
-    if (round===1) {
-    let arrayDescAux = [...othersDiscards];
-    console.log("recibo cartas");
-    arrayDescAux.push(arrayDescartes);
-    setOthersDiscards(arrayDescAux);
+    if (round === 1) {
+      let arrayDescAux = [...othersDiscards];
+      console.log("recibo cartas");
+      arrayDescAux.push(arrayDescartes);
+      setOthersDiscards(arrayDescAux);
     }
   }, [arrayDescartes]);
 
@@ -326,7 +331,7 @@ function Room({ user, room }) {
 
   useEffect(() => {
     console.log("se actualiza othersDiscards");
-    console.log(othersDiscards);//tenemos el array de todos los descartes
+    console.log(othersDiscards); //tenemos el array de todos los descartes
     let discardDeck = [...barajaDescartes];
     if (othersDiscards.length === 4) {
       console.log("entra por longitud 4");
@@ -349,6 +354,33 @@ function Room({ user, room }) {
     }
   }, [round]);
 
+  function call() {
+    switch (round) {
+      case 2:
+        callSignal(contadorMayor);
+        break;
+
+      case 3:
+        callSignal(contadorPeque);
+        break;
+
+      case 5:
+        callSignal(contadorPares);
+        break;
+
+      case 7:
+        callSignal(contadorJuego);
+        break;
+
+      case 8:
+        callSignal(contadorPunto);
+        break;
+
+      default:
+        break;
+    }
+  }
+
   function descartarCarta(jugador, carta) {
     let deckHandsAux = [...deckHands]; //... operator spread clona array para tener dos arrays de forma independiente
     let barajaDescAux = [...barajaDescartes];
@@ -360,13 +392,37 @@ function Room({ user, room }) {
     console.log(barajaDescAux);
   }
 
-  useEffect(()=>{
-    if (myChair%2 === 0) {
-      setMyTeam('blue')
-    } else {
-      setMyTeam('red')
+  function fold() {
+    switch (round) {
+      case 2:
+        foldSignal(contadorMayor);
+        break;
+
+      case 3:
+        foldSignal(contadorPeque);
+        break;
+
+      case 5:
+        foldSignal(contadorPares);
+        break;
+
+      case 7:
+        foldSignal(contadorJuego);
+        break;
+
+      default:
+        alert("Entra default del switch de fold");
+        break;
     }
-  },[myChair])
+  }
+
+  useEffect(() => {
+    if (myChair % 2 === 0) {
+      setMyTeam("blue");
+    } else {
+      setMyTeam("red");
+    }
+  }, [myChair]);
 
   const joinRoom = async (user, room) => {
     try {
@@ -404,9 +460,10 @@ function Room({ user, room }) {
         console.log(playerThree + 1);
       });
 
-      connection.on("Bet", (bet,team) => {
+      connection.on("Bet", (bet, team) => {
         setBet(bet);
-        if (myTeam !== team ) {//si mi equipo es el que NO apuesta abrimos los botones al resto;
+        if (myTeam !== team) {
+          //si mi equipo es el que NO apuesta abrimos los botones al resto;
           setFlagBet(true);
         } else {
           setFlagBet(false);
@@ -418,13 +475,12 @@ function Room({ user, room }) {
         console.log(handCards);
       });
 
-      connection.on("Accountant", ()=>{
-      
-        if (myChair===playerThree) {
-          console.log('entra por postre ')
+      connection.on("Accountant", () => {
+        if (myChair === playerThree) {
+          console.log("entra por postre ");
           countAll();
         }
-      })
+      });
 
       connection.on("StartGame", (player3) => {
         setGame(true);
@@ -437,6 +493,41 @@ function Room({ user, room }) {
       connection.on("OddTeamBets", (teamBet) => {
         if (myChair % 2 === 0) {
           setAnswer(true);
+        }
+      });
+
+      connection.on("Fold", (contador, team) => {
+        if (team === "blue") {
+          setContadorBlueTeam(contadorBlueTeam + contador);
+        } else {
+          setContadorRedTeam(contadorRedTeam + contador);
+        }
+      });
+
+      connection.on("Call", (contador) => {
+        switch (round) {
+          case 2:
+            setContadorMayor(contador);
+            changeRound(2);
+            break;
+
+          case 3:
+            setContadorPeque(contador);
+            changeRound(3);
+            break;
+
+          case 5:
+            setContadorPares(contador);
+            changeRound(5);
+            break;
+
+          case 7:
+            setContadorJuego(contador);
+            changeRound(7);
+            break;
+
+          default:
+            break;
         }
       });
 
@@ -505,7 +596,7 @@ function Room({ user, room }) {
   const noMus = async (gameCards) => {
     console.log("entra nomus");
     try {
-      await connection.invoke("NoMus",gameCards);
+      await connection.invoke("NoMus", gameCards);
     } catch (e) {
       console.log(e);
     }
@@ -539,7 +630,7 @@ function Room({ user, room }) {
 
   const countAll = async () => {
     try {
-      let handss = [...deckHands]
+      let handss = [...deckHands];
       await connection.invoke("AccountantMayor", arrayPruebas);
     } catch (e) {
       console.log(e + " countall");
@@ -559,6 +650,30 @@ function Room({ user, room }) {
     setMyDiscards(myDiscardsAuxAux);
     try {
       await connection.invoke("DropCards", myDiscardsAuxAux, playerThree);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const foldSignal = async (contador) => {
+    try {
+      await connection.invoke("Fold", contador);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const changeRound = async (ronda) => {
+    try {
+      await connection.invoke("ChangeRound", ronda);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const callSignal = async (contador) => {
+    try {
+      await connection.invoke("Call", bet, contador);
     } catch (e) {
       console.log(e);
     }
@@ -624,7 +739,10 @@ function Room({ user, room }) {
                         >
                           Mus
                         </div>
-                        <div className="buttons" onClick={() => noMus(deckHands)}>
+                        <div
+                          className="buttons"
+                          onClick={() => noMus(deckHands)}
+                        >
                           No hay mus
                         </div>
                       </div>
@@ -644,7 +762,7 @@ function Room({ user, room }) {
                       <></>
                     )}
 
-                    {round > 1 && !flagBet  ? (
+                    {round > 1 && !flagBet ? (
                       <div className="postnohaymus">
                         <div>
                           <div onClick={() => sumBet(1)}>
@@ -672,37 +790,39 @@ function Room({ user, room }) {
                           <h2>ÓRDAGO</h2>
                         </div>
                       </div>
-                    ) : round>1 && flagBet ? (
+                    ) : round > 1 && flagBet ? (
                       <>
                         <div className="postnohaymus">
-                        <div>
-                          <div onClick={() => sumBet(1)}>
-                            <h1>+1</h1>
-                          </div>
-                          <div onClick={() => sumBet(5)}>
-                            <h1>+5</h1>
-                          </div>
-                        </div>
-                        <div>
                           <div>
-                            <div onClick={() => envido()}>
-                              <h2>Quiero</h2>
+                            <div onClick={() => sumBet(1)}>
+                              <h1>+1</h1>
                             </div>
-                            <p className="suma">{bet}</p>
+                            <div onClick={() => sumBet(5)}>
+                              <h1>+5</h1>
+                            </div>
                           </div>
-                          <div onClick={() => sumBet(-1)}>
-                            <h2>BORRAR</h2>
+                          <div>
+                            <div>
+                              <div onClick={() => envido()}>
+                                <h2>Quiero</h2>
+                              </div>
+                              <p className="suma">{bet}</p>
+                            </div>
+                            <div onClick={() => sumBet(-1)}>
+                              <h2>BORRAR</h2>
+                            </div>
+                          </div>
+                          <div onClick={() => fold()}>
+                            <h1>NO QUIERO</h1>
+                          </div>
+                          <div>
+                            <h2>ÓRDAGO</h2>
                           </div>
                         </div>
-                        <div onClick={() => fold()}>
-                          <h1>NO QUIERO</h1>
-                        </div>
-                        <div>
-                          <h2>ÓRDAGO</h2>
-                        </div>
-                      </div>
                       </>
-                    ): <></>}
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ) : (
                   <></>
