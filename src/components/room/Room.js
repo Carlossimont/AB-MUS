@@ -58,13 +58,12 @@ function Room({ user, room }) {
   let [droppedCards, setDroppedCards] = useState([]);
   let [othersDiscards, setOthersDiscards] = useState([]);
   let [arrayDescartes, setArrayDescartes] = useState([]);
-  let [arrayDespuesDescartes,setArrayDespuesDescartes] = useState([]);
 
   let [check, setCheck] = useState("nada");
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState(['Edu']);
+  const [users, setUsers] = useState([]);
   let playersAux = [];
 
   useEffect(() => {
@@ -265,7 +264,7 @@ function Room({ user, room }) {
     });
     setBaraja(barajaAux);
     console.log(deckHandsAux);
-    setArrayDespuesDescartes(deckHandsAux);
+    setDeckHands(deckHandsAux);
     sendDeckHands(deckHandsAux);
     changeTurn(playerThree, -1);//TODO: cambio turno cuando el postre reparte los descartes
   }
@@ -483,10 +482,10 @@ function Room({ user, room }) {
     }
   };
 
-  const noMus = async () => {
+  const noMus = async (gameCards) => {
     console.log("entra nomus");
     try {
-      await connection.invoke("NoMus");
+      await connection.invoke("NoMus",gameCards);
     } catch (e) {
       console.log(e);
     }
@@ -605,7 +604,7 @@ function Room({ user, room }) {
                         >
                           Mus
                         </div>
-                        <div className="buttons" onClick={() => noMus()}>
+                        <div className="buttons" onClick={() => noMus(deckHands)}>
                           No hay mus
                         </div>
                       </div>
