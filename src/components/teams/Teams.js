@@ -32,21 +32,22 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     <div key={i}>{user}</div>
                     ))}
                 </div>
-                {users.length == 4 ? <div>
+                {users.length == 4 ? <div className='minitablero'> 
+                    <div>
                     <div className="center" onClick={()=>assignChair(0)}>{players[0]}</div>
                     <div className="row">
-                        <div onClick={()=>assignChair(1)}>{players[1]}</div>
+                        <div className='rowplayer' onClick={()=>assignChair(1)}>{players[1]}</div>
                         <div className="imagen"><img src={tapete} alt="" /></div>
-                        <div onClick={()=>assignChair(3)}>{players[3]}</div>
+                        <div className='rowplayer' onClick={()=>assignChair(3)}>{players[3]}</div>
                     </div>
                     <div className="center" onClick={()=>assignChair(2)}>{players[2]}</div>
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
-                </div> : <div>
+                    </div>
+                    <div className='avatares'>Avatares</div>    
+                    </div> : <div>
                             <p>CARGANDO JUGADORES</p>
-                            {users.length == 1 ? <div>
-                                <progress class="nes-progress" value="25" max="100"></progress>
-                            </div> : <></>}
-                    
+                        
+                            <progress class="nes-progress" value={`${users.length*25}`} max="100"></progress>
                     
                         </div>}
             </div>
