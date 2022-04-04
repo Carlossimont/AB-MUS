@@ -37,7 +37,7 @@ function Room({ user, room }) {
   let [ordenRonda, setOrdenRonda] = useState([]);
   let [turno, setTurno] = useState(-1);
   let [changeRepartir, setChangeRepartir] = useState(false);
-  let [round, setRound] = useState(-1);
+  let [round, setRound] = useState(3);
   let [roundName, setRoundName] = useState("Mus");
   let [bet, setBet] = useState(2);
   let [arrayPruebas, setArrayPruebas] = useState([
@@ -71,7 +71,7 @@ function Room({ user, room }) {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(['Edu','Maren','Carlos','Asier']);
   let playersAux = [];
 
   useEffect(() => {
@@ -698,7 +698,7 @@ function Room({ user, room }) {
 
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-      {!game ? (
+      {game ? (
         <Teams
           joinRoom={joinRoom}
           user={user}
@@ -721,7 +721,7 @@ function Room({ user, room }) {
                   <img src={"/img/pj1_normal.png"} alt="" />
                   <p>{deskPlayers[0]}</p>
                 </div>
-                {myChair === turno ? (
+                {true ? (
                   <div className="flexbuttons">
                     {myChair === playerThree && round === -1 ? (
                       <div className="prenohaymus">
@@ -734,7 +734,7 @@ function Room({ user, room }) {
                     {round === 0 ? (
                       <div className="prenohaymus">
                         <div
-                          className="buttons"
+                          className="mus_buttons"
                           onClick={() => changeTurn(playerThree, round)}
                         >
                           Mus
