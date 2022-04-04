@@ -46,6 +46,7 @@ function Room({ user, room }) {
   let [contadorPeque, setContadorPeque] = useState(1);
   let [contadorPares, setContadorPares] = useState(0);
   let [contadorJuego, setContadorJuego] = useState(0);
+  let [contadorPunto, setContadorPunto] = useState(1);
   let [contadorOddTeam, setContadorOddTeam] = useState(0);
   let [contadorParTeam, setContadorParTeam] = useState(0);
   let [contadorGamesOddTeam, setContadorGamesOddTeam] = useState(0);
@@ -58,6 +59,8 @@ function Room({ user, room }) {
   let [droppedCards, setDroppedCards] = useState([]);
   let [othersDiscards, setOthersDiscards] = useState([]);
   let [arrayDescartes, setArrayDescartes] = useState([]);
+  let [flagBet,setFlagBet] = useState(false);
+  let [myTeam,setMyTeam] = useState();
 
   let [check, setCheck] = useState("nada");
 
@@ -357,6 +360,14 @@ function Room({ user, room }) {
     console.log(barajaDescAux);
   }
 
+  useEffect(()=>{
+    if (myChair%2 === 0) {
+      setMyTeam('blue')
+    } else {
+      setMyTeam('red')
+    }
+  },[myChair])
+
   const joinRoom = async (user, room) => {
     try {
       const connection = new HubConnectionBuilder()
@@ -391,6 +402,15 @@ function Room({ user, room }) {
       connection.on("NoMus", () => {
         setRound(2);
         console.log(playerThree + 1);
+      });
+
+      connection.on("Bet", (bet,team) => {
+        setBet(bet);
+        if (myTeam !== team ) {//si mi equipo es el que NO apuesta abrimos los botones al resto;
+          setFlagBet(true);
+        } else {
+          setFlagBet(false);
+        }
       });
 
       connection.on("ReceiveHandCards", (handCards) => {
@@ -624,7 +644,7 @@ function Room({ user, room }) {
                       <></>
                     )}
 
-                    {round > 1 ? (
+                    {round > 1 && !flagBet  ? (
                       <div className="postnohaymus">
                         <div>
                           <div onClick={() => sumBet(1)}>
@@ -652,9 +672,37 @@ function Room({ user, room }) {
                           <h2>ÓRDAGO</h2>
                         </div>
                       </div>
-                    ) : (
-                      <></>
-                    )}
+                    ) : round>1 && flagBet ? (
+                      <>
+                        <div className="postnohaymus">
+                        <div>
+                          <div onClick={() => sumBet(1)}>
+                            <h1>+1</h1>
+                          </div>
+                          <div onClick={() => sumBet(5)}>
+                            <h1>+5</h1>
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <div onClick={() => envido()}>
+                              <h2>Quiero</h2>
+                            </div>
+                            <p className="suma">{bet}</p>
+                          </div>
+                          <div onClick={() => sumBet(-1)}>
+                            <h2>BORRAR</h2>
+                          </div>
+                        </div>
+                        <div onClick={() => fold()}>
+                          <h1>NO QUIERO</h1>
+                        </div>
+                        <div>
+                          <h2>ÓRDAGO</h2>
+                        </div>
+                      </div>
+                      </>
+                    ): <></>}
                   </div>
                 ) : (
                   <></>
