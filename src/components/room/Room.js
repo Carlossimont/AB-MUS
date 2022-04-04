@@ -1,15 +1,14 @@
-import tapete from './img/tapete.jpg';
-import tapetepixel from './img/tapetepixel.png';
-import './Room.scss'
-import Teams from '../teams/Teams'
-import { useState,useEffect } from 'react';
-import Chat from '../chat/Chat';
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import erlang from './img/erlang.png';
-import B1 from './img/B1.png';
-import F000 from './img/F000.png';
-import suelo from './img/suelo.png';
-
+import tapete from "./img/tapete.jpg";
+import tapetepixel from "./img/tapetepixel.png";
+import "./room.scss";
+import Teams from "../teams/Teams";
+import { useState, useEffect } from "react";
+import Chat from "../chat/Chat";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import erlang from "./img/erlang.png";
+import B1 from "./img/B1.png";
+import F000 from "./img/F000.png";
+import suelo from "./img/suelo.png";
 
 function Room({ user, room }) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
@@ -34,14 +33,34 @@ function Room({ user, room }) {
   let [deskPlayers, setDeskPlayers] = useState([]);
   let [baraja, setBaraja] = useState([]);
   let [barajaDescartes, setBarajaDescartes] = useState([]);
-  let [deckHands, setDeckHands] = useState([], [], [], []);
+  let [deckHands, setDeckHands] = useState([], [], [], []); //creo que debería ser [[],[],[],[]] pero así funciona asi k...sssshhh
   let [ordenRonda, setOrdenRonda] = useState([]);
-  let [turno,setTurno] = useState(-1);
-  let [changeRepartir,setChangeRepartir] = useState(false);
-  let [round,setRound] = useState(-1);
-  let [roundName,setRoundName] = useState('Mus');
+  let [turno, setTurno] = useState(-1);
+  let [changeRepartir, setChangeRepartir] = useState(false);
+  let [round, setRound] = useState(-1);
+  let [roundName, setRoundName] = useState("Mus");
+  let [bet, setBet] = useState(2);
+  let [arrayPruebas,setArrayPruebas] = useState([['E11,O12,C1,E12'],['E1,O2,C1,E10'],['E6,O4,C5,E7'],['E10,O10,C10,E7']])
   
-  let [check,setCheck] = useState('nada');
+  let [contadorMayor, setContadorMayor] = useState(1);
+  let [contadorPeque, setContadorPeque] = useState(1);
+  let [contadorPares, setContadorPares] = useState(0);
+  let [contadorJuego, setContadorJuego] = useState(0);
+  let [contadorOddTeam, setContadorOddTeam] = useState(0);
+  let [contadorParTeam, setContadorParTeam] = useState(0);
+  let [contadorGamesOddTeam, setContadorGamesOddTeam] = useState(0);
+  let [contadorGamesParTeam, setContadorGamesParTeam] = useState(0);
+
+  let [answer, setAnswer] = useState(false);
+  let [faseApuesta, setFaseApuesta] = useState(0);
+  let [discNum, setDiscNum] = useState(0);
+  let [myDiscards, setMyDiscards] = useState([]);
+  let [droppedCards, setDroppedCards] = useState([]);
+  let [othersDiscards, setOthersDiscards] = useState([]);
+  let [arrayDescartes, setArrayDescartes] = useState([]);
+  let [arrayDespuesDescartes,setArrayDespuesDescartes] = useState([]);
+
+  let [check, setCheck] = useState("nada");
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
@@ -52,24 +71,25 @@ function Room({ user, room }) {
     let deskPlayersAux = [];
     let pos = myChair;
     let barajaAux = [];
-    if (game){
-    for (let i = 0; i < 4; i++) {
-      if (pos == 4) {
-        pos = 0;
+    if (game) {
+      for (let i = 0; i < 4; i++) {
+        if (pos == 4) {
+          pos = 0;
+        }
+        deskPlayersAux[i] = players[pos];
+        pos++;
+        console.log(deskPlayersAux);
       }
-      deskPlayersAux[i] = players[pos];
-      pos++;
-      console.log(deskPlayersAux);
-    }
-    setDeskPlayers(deskPlayersAux);
-    palos.forEach((p) => {
-      numeros.forEach((n) => {
-        barajaAux.push(p + n);
+      setDeskPlayers(deskPlayersAux);
+      palos.forEach((p) => {
+        numeros.forEach((n) => {
+          barajaAux.push(p + n);
+        });
       });
-    });
-    console.log(barajaAux);
-    setBaraja(barajaAux);
-  }}, [game]);
+      console.log(barajaAux);
+      setBaraja(barajaAux);
+    }
+  }, [game]);
 
   useEffect(() => {
     console.log(players);
@@ -78,69 +98,69 @@ function Room({ user, room }) {
     setPlayers(playersAux);
   }, [number]);
 
-  useEffect(()=>{
+
+  useEffect(() => {
     switch (round) {
       case -1:
-        setRoundName('Repartiendo...');
-      setTurno(playerThree+1);
+        setRoundName("Repartiendo...");
+        setTurno(playerThree + 1);
         break;
 
-        case 0:
-        setRoundName('Mus');
-      setTurno(playerThree+1);
+      case 0:
+        setRoundName("Mus");
+        setTurno(playerThree + 1);
         break;
 
-        case 1:
-        setRoundName('Descartes');
-      setTurno(playerThree+1);
+      case 1:
+        setRoundName("Descartes");
+        setTurno(playerThree + 1);
         break;
 
-        case 2:
-        setRoundName('Mayor');
-      setTurno(playerThree+1);
+      case 2:
+        setRoundName("Mayor");
+        setTurno(playerThree + 1);
         break;
 
-        case 3:
-        setRoundName('Pequeña');
-      setTurno(playerThree+1);
+      case 3:
+        setRoundName("Pequeña");
+        setTurno(playerThree + 1);
         break;
 
-        case 4:
-        setRoundName('Hay pares');
-      setTurno(playerThree+1);
+      case 4:
+        setRoundName("Hay pares");
+        setTurno(playerThree + 1);
         break;
 
-        case 5:
-        setRoundName('Pares');
-      setTurno(playerThree+1);
+      case 5:
+        setRoundName("Pares");
+        setTurno(playerThree + 1);
         break;
 
-        case 6:
-        setRoundName('Hay Juego');
-      setTurno(playerThree+1);
+      case 6:
+        setRoundName("Hay Juego");
+        setTurno(playerThree + 1);
         break;
 
-        case 7:
-        setRoundName('Juego');
-      setTurno(playerThree+1);
+      case 7:
+        setRoundName("Juego");
+        setTurno(playerThree + 1);
         break;
 
-        case 8:
-        setRoundName('Punto');
-      setTurno(playerThree+1);
+      case 8:
+        setRoundName("Punto");
+        setTurno(playerThree + 1);
         break;
 
-        case 9:
-        setRoundName('Contando...');
-      setTurno(playerThree+1);
+      case 9:
+        setRoundName("Contando...");
+        setTurno(playerThree + 1);
         break;
-    
+
       default:
-        alert('Ha entrado default en switch de ronda')
+        alert("Ha entrado default en switch de ronda");
         break;
     }
-    
-  },[round])
+  }, [round]);
 
   // useEffect(() => {
   //   let barajaAux = [];
@@ -175,29 +195,23 @@ function Room({ user, room }) {
     console.log(arrayAux);
     setBaraja(arrayAux); //mete en baraja las cartas barajadas BIEN
     console.log("acaba barajar");
-    setCheck('barajar');
-
+    setCheck("barajar");
   }
 
-  useEffect(()=>{
-    if (check=='nada') {
-
-    if (check=='barajar') {
-      
+  useEffect(() => {
+    if (check == "nada") {
+      if (check == "barajar") {
+      }
     }
-  }
-},[check])
+  }, [check]);
 
   function repartir() {
     console.log("entra repartir");
-    console.log(baraja)
+    console.log(baraja);
     let cont = -1;
     let deckHandsAux = [[], [], [], []];
     let barajaAux = [...baraja];
-    
-      
-    
-    setCheck('barajar')
+    setCheck("barajar");
 
     for (let i = 0; i < 16; i++) {
       cont++;
@@ -206,61 +220,132 @@ function Room({ user, room }) {
         cont = -1;
       }
     }
-    setCheck('repartir');
+    setCheck("repartir");
     barajaAux.splice(0, 16);
     console.log(deckHandsAux);
     setDeckHands(deckHandsAux);
     setBaraja(barajaAux);
-    console.log('baraja restante');
+    console.log("baraja restante");
     console.log(barajaAux);
-    changeTurn(turno);
+    changeTurn(playerThree, round);
     setChangeRepartir(true);
-  
   }
 
-  useEffect(()=>{
-    if(check==='repartir'){
+  useEffect(() => {
+    if (check === "repartir") {
       sendDeckHands(deckHands);
     }
-  },[deckHands])
+  }, [deckHands]);
 
-  useEffect(()=>{
-    if (turno===4) {
+  useEffect(() => {
+    if (turno === 4) {
       setTurno(0);
     }
-  },[turno])
+  }, [turno]);
 
-  function seleccionarDescarte() {
-    let deckHandsAux = [...deckHands];
-    let barajaAux = [...baraja];
-    deckHands.forEach((jugador, i) => {
+  function repartirMus() {
+    console.log("entra repartir mus");
+    let deckHandsAux = [...othersDiscards];
+    let barajaAux = [...baraja]; //esta es la baraja restante
+    setCheck("repartir");
+    othersDiscards.forEach((jugador, i) => {
       jugador.forEach((carta, j) => {
-        if (carta == 0) {
+        if (carta === "F000") {
+          console.log('carta coincide con F000');
           deckHandsAux[i][j] = barajaAux[0];
           barajaAux.splice(0, 1);
-          if (!barajaAux.length) {
+          if (!barajaAux.length) {//esto nunca va  a entrar por AHORA
+            console.log('espero que no entre');
             barajaAux = [...barajaDescartes];
-            setBaraja(barajaAux);
+            setBaraja(barajaAux); //TODO: barajar los descartes al meterlos en la baraja
             setBarajaDescartes([]);
           }
         }
       });
     });
     setBaraja(barajaAux);
-    setDeckHands(deckHandsAux);
+    console.log(deckHandsAux);
+    setArrayDespuesDescartes(deckHandsAux);
+    sendDeckHands(deckHandsAux);
+    changeTurn(playerThree, -1);//TODO: cambio turno cuando el postre reparte los descartes
   }
 
-  // useEffect(() => {
-  //   if (barajaDescartes.length == 0 && playerThree>-1) {
-  //     barajar();
-  //   }
-  // }, [barajaDescartes]);
+  useEffect(() => {
+    console.log("entra set baraja descartes");
+    //TODO: seguir aqui
+    if (turno === myChair && barajaDescartes.length > 3) {
+      repartirMus();
+    }
+  }, [barajaDescartes]);
 
-  function sleep(duration) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, duration);
+  function discardOneCard(pos) {
+    let myDiscardsAux = [...myDiscards];
+    if (myDiscardsAux[pos] === myCards[pos]) {
+      myDiscardsAux[pos] = "000";
+    } else {
+      myDiscardsAux[pos] = myCards[pos];
+    }
+    setMyDiscards(myDiscardsAux);
+  }
+
+  useEffect(() => {
+    if (round===1) {
+    let arrayDescAux = [...othersDiscards];
+    console.log("recibo cartas");
+    arrayDescAux.push(arrayDescartes);
+    setOthersDiscards(arrayDescAux);
+    }
+  }, [arrayDescartes]);
+
+  function addDiscardArray(array) {
+    setArrayDescartes(array);
+    console.log("recibo cartas");
+    //TODO: esto peta, no rellena el array con el array que viene, se queda solo con el ultimo
+  }
+
+  useEffect(() => {
+    let count = 0;
+    myDiscards.forEach((carta) => {
+      if (carta === "000") {
+        count++;
+      }
     });
+    setDiscNum(count);
+  }, [myDiscards]);
+
+  function sumBet(num) {
+    //puede fallar el num
+    if (num < 0) {
+      setBet(2);
+    } else {
+      setBet(bet + num);
+    }
   }
+
+  useEffect(() => {
+    console.log("se actualiza othersDiscards");
+    console.log(othersDiscards);//tenemos el array de todos los descartes
+    let discardDeck = [...barajaDescartes];
+    if (othersDiscards.length === 4) {
+      console.log("entra por longitud 4");
+      othersDiscards.forEach((mano, i) => {
+        mano.forEach((carta, j) => {
+          if (carta !== deckHands[i][j]) {
+            discardDeck.push(deckHands[i][j]);
+            console.log(discardDeck);
+          }
+        });
+      });
+      console.log(discardDeck);
+      setBarajaDescartes(discardDeck);
+    }
+  }, [othersDiscards]);
+
+  useEffect(() => {
+    if (round === 1) {
+      setMyDiscards(myCards);
+    }
+  }, [round]);
 
   function descartarCarta(jugador, carta) {
     let deckHandsAux = [...deckHands]; //... operator spread clona array para tener dos arrays de forma independiente
@@ -294,21 +379,19 @@ function Room({ user, room }) {
         setNumber(playerNumber);
       });
 
-      connection.on("NewTurn", (num) => {//ddddddddddddhdhdedvbeifvbefbvebrvibewrbivewirb
+      connection.on("NewTurn", (num) => {
+        //ddddddddddddhdhdedvbeifvbefbvebrvibewrbivewirb
         setTurno(num);
       });
 
-      connection.on("NextRound", () => {
-        let ronda = round;
-        ronda++;
-        console.log('entra nextround desde signalr');
-        console.log(ronda);
+      connection.on("NextRound", (ronda) => {
+        console.log("entra nextround desde signalr");
         setRound(ronda);
       });
 
       connection.on("NoMus", () => {
         setRound(2);
-        console.log(playerThree+1);
+        console.log(playerThree + 1);
       });
 
       connection.on("ReceiveHandCards", (handCards) => {
@@ -316,12 +399,35 @@ function Room({ user, room }) {
         console.log(handCards);
       });
 
+      connection.on("Accountant", ()=>{
+      
+        if (myChair===playerThree) {
+          console.log('entra por postre ')
+          countAll();
+        }
+      })
+
       connection.on("StartGame", (player3) => {
         setGame(true);
         setRound(-1);
         setPlayerThree(player3);
         console.log(player3);
         setTurno(player3);
+      });
+
+      connection.on("OddTeamBets", (teamBet) => {
+        if (myChair % 2 === 0) {
+          setAnswer(true);
+        }
+      });
+
+      connection.on("DroppedCards", (arrayDesc) => {
+        addDiscardArray(arrayDesc);
+        // let arrayDescAux = [...othersDiscards];
+        // console.log('recibo cartas');
+        // arrayDescAux.push(arrayDesc);//TODO: esto peta, no rellena el array con el array que viene, se queda solo con el ultimo
+        // console.log(arrayDescAux);
+        // setOthersDiscards(arrayDescAux);
       });
 
       connection.onclose((e) => {
@@ -386,10 +492,10 @@ function Room({ user, room }) {
     }
   };
 
-  const changeTurn = async (postre) => {
+  const changeTurn = async (postre, ronda) => {
     console.log("entra changeturn");
     try {
-      await connection.invoke("ChangeTurn",postre);
+      await connection.invoke("ChangeTurn", postre, ronda);
     } catch (e) {
       console.log(e);
     }
@@ -412,6 +518,33 @@ function Room({ user, room }) {
     }
   };
 
+  const countAll = async () => {
+    try {
+      let handss = [...deckHands]
+      await connection.invoke("AccountantMayor", arrayPruebas);
+    } catch (e) {
+      console.log(e + " countall");
+    }
+  };
+
+  const dropMyCards = async () => {
+    //al pulsar el boton de descartar cambiamos las partes de atras de las cartas por invisibles
+    let myDiscardsAuxAux = [...myDiscards];
+    console.log("entra dropmycards");
+    for (let i = 0; i < 4; i++) {
+      if (myDiscardsAuxAux[i] !== myCards[i]) {
+        myDiscardsAuxAux[i] = "F000";
+        console.log(myDiscardsAuxAux);
+      }
+    }
+    setMyDiscards(myDiscardsAuxAux);
+    try {
+      await connection.invoke("DropCards", myDiscardsAuxAux, playerThree);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const closeConnection = async () => {
     try {
       await connection.stop();
@@ -420,174 +553,274 @@ function Room({ user, room }) {
     }
   };
 
-  useEffect(() => {}, [myChair]);
+  const envido = async () => {
+    console.log("entra bet");
+    try {
+      await connection.invoke("Bet", bet);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
-
     <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-        {!game ? 
-            <Teams 
-            joinRoom={joinRoom} 
-            user={user} 
-            room={room} 
-            setMyChair={setMyChair} 
-            myChair={myChair}
-            setPlayer={setPlayer} 
-            connection={connection} 
-            users={users} 
-            setReady={setReady} 
-            ready={ready} 
-            players={players}/> 
-        :
+      {!game ? (
+        <Teams
+          joinRoom={joinRoom}
+          user={user}
+          room={room}
+          setMyChair={setMyChair}
+          myChair={myChair}
+          setPlayer={setPlayer}
+          connection={connection}
+          users={users}
+          setReady={setReady}
+          ready={ready}
+          players={players}
+        />
+      ) : (
         <div className="flex">
-        
-
-        <div className="team2">
-            
-            <div className='tablero'>
-            <div className="jugador-activo">
-                      <div className="avatar j1 avatar-activo">
-                        <img src={erlang} alt="" />
-                        <p>{deskPlayers[0]}</p>
+          <div className="team2">
+            <div className="tablero">
+              <div className="jugador-activo">
+                <div className="avatar t1 avatar-activo">
+                  <img src={"/img/pj1_normal.png"} alt="" />
+                  <p>{deskPlayers[0]}</p>
+                </div>
+                {myChair === turno ? (
+                  <div className="flexbuttons">
+                    {myChair === playerThree && round === -1 ? (
+                      <div className="prenohaymus">
+                        <div onClick={() => barajar()}>barajar</div>
+                        <div onClick={() => repartir()}>repartir</div>
                       </div>
-                        {myChair===turno ?
-                      <div className='flexbuttons'>
-                        {myChair===playerThree && round===-1 ? 
-                          <div className='prenohaymus'>
-                            <div onClick={()=>barajar()}>barajar</div>
-                            <div onClick={()=>repartir()}>repartir</div>
-                          </div> : <></>}
-                        {round === 0 ?
-                        <div className='prenohaymus'>
-                          <div className="buttons" onClick={()=>changeTurn(playerThree)}>Mus</div>
-                          <div className="buttons" onClick={()=>noMus()}>No hay mus</div>
-                        </div> : <></>
-                        }
-
-                        {round === 1 ?//meter condicion de que se haya descartado de una carta minimo
-                        <div className="buttons">Descartar</div>
-                        :<></>}
-                 
-                        {round > 1 ?
-                        <div className='postnohaymus'>
-                            <div>
-                              <div><h1>+1</h1></div>
-                              <div><h1>+5</h1></div>
-                             
-
-                            </div>
-                            <div>
-                              <div>
-                                <h2>Envido</h2>
-                                <p className='suma'>suma</p>
-                              </div>
-                              <div><h2>BORRAR</h2></div>
-                             
-                            </div>
-                             <div><h1>PASAR</h1></div>
-                            <div><h2>ÓRDAGO</h2></div>
+                    ) : (
+                      <></>
+                    )}
+                    {round === 0 ? (
+                      <div className="prenohaymus">
+                        <div
+                          className="buttons"
+                          onClick={() => changeTurn(playerThree, round)}
+                        >
+                          Mus
                         </div>
-                        : <></>}
-                      
-                        </div> : <></>}
+                        <div className="buttons" onClick={() => noMus()}>
+                          No hay mus
                         </div>
-
-                    <div className="avatar j2 avatar-oponente-dr">
-                      <img src={erlang} alt="" />
-                      <p>{deskPlayers[1]}</p>
-                    </div>
-                    
-                    <div className="avatar j3 avatar-compa">
-                      <img src={erlang} alt="" />
-                      <p>{deskPlayers[2]}</p>
-                    </div>
-
-                    <div className="avatar j4 avatar-oponente-iz">
-                      <img src={erlang} alt="" />
-                      <p>{deskPlayers[3]}</p>
-                    </div>
-
-                    <div className="cards2 cartas-oponente-iz">
-                      {round>-1 ? <>
-                      <div className="card-contri"><img src={"/img/000.png"} /></div>
-                      <div className="card-contri"><img src={"/img/000.png"} /></div>
-                      <div className="card-contri"><img src={"/img/000.png"} /></div>
-                      <div className="card-contri"><img src={"/img/000.png"} /></div>
-                      </>
-                      : <></>}
-                    </div>
-
-                      <div className="cards3 cartas-compa">
-                      {round>-1 ? <>
-                        <div className="card-compa"><img src={"/img/000.png"} /></div>
-                        <div className="card-compa"><img src={"/img/000.png"} /></div>
-                        <div className="card-compa"><img src={"/img/000.png"} /></div>
-                        <div className="card-compa"><img src={"/img/000.png"} /></div>
-                        </>
-                      : <></>}
                       </div>
+                    ) : (
+                      <></>
+                    )}
 
-                      <div className="info">{roundName}</div>
-                      <div className='mesa'><img src={tapetepixel} alt="" /></div>
-                      
-                      <div className="cards1 cartas-activo">
-                <div className="card p1">
-                  <img src={B1} alt="" />
-                </div>
-                <div className="card p1">
-                  <img src={B1} alt="" />
-                </div>
-                <div className="card p1">
-                  <img src={B1} alt="" />
-                </div>
-                <div className="card p1">
-                  <img src={B1} alt="" />
-                </div>
+                    {round === 1 && discNum > 0 ? ( //meter condicion de que se haya descartado de una carta minimo
+                      <div className="buttons" onClick={() => dropMyCards()}>
+                        Descartar
+                      </div>
+                    ) : round === 1 && discNum === 0 ? (
+                      <div className="buttons">
+                        Debes descartarte de una mínimo
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+
+                    {round > 1 ? (
+                      <div className="postnohaymus">
+                        <div>
+                          <div onClick={() => sumBet(1)}>
+                            <h1>+1</h1>
+                          </div>
+                          <div onClick={() => sumBet(5)}>
+                            <h1>+5</h1>
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <div onClick={() => envido()}>
+                              <h2>Envido</h2>
+                            </div>
+                            <p className="suma">{bet}</p>
+                          </div>
+                          <div onClick={() => sumBet(-1)}>
+                            <h2>BORRAR</h2>
+                          </div>
+                        </div>
+                        <div onClick={() => changeTurn(playerThree, round)}>
+                          <h1>PASAR</h1>
+                        </div>
+                        <div>
+                          <h2>ÓRDAGO</h2>
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
-              
-                    
-                    <div className="cards2  cartas-oponente-dr">
-                      {round>-1 ? <>
-                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
-                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
-                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
-                        <div className="card-contrd"><img src={"/img/000.png"} /></div>
-                        </>
-                      : <></>}
+
+              <div className="avatar t2 avatar-oponente-dr">
+                <img src={"/img/2_Normal_pj2.png"} alt="" />
+                <p>{deskPlayers[1]}</p>
+              </div>
+
+              <div className="avatar t1 avatar-compa">
+                <img src={"/img/1_Normal_pj3.png"} alt="" />
+                <p>{deskPlayers[2]}</p>
+              </div>
+
+              <div className="avatar t2 avatar-oponente-iz">
+                <img src={"/img/pj1_normal.png"} alt="" />
+                <p>{deskPlayers[3]}</p>
+              </div>
+
+              <div className="cards2 cartas-oponente-iz">
+                {round > -1 ? (
+                  <>
+                    <div className="card-contri">
+                      <img src={"/img/000.png"} />
                     </div>
-                        
-                    <div className='mazo1'><img src={"/img/000.png"} alt=""/></div>
-                    <div className='mazo2'><img src={"/img/000.png"} alt=""/></div>
-                    <div className='mazo3'><img src={"/img/000.png"} alt=""/></div>
-                    <div className='mazo4'><img src={"/img/000.png"} alt=""/></div>
+                    <div className="card-contri">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-contri">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-contri">
+                      <img src={"/img/000.png"} />
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
 
-                    <div className='mazo1'><img src={F000} alt=""/></div>
-                    <div className='mazo2'><img src={F000} alt=""/></div>
-                    <div className='mazo3'><img src={F000} alt=""/></div>
-                    <div className='mazo4'><img src={F000} alt=""/></div>
+              <div className="cards3 cartas-compa">
+                {round > -1 ? (
+                  <>
+                    <div className="card-compa">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-compa">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-compa">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-compa">
+                      <img src={"/img/000.png"} />
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
 
-                    <Chat 
-                      closeConnection={closeConnection} 
-                      sendMessage={sendMessage} 
-                      messages={messages}
-                      setMessage={setMessage}
-                      message={message}
-                    ></Chat>
+              <div className="info">{roundName}</div>
+              <div>Impar: {contadorOddTeam}</div>
+              <div>Par: {contadorParTeam}</div>
+              <div className="mesa">
+                <img src={tapetepixel} alt="" />
+              </div>
+
+              <div className="cards1 cartas-activo">
+                {round === 1 ? (
+                  <>
+                    <div className="card p1">
+                      <img
+                        src={"/img/" + myDiscards[0] + ".png"}
+                        onClick={() => discardOneCard(0)}
+                        alt=""
+                      />
+                    </div>
+                    <div className="card p1">
+                      <img
+                        src={"/img/" + myDiscards[1] + ".png"}
+                        onClick={() => discardOneCard(1)}
+                        alt=""
+                      />
+                    </div>
+                    <div className="card p1">
+                      <img
+                        src={"/img/" + myDiscards[2] + ".png"}
+                        onClick={() => discardOneCard(2)}
+                        alt=""
+                      />
+                    </div>
+                    <div className="card p1">
+                      <img
+                        src={"/img/" + myDiscards[3] + ".png"}
+                        onClick={() => discardOneCard(3)}
+                        alt=""
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="card p1">
+                      <img src={"/img/" + myCards[0] + ".png"} alt="" />
+                    </div>
+                    <div className="card p1">
+                      <img src={"/img/" + myCards[1] + ".png"} alt="" />
+                    </div>
+                    <div className="card p1">
+                      <img src={"/img/" + myCards[2] + ".png"} alt="" />
+                    </div>
+                    <div className="card p1">
+                      <img src={"/img/" + myCards[3] + ".png"} alt="" />
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="cards2  cartas-oponente-dr">
+                {round > -1 ? (
+                  <>
+                    <div className="card-contrd">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-contrd">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-contrd">
+                      <img src={"/img/000.png"} />
+                    </div>
+                    <div className="card-contrd">
+                      <img src={"/img/000.png"} />
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              <div className="mazo1">
+                <img src={"/img/000.png"} alt="" />
+              </div>
+              <div className="mazo2">
+                <img src={"/img/000.png"} alt="" />
+              </div>
+              <div className="mazo3">
+                <img src={"/img/000.png"} alt="" />
+              </div>
+              <div className="mazo4">
+                <img src={"/img/000.png"} alt="" />
+              </div>
             </div>
-
+          </div>
         </div>
-
-        
+      )}
+      <Chat
+        closeConnection={closeConnection}
+        sendMessage={sendMessage}
+        messages={messages}
+        setMessage={setMessage}
+        message={message}
+      ></Chat>
     </div>
-
-}
-    </div>
-
-        
-        
-
-
-)
+  );
 }
 export default Room;
-
+//viernes 1 de abril 783 lineas
