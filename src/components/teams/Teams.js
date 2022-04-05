@@ -3,6 +3,7 @@ import { useState,useEffect } from 'react';
 import './Teams.scss'
 import Chat from '../chat/Chat';
 
+
 function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users,players}) {
     //ngOnInit
     useEffect(()=>{
@@ -32,21 +33,31 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     <div key={i}>{user}</div>
                     ))}
                 </div>
-                {users.length == 4 ? <div>
+                {users.length == 4 ? <div className='minitablero'> 
+                    <div>
                     <div className="center" onClick={()=>assignChair(0)}>{players[0]}</div>
                     <div className="row">
-                        <div onClick={()=>assignChair(1)}>{players[1]}</div>
+                        <div className='rowplayer' onClick={()=>assignChair(1)}>{players[1]}</div>
                         <div className="imagen"><img src={tapete} alt="" /></div>
-                        <div onClick={()=>assignChair(3)}>{players[3]}</div>
+                        <div className='rowplayer' onClick={()=>assignChair(3)}>{players[3]}</div>
                     </div>
                     <div className="center" onClick={()=>assignChair(2)}>{players[2]}</div>
                     {myChair>-1 ? <div onClick={()=>isReady()} className="okbutton">OK</div> : <></>}
-                </div> : <div>
+                    </div>
+                    <div className='avatares'>
+                        <p>Avatares</p>
+                        <div>
+                            <div><img src="public\img\Pj_1\1_Normal_pj1.png" alt="" /></div>
+                            <div><img src="public\img\Pj_2\1_Normal_pj2.png" alt="" /></div>
+                            <div><img src="public\img\Pj_3\1_Normal_pj3.png" alt="" /></div>
+                            <div><img src="public\img\Pj_4\1_Normal_pj4.png" alt="" /></div>
+                        </div>
+
+                    </div>    
+                    </div> : <div>
                             <p>CARGANDO JUGADORES</p>
-                             <div>
-                                <progress class="nes-progress" value={`${users.length * 25}`} max="100"></progress>
-                            </div>
-                    
+                        
+                            <progress class="nes-progress" value={`${users.length*25}`} max="100"></progress>
                     
                         </div>}
             </div>

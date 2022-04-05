@@ -37,7 +37,7 @@ function Room({ user, room }) {
   let [ordenRonda, setOrdenRonda] = useState([]);
   let [turno, setTurno] = useState(-1);
   let [changeRepartir, setChangeRepartir] = useState(false);
-  let [round, setRound] = useState(-1);
+  let [round, setRound] = useState(3);
   let [roundName, setRoundName] = useState("Mus");
   let [bet, setBet] = useState(2);
   let [arrayPruebas, setArrayPruebas] = useState([
@@ -71,7 +71,7 @@ function Room({ user, room }) {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(["Edu", "Maren", "Carlos", "Asier"]);
   let playersAux = [];
 
   useEffect(() => {
@@ -203,6 +203,7 @@ function Room({ user, room }) {
     console.log("acaba barajar");
     setCheck("barajar");
   }
+  function fold() {} //HAY QUE QUITAR ESTO CUANDO TERMINE LAS PRUEBAS
 
   useEffect(() => {
     if (check == "nada") {
@@ -698,7 +699,7 @@ function Room({ user, room }) {
 
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-      {!game ? (
+      {game ? (
         <Teams
           joinRoom={joinRoom}
           user={user}
@@ -718,10 +719,10 @@ function Room({ user, room }) {
             <div className="tablero">
               <div className="jugador-activo">
                 <div className="avatar t1 avatar-activo">
-                  <img src={"/img/pj1_normal.png"} alt="" />
+                  <img src="" alt="" />
                   <p>{deskPlayers[0]}</p>
                 </div>
-                {myChair === turno ? (
+                {true ? (
                   <div className="flexbuttons">
                     {myChair === playerThree && round === -1 ? (
                       <div className="prenohaymus">
@@ -734,7 +735,7 @@ function Room({ user, room }) {
                     {round === 0 ? (
                       <div className="prenohaymus">
                         <div
-                          className="buttons"
+                          className="mus_buttons"
                           onClick={() => changeTurn(playerThree, round)}
                         >
                           Mus
@@ -764,30 +765,39 @@ function Room({ user, room }) {
 
                     {round > 1 && !flagBet ? (
                       <div className="postnohaymus">
-                        <div>
-                          <div onClick={() => sumBet(1)}>
-                            <h1>+1</h1>
-                          </div>
-                          <div onClick={() => sumBet(5)}>
-                            <h1>+5</h1>
-                          </div>
-                        </div>
-                        <div>
+                        <div className="superflex">
                           <div>
-                            <div onClick={() => envido()}>
-                              <h2>Envido</h2>
+                            <div className="flex_buttons_up">
+                              <div onClick={() => sumBet(1)}>
+                                <p>+1</p>
+                              </div>
+                              <div onClick={() => sumBet(5)}>
+                                <p>+5</p>
+                              </div>
+                              <div
+                                className="flex_buttons_up"
+                                onClick={() => envido()}
+                              >
+                                <p>Envido</p>
+                                <p className="suma">{bet}</p>
+                              </div>
                             </div>
-                            <p className="suma">{bet}</p>
+                            <div className="flex_buttons_down">
+                              <div onClick={() => sumBet(-1)}>
+                                <p>BORRAR</p>
+                              </div>
+                              <div
+                                onClick={() => changeTurn(playerThree, round)}
+                              >
+                                <p>PASAR</p>
+                              </div>
+                            </div>
                           </div>
-                          <div onClick={() => sumBet(-1)}>
-                            <h2>BORRAR</h2>
+                          <div className="ordago">
+                            <div>
+                              <p>ÓRDAGO</p>
+                            </div>
                           </div>
-                        </div>
-                        <div onClick={() => changeTurn(playerThree, round)}>
-                          <h1>PASAR</h1>
-                        </div>
-                        <div>
-                          <h2>ÓRDAGO</h2>
                         </div>
                       </div>
                     ) : round > 1 && flagBet ? (
