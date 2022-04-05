@@ -71,7 +71,7 @@ function Room({ user, room }) {
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState(['Edu','Maren','Carlos','Asier']);
+  const [users, setUsers] = useState(["Edu", "Maren", "Carlos", "Asier"]);
   let playersAux = [];
 
   useEffect(() => {
@@ -203,7 +203,7 @@ function Room({ user, room }) {
     console.log("acaba barajar");
     setCheck("barajar");
   }
-  function fold(){} //HAY QUE QUITAR ESTO CUANDO TERMINE LAS PRUEBAS
+  function fold() {} //HAY QUE QUITAR ESTO CUANDO TERMINE LAS PRUEBAS
 
   useEffect(() => {
     if (check == "nada") {
@@ -768,23 +768,37 @@ function Room({ user, room }) {
                         <div className="superflex">
                           <div>
                             <div className="flex_buttons_up">
-                              <div onClick={() => sumBet(1)}><p>+1</p></div>
-                              <div onClick={() => sumBet(5)}><p>+5</p></div>
-                              <div  className="flex_buttons_up" onClick={() => envido()}>
+                              <div onClick={() => sumBet(1)}>
+                                <p>+1</p>
+                              </div>
+                              <div onClick={() => sumBet(5)}>
+                                <p>+5</p>
+                              </div>
+                              <div
+                                className="flex_buttons_up"
+                                onClick={() => envido()}
+                              >
                                 <p>Envido</p>
                                 <p className="suma">{bet}</p>
                               </div>
                             </div>
-                            <div  className="flex_buttons_down">
-                              <div onClick={() => sumBet(-1)}><p>BORRAR</p></div>
-                              <div onClick={() => changeTurn(playerThree, round)}><p>PASAR</p></div>
+                            <div className="flex_buttons_down">
+                              <div onClick={() => sumBet(-1)}>
+                                <p>BORRAR</p>
+                              </div>
+                              <div
+                                onClick={() => changeTurn(playerThree, round)}
+                              >
+                                <p>PASAR</p>
+                              </div>
                             </div>
                           </div>
                           <div className="ordago">
-                            <div><p>ÓRDAGO</p></div>
+                            <div>
+                              <p>ÓRDAGO</p>
+                            </div>
                           </div>
                         </div>
-                          
                       </div>
                     ) : round > 1 && flagBet ? (
                       <>
