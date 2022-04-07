@@ -56,6 +56,8 @@ function Room({ user, room }) {
   let [contadorBlueTeam, setContadorBlueTeam] = useState(0);
   let [contadorGamesRedTeam, setContadorGamesRedTeam] = useState(0);
   let [contadorGamesBlueTeam, setContadorGamesBlueTeam] = useState(0);
+  let [mazoPos, setMazoPos] = useState(["F000", "F000", "F000", "F000"]);
+  let [contador, setContador] = useState(-1);
 
   let [answer, setAnswer] = useState(false);
   let [faseApuesta, setFaseApuesta] = useState(0);
@@ -65,7 +67,15 @@ function Room({ user, room }) {
   let [othersDiscards, setOthersDiscards] = useState([]);
   let [arrayDescartes, setArrayDescartes] = useState([]);
   let [flagBet, setFlagBet] = useState(false);
-  let [myTeam, setMyTeam] = useState();
+  let [myTeam, setMyTeam] = useState("white");
+  let [showAnswer, setShowAnswer] = useState(false);
+  let [betTeam, setBetTeam] = useState("white");
+  let [secondBet, setSecondBet] = useState(0);
+  let [foldNum, setFoldNum] = useState(-1);
+  let [boolJuego,setBoolJuego] = useState([]);
+  let [boolPares,setBoolPares] = useState([]);
+  let [tengoPares,setTengoPares] = useState(false);
+  let [tengoJuego,setTengoJuego] = useState(false);
 
   let [check, setCheck] = useState("nada");
 
@@ -73,6 +83,29 @@ function Room({ user, room }) {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState(["Edu", "Maren", "Carlos", "Asier"]);
   let playersAux = [];
+
+  useEffect(() => {
+    if (round > 0) {
+      setSecondBet(1);
+    }
+  }, [showAnswer]);
+
+  useEffect(() => {
+    if (betTeam !== "white") {
+      setFlagBet(true);
+      console.log("mi equipo");
+      console.log(myTeam);
+      console.log("equipo entra");
+      console.log(betTeam);
+      if (myTeam !== betTeam) {
+        //si mi equipo es el que NO apuesta abrimos los botones al resto;
+        setShowAnswer(true);
+      } else {
+        setShowAnswer(false);
+      }
+      console.log(flagBet);
+    }
+  }, [betTeam]);
 
   useEffect(() => {
     let deskPlayersAux = [];
@@ -97,6 +130,7 @@ function Room({ user, room }) {
       setBaraja(barajaAux);
     }
   }, [game]);
+
 
   useEffect(() => {
     console.log(players);
@@ -203,14 +237,13 @@ function Room({ user, room }) {
     console.log("acaba barajar");
     setCheck("barajar");
   }
-  function fold() {} //HAY QUE QUITAR ESTO CUANDO TERMINE LAS PRUEBAS
 
-  useEffect(() => {
-    if (check == "nada") {
-      if (check == "barajar") {
-      }
-    }
-  }, [check]);
+  // useEffect(() => {
+  //   if (check == "nada") {
+  //     if (check == "barajar") {
+  //     }
+  //   }
+  // }, [check]);
 
   function repartir() {
     console.log("entra repartir");
@@ -242,6 +275,8 @@ function Room({ user, room }) {
     if (check === "repartir") {
       sendDeckHands(deckHands);
     }
+    console.log("Se actualiza deckhands");
+    console.log(deckHands);
   }, [deckHands]);
 
   useEffect(() => {
@@ -280,11 +315,70 @@ function Room({ user, room }) {
 
   useEffect(() => {
     console.log("entra set baraja descartes");
-    //TODO: seguir aqui
     if (turno === myChair && barajaDescartes.length > 3) {
       repartirMus();
     }
   }, [barajaDescartes]);
+
+  // switch (round) {
+  //   case 2:
+  //     setContadorMayor(contador);
+  //     changeRound(2);
+  //     break;
+
+  //   case 3:
+  //     setContadorPeque(contador);
+  //     changeRound(3);
+  //     break;
+
+  //   case 5:
+  //     setContadorPares(contador);
+  //     changeRound(5);
+  //     break;
+
+  //   case 7:
+  //     setContadorJuego(contador);
+  //     changeRound(7);
+  //     break;
+
+  //   default:
+  //     console.log("no entra una puta variable en async");
+  //     break;
+
+  useEffect(() => {
+    if (contador > -1) {
+      switch (round) {
+        case 2:
+          setContadorMayor(contador);
+          changeRound(2);
+          break;
+
+        case 3:
+          setContadorPeque(contador);
+          changeRound(3);
+          break;
+
+        case 5:
+          setContadorPares(contador);
+          changeRound(5);
+          break;
+
+        case 7:
+          setContadorJuego(contador);
+          changeRound(7);
+          break;
+
+        case 8:
+          setContadorPunto(contador);
+          changeRound(8);
+          break;
+
+        default:
+          console.log("entra default en switch de contador");
+          break;
+      }
+    }
+  }, [contador]);
 
   function discardOneCard(pos) {
     let myDiscardsAux = [...myDiscards];
@@ -330,6 +424,15 @@ function Room({ user, room }) {
     }
   }
 
+  function sumSecondBet(num) {
+    //puede fallar el num
+    if (num < 0) {
+      setSecondBet(2);
+    } else {
+      setSecondBet(bet + num);
+    }
+  }
+
   useEffect(() => {
     console.log("se actualiza othersDiscards");
     console.log(othersDiscards); //tenemos el array de todos los descartes
@@ -350,9 +453,34 @@ function Room({ user, room }) {
   }, [othersDiscards]);
 
   useEffect(() => {
+    console.log("nueva ronda");
+    console.log(round);
     if (round === 1) {
       setMyDiscards(myCards);
     }
+    console.log(myChair);
+    console.log(playerThree);
+    if (myChair === playerThree) {
+      if (round === 2) {
+        recibirCartas(deckHands);
+      }
+      if (round === 4) {
+        hayPares(deckHands);
+      }
+      if (round === 6) {
+        hayJuego(deckHands);
+      }
+      if (round === 9) {
+        countAll(deckHands);
+      }
+    }
+
+    setBet(2);
+    setSecondBet(0);
+    setShowAnswer(false);
+    setBetTeam("white");
+    setFlagBet(false);
+    //TODO: aaaa
   }, [round]);
 
   function call() {
@@ -382,33 +510,70 @@ function Room({ user, room }) {
     }
   }
 
-  function descartarCarta(jugador, carta) {
-    let deckHandsAux = [...deckHands]; //... operator spread clona array para tener dos arrays de forma independiente
-    let barajaDescAux = [...barajaDescartes];
-    barajaDescAux.push(deckHandsAux[jugador][carta]);
-    deckHandsAux[jugador][carta] = 0;
-    setDeckHands(deckHandsAux);
+  useEffect(() => {
+    if (foldNum > -1) {
+      if (playerThree === myChair) {
+        changeRound(round);
+      }
+    }
+  }, [foldNum]);
 
-    setBarajaDescartes(barajaDescAux);
-    console.log(barajaDescAux);
-  }
+  useEffect(()=>{
+    let count = 0;
+    if (round > -1 ) {
+      boolPares.forEach((booleano,i)=>{
+        if (booleano) {
+          if (i===myChair) {
+            setTengoPares(true);
+          } else {
+            count++;
+          }
+        }
+      })
+    }
+    if (count===4) {
+      noPares();
+    }
+  },[boolPares])
+
+  useEffect(()=>{
+    let count = 0;
+    if (round === 4 ) {
+      boolJuego.forEach((booleano,i)=>{
+        if (booleano) {
+          if (i===myChair) {
+            setTengoJuego(true);
+          } else {
+            count++;
+          }
+        }
+      })
+    }
+    if (count===4) {
+      noJuego();
+    }
+  },[boolJuego])
 
   function fold() {
     switch (round) {
       case 2:
-        foldSignal(contadorMayor);
+        foldSignal(contadorMayor, 2);
         break;
 
       case 3:
-        foldSignal(contadorPeque);
+        foldSignal(contadorPeque, 3);
         break;
 
       case 5:
-        foldSignal(contadorPares);
+        foldSignal(contadorPares, 5);
         break;
 
       case 7:
-        foldSignal(contadorJuego);
+        foldSignal(contadorJuego, 7);
+        break;
+
+      case 8:
+        foldSignal(contadorPunto, 8);
         break;
 
       default:
@@ -418,10 +583,16 @@ function Room({ user, room }) {
   }
 
   useEffect(() => {
-    if (myChair % 2 === 0) {
-      setMyTeam("blue");
-    } else {
-      setMyTeam("red");
+    console.log("cambio de chair");
+    if (myChair > -1) {
+      console.log("cambio de chair bien");
+      if (myChair % 2 === 0) {
+        console.log("seteo team blue");
+        setMyTeam("blue");
+      } else {
+        console.log("seteo team red");
+        setMyTeam("red");
+      }
     }
   }, [myChair]);
 
@@ -458,17 +629,11 @@ function Room({ user, room }) {
 
       connection.on("NoMus", () => {
         setRound(2);
-        console.log(playerThree + 1);
       });
 
       connection.on("Bet", (bet, team) => {
         setBet(bet);
-        if (myTeam !== team) {
-          //si mi equipo es el que NO apuesta abrimos los botones al resto;
-          setFlagBet(true);
-        } else {
-          setFlagBet(false);
-        }
+        setBetTeam(team);
       });
 
       connection.on("ReceiveHandCards", (handCards) => {
@@ -476,12 +641,12 @@ function Room({ user, room }) {
         console.log(handCards);
       });
 
-      connection.on("Accountant", () => {
-        if (myChair === playerThree) {
-          console.log("entra por postre ");
-          countAll();
-        }
-      });
+      // connection.on("Accountant", () => {
+      //   if (myChair === playerThree) {
+      //     console.log("entra por postre ");
+      //     countAll();
+      //   }
+      // });
 
       connection.on("StartGame", (player3) => {
         setGame(true);
@@ -491,10 +656,10 @@ function Room({ user, room }) {
         setTurno(player3);
       });
 
-      connection.on("OddTeamBets", (teamBet) => {
-        if (myChair % 2 === 0) {
-          setAnswer(true);
-        }
+      connection.on("SecondBet", (contador, secondBet, team) => {
+        setBet(secondBet);
+        setBetTeam(team);
+        setContador(contador);
       });
 
       connection.on("Fold", (contador, team) => {
@@ -503,33 +668,25 @@ function Room({ user, room }) {
         } else {
           setContadorRedTeam(contadorRedTeam + contador);
         }
+        setBet(2);
+        setSecondBet(1);
+        setFlagBet(false);
+        //setFoldNum(foldNum + 1);  si alguien no quiere hacemos nextround desde el back
       });
 
       connection.on("Call", (contador) => {
-        switch (round) {
-          case 2:
-            setContadorMayor(contador);
-            changeRound(2);
-            break;
+        setContador(contador);
+        setBet(2);
+        setSecondBet(1);
+        setFlagBet(false);
+      });
 
-          case 3:
-            setContadorPeque(contador);
-            changeRound(3);
-            break;
+      connection.on("boolPares", (bool) => {
+        setBoolPares(bool);
+      });
 
-          case 5:
-            setContadorPares(contador);
-            changeRound(5);
-            break;
-
-          case 7:
-            setContadorJuego(contador);
-            changeRound(7);
-            break;
-
-          default:
-            break;
-        }
+      connection.on("boolJuego", (bool) => {
+        setBoolJuego(bool);
       });
 
       connection.on("DroppedCards", (arrayDesc) => {
@@ -557,7 +714,9 @@ function Room({ user, room }) {
 
   useEffect(() => {
     let ordenRondaAux = [];
+    let mazoPosAux = [];
     let orden = playerThree;
+    let mazo = myChair;
     if (playerThree !== -1) {
       for (let i = 0; i < 4; i++) {
         if (orden === 4) {
@@ -566,6 +725,18 @@ function Room({ user, room }) {
         orden++;
         ordenRondaAux.push(players[orden]);
       }
+      for (let i = 0; i < 4; i++) {
+        if (mazo === 4) {
+          mazo = 0;
+        }
+        if (mazo === playerThree) {
+          mazoPosAux.push("000");
+        } else {
+          mazoPosAux.push("F000");
+        }
+        mazo++;
+      }
+      setMazoPos(mazoPosAux);
       setOrdenRonda(ordenRondaAux);
     }
   }, [playerThree]);
@@ -594,10 +765,10 @@ function Room({ user, room }) {
     }
   };
 
-  const noMus = async (gameCards) => {
+  const noMus = async () => {
     console.log("entra nomus");
     try {
-      await connection.invoke("NoMus", gameCards);
+      await connection.invoke("NoMus");
     } catch (e) {
       console.log(e);
     }
@@ -620,6 +791,15 @@ function Room({ user, room }) {
     }
   };
 
+  const recibirCartas = async (manos) => {
+    console.log(manos);
+    try {
+      await connection.invoke("RecibirCartas", manos);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const setPlayer = async (playerNumber) => {
     try {
       console.log("entra a app.js setPlayer");
@@ -629,12 +809,47 @@ function Room({ user, room }) {
     }
   };
 
-  const countAll = async () => {
+  const noPares = async () => {
     try {
-      let handss = [...deckHands];
-      await connection.invoke("AccountantMayor", arrayPruebas);
+      console.log("NADIE TIENE PARES");
+      await connection.invoke("NextRound", 5);
     } catch (e) {
-      console.log(e + " countall");
+      console.log(e + " nadie pares");
+    }
+  };
+
+  const noJuego = async () => {
+    try {
+      console.log("NADIE TIENE JUEGO");
+      await connection.invoke("NextRound", 7);
+    } catch (e) {
+      console.log(e + " nadie juego");
+    }
+  };
+
+  const countAll = async (deck) => {
+    try {
+      await connection.invoke("AccountantMayor", deck);
+    } catch (e) {
+      console.log(e + " accountant mayor");
+    }
+  };
+
+  const hayPares = async (deck) => {
+    try {
+      console.log("invoca a hay pares");
+      await connection.invoke("HayPares", deck);
+    } catch (e) {
+      console.log(e + " hay pares");
+    }
+  };
+
+  const hayJuego = async (deck) => {
+    try {
+      console.log("invoca a hay juego");
+      await connection.invoke("HayJuego", deck);
+    } catch (e) {
+      console.log(e + " hay juego");
     }
   };
 
@@ -656,9 +871,9 @@ function Room({ user, room }) {
     }
   };
 
-  const foldSignal = async (contador) => {
+  const foldSignal = async (contador, ronda) => {
     try {
-      await connection.invoke("Fold", contador);
+      await connection.invoke("Fold", contador, ronda);
     } catch (e) {
       console.log(e);
     }
@@ -699,7 +914,7 @@ function Room({ user, room }) {
 
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-      {game ? (
+      {!game ? (
         <Teams
           joinRoom={joinRoom}
           user={user}
@@ -719,78 +934,117 @@ function Room({ user, room }) {
             <div className="tablero">
               <div className="jugador-activo">
                 <div className="avatar t1 avatar-activo">
-                  <img src="" alt="" />
+                  <img src="/img/Pj_2/1_Normal_pj2.png" alt="" />
                   <p>{deskPlayers[0]}</p>
                 </div>
-                {true ? (
-                  <div className="flexbuttons">
-                    {myChair === playerThree && round === -1 ? (
-                      <div className="prenohaymus">
-                        <div onClick={() => barajar()}>barajar</div>
-                        <div onClick={() => repartir()}>repartir</div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                    {round === 0 ? (
-                      <div className="prenohaymus">
-                        <div
-                          className="mus_buttons"
-                          onClick={() => changeTurn(playerThree, round)}
-                        >
-                          Mus
-                        </div>
-                        <div
-                          className="buttons"
-                          onClick={() => noMus(deckHands)}
-                        >
-                          No hay mus
-                        </div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
+                {!flagBet ? (
+                  <>
+                    {myChair === turno ? (
+                      <div className="flexbuttons">
+                        {myChair === playerThree && round === -1 ? (
+                          <div className="prenohaymus">
+                            <div className="mus_buttons" onClick={() => barajar()}>barajar</div>
+                            <div className="mus_buttons" onClick={() => repartir()}>repartir</div>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                        {round === 0 ? (
+                          <div className="prenohaymus">
+                            <div
+                              className="mus_buttons"
+                              onClick={() => changeTurn(playerThree, round)}
+                            >
+                              Mus
+                            </div>
+                            <div
+                              className="mus_buttons"
+                              onClick={() => noMus()}
+                            >
+                              No hay mus
+                            </div>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
 
-                    {round === 1 && discNum > 0 ? ( //meter condicion de que se haya descartado de una carta minimo
-                      <div className="buttons" onClick={() => dropMyCards()}>
-                        Descartar
-                      </div>
-                    ) : round === 1 && discNum === 0 ? (
-                      <div className="buttons">
-                        Debes descartarte de una mínimo
+                        {round === 1 && discNum > 0 ? ( //meter condicion de que se haya descartado de una carta minimo
+                          <div
+                            className="mus_buttons"
+                            onClick={() => dropMyCards()}
+                          >
+                            Descartar
+                          </div>
+                        ) : round === 1 && discNum === 0 ? (
+                          <div className="mus_buttons">
+                            Debes descartarte de una mínimo
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+
+                        {round === 2 && round === 3 && round === 8 ? (
+                          <div className="postnohaymus">
+                            <div className="superflex">
+                              <div>
+                                <div className="flex_buttons_up">
+                                  <div onClick={() => sumBet(1)}>+1</div>
+                                  <div onClick={() => sumBet(5)}>+5</div>
+                                  <div
+                                    className="flex_buttons_up"
+                                    onClick={() => envido()}
+                                  >
+                                    <span>Envido</span>
+                                    <span className="suma">{bet}</span>
+                                  </div>
+                                </div>
+                                <div className="flex_buttons_down">
+                                  <div onClick={() => sumBet(-1)}>BORRAR</div>
+                                  <div
+                                    onClick={() =>
+                                      changeTurn(playerThree, round)
+                                    }
+                                  >
+                                    PASAR
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="ordago">
+                                <div>
+                                  <p>ÓRDAGO</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                     ) : (
                       <></>
                     )}
-
-                    {round > 1 && !flagBet ? (
+                  </>
+                ) : showAnswer ? (
+                  <>
+                    <div className="flexbuttons">
                       <div className="postnohaymus">
                         <div className="superflex">
                           <div>
                             <div className="flex_buttons_up">
-                              <div onClick={() => sumBet(1)}>
-                                <p>+1</p>
-                              </div>
-                              <div onClick={() => sumBet(5)}>
-                                <p>+5</p>
-                              </div>
+                              <div onClick={() => sumSecondBet(1)}>+1</div>
+                              <div onClick={() => sumSecondBet(5)}>+5</div>
                               <div
                                 className="flex_buttons_up"
-                                onClick={() => envido()}
+                                onClick={() => sumSecondBet(0)}
                               >
-                                <p>Envido</p>
-                                <p className="suma">{bet}</p>
+                                <span>SUBO</span>
+                                <span className="suma">{secondBet}</span>
                               </div>
                             </div>
                             <div className="flex_buttons_down">
-                              <div onClick={() => sumBet(-1)}>
-                                <p>BORRAR</p>
-                              </div>
-                              <div
-                                onClick={() => changeTurn(playerThree, round)}
-                              >
-                                <p>PASAR</p>
-                              </div>
+                              <div onClick={() => sumSecondBet(-1)}>BORRAR</div>
+                              <div onClick={() => call()}>QUIERO</div>
+                              <div onClick={() => fold()}>NO QUIERO</div>
                             </div>
                           </div>
                           <div className="ordago">
@@ -800,57 +1054,25 @@ function Room({ user, room }) {
                           </div>
                         </div>
                       </div>
-                    ) : round > 1 && flagBet ? (
-                      <>
-                        <div className="postnohaymus">
-                          <div>
-                            <div onClick={() => sumBet(1)}>
-                              <h1>+1</h1>
-                            </div>
-                            <div onClick={() => sumBet(5)}>
-                              <h1>+5</h1>
-                            </div>
-                          </div>
-                          <div>
-                            <div>
-                              <div onClick={() => envido()}>
-                                <h2>Quiero</h2>
-                              </div>
-                              <p className="suma">{bet}</p>
-                            </div>
-                            <div onClick={() => sumBet(-1)}>
-                              <h2>BORRAR</h2>
-                            </div>
-                          </div>
-                          <div onClick={() => fold()}>
-                            <h1>NO QUIERO</h1>
-                          </div>
-                          <div>
-                            <h2>ÓRDAGO</h2>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                    </div>
+                  </>
                 ) : (
                   <></>
                 )}
               </div>
 
               <div className="avatar t2 avatar-oponente-dr">
-                <img src={"/img/2_Normal_pj2.png"} alt="" />
+                <img src={"/img/Pj_2/1_Normal_pj2.png"} alt="" />
                 <p>{deskPlayers[1]}</p>
               </div>
 
               <div className="avatar t1 avatar-compa">
-                <img src={"/img/1_Normal_pj3.png"} alt="" />
+                <img src={"/img/Pj_3/1_Normal_pj3.png"} alt="" />
                 <p>{deskPlayers[2]}</p>
               </div>
 
               <div className="avatar t2 avatar-oponente-iz">
-                <img src={"/img/pj1_normal.png"} alt="" />
+                <img src={"/img/Pj_4/1_Normal_pj4.png"} alt="" />
                 <p>{deskPlayers[3]}</p>
               </div>
 
@@ -897,8 +1119,8 @@ function Room({ user, room }) {
               </div>
 
               <div className="info">{roundName}</div>
-              <div>Impar: {contadorOddTeam}</div>
-              <div>Par: {contadorParTeam}</div>
+              <div>Red: {contadorRedTeam}</div>
+              <div>Blue: {contadorBlueTeam}</div>
               <div className="mesa">
                 <img src={tapetepixel} alt="" />
               </div>
@@ -974,16 +1196,16 @@ function Room({ user, room }) {
               </div>
 
               <div className="mazo1">
-                <img src={"/img/000.png"} alt="" />
+                <img src={"/img/" + mazoPos[0] + ".png"} alt="" />
               </div>
               <div className="mazo2">
-                <img src={"/img/000.png"} alt="" />
+                <img src={"/img/" + mazoPos[1] + ".png"} alt="" />
               </div>
               <div className="mazo3">
-                <img src={"/img/000.png"} alt="" />
+                <img src={"/img/" + mazoPos[2] + ".png"} alt="" />
               </div>
               <div className="mazo4">
-                <img src={"/img/000.png"} alt="" />
+                <img src={"/img/" + mazoPos[3] + ".png"} alt="" />
               </div>
             </div>
           </div>
@@ -1001,3 +1223,4 @@ function Room({ user, room }) {
 }
 export default Room;
 //viernes 1 de abril 783 lineas
+//martes  5 de abril 1072 lineas

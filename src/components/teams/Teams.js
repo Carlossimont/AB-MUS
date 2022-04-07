@@ -57,7 +57,7 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     </div> : <div>
                             <p>CARGANDO JUGADORES</p>
                         
-                            <progress class="nes-progress" value={`${users.length*25}`} max="100"></progress>
+                            <progress className="nes-progress" value={`${users.length*25}`} max="100"></progress>
                     
                         </div>}
             </div>
