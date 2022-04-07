@@ -1,0 +1,14 @@
+.rules{
+    display: flex;
+    flex-direction: column;
+    background-color: beige;
+    max-width: 60%;
+    margin: 8rem 12rem 10rem 15rem;
+    max-height: 300px;
+    overflow: scroll;
+    padding: 3rem;
+}
+.rules div{
+    font-size: 20px;
+
+}

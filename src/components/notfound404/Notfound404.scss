@@ -1,0 +1,46 @@
+#logo404{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+    img{
+        max-width: 40%;
+    }
+    p{
+        font-size: 50px;
+        margin: 0;
+        color: white;
+        text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 
+    0 0 15px #ff0000, 0 0 18px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 75px #ff0000;
+    }
+}
+.parpadea {
+  
+    animation-name: parpadeo;
+    animation-duration: 5s;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count: infinite;
+  
+    -webkit-animation-name:parpadeo;
+    -webkit-animation-duration: 4s;
+    -webkit-animation-timing-function:ease-out;
+    -webkit-animation-iteration-count: infinite;
+  }
+  
+  @-moz-keyframes parpadeo{  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+  }
+  
+  @-webkit-keyframes parpadeo {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+     100% { opacity: 1.0; }
+  }
+  
+  @keyframes parpadeo {  
+    0% { opacity: 1.0; }
+     50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+  }

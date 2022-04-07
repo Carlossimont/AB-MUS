@@ -11,7 +11,7 @@ const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=>
     const messagesEndRef = useRef(null)
   
     const scrollToBottom = () => {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+      messagesEndRef.current.scrollIntoView({behavior: "smooth"})
     }
   
     useEffect(scrollToBottom, [messages]);
@@ -31,8 +31,8 @@ const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=>
            
         </div>
         <div>
-            <input type="text" name="" id="" onChange={(m)=>setMessage(m.target.value)} value={message} />
-            <button onClick={()=>functionSend()}>Send</button> 
+            <input className="input_msg" type="text" name="" id="" onChange={(m)=>setMessage(m.target.value)} value={message} />
+            <button className="send_button" onClick={()=>functionSend()}>Send</button> 
         </div>
     </div>
 
