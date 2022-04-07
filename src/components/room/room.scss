@@ -4,29 +4,28 @@
 .flex div{
     // border: .1rem solid black;
 }
+.background{
+    min-height: 100vh;
+}
 #tapete{
     background-size: 100%;
 
 }
 .mesa{
-z-index:-1;
+z-index:0;
 }
 .mesa img{
-
     position: absolute;
     max-width: 50rem;
-    border: 10px groove rgb(80, 37, 0);
-
     top: 0;
     left: 0;
-    right: 14rem;
-    bottom: 2rem;
+    right: 30rem;
+    bottom: 8rem;
     margin: auto;
 }
-// #background{
-//     max-width: 500px;
-//     max-height: 300px;
-// }
+#background{
+background-repeat: inherit;
+}
 #room{
     background-color: chocolate;
 }
@@ -43,6 +42,7 @@ z-index:-1;
     max-height: 100px;
 }
 .t1 img{
+
     border: 10px ridge rgb(37, 11, 233);
     background-color: rgb(226, 176, 110);
     border-radius: 6px;
@@ -171,13 +171,13 @@ z-index:-1;
 .tablero {
     display: grid;
     gap: .5rem;
-    grid-template-columns: 5vw minmax(100px,10vw) 10vw 31fr 10vw minmax(100px,10vw);
+    grid-template-columns:minmax(100px,10vw) 10vw 25vw 10vw minmax(100px,10vw);
     grid-template-rows: 15vh 15vh 30vh 15vh 20vh;
-    grid-template-areas: ". . . avatar-compa . ."
-                        ". . mazo3 cartas-compa mazo2 ."
-                        ". avatar-oponente-iz cartas-oponente-iz info cartas-oponente-dr avatar-oponente-dr"
-                        ". . mazo4 cartas-activo mazo1 ."
-                        ". . jugador-activo jugador-activo jugador-activo ."
+    grid-template-areas: " . . avatar-compa . ."
+                        " . mazo3 cartas-compa mazo2 ."
+                        " avatar-oponente-iz cartas-oponente-iz info cartas-oponente-dr avatar-oponente-dr"
+                        " . mazo4 cartas-activo mazo1 ."
+                        " . jugador-activo jugador-activo jugador-activo ."
     ;
     width: 100%;
     max-width: 100%;
@@ -244,11 +244,16 @@ z-index:-1;
 .info {
     z-index:1;
     grid-area: info;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 1rem 2rem;
-    background-color: rgba(200,200,200,.4);
-    border-radius: 1rem;
-    box-shadow: 0 0 2px 4px rgba(50,50,50,.3);
+
+    font-size: 120px;
+    p{
+        opacity: 0.3;
+        color: aliceblue;
+    }  
 }
 .cartas-oponente-dr {
     grid-area: cartas-oponente-dr;
@@ -297,10 +302,12 @@ z-index:-1;
     }
 }
 .jugador-activo {
+    margin-top: 1rem;
     grid-area: jugador-activo;
     display: flex;
     justify-content: center;
     gap: 1rem;
+    
 }
 
 .moverchat {
@@ -341,12 +348,12 @@ z-index:-1;
 }
 .flex_buttons_up{
     display: flex;
-    p{
+    div{
+        width: 100%;
         z-index:1;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 2rem;
         padding: 1rem;
         max-height: 5rem;
         text-align: center;
@@ -357,9 +364,16 @@ z-index:-1;
         box-shadow: 5px 5px 5px black;
     }
 }
+.flex_buttons_up div:hover{
+    transition: 0.6s;
+    background-color: aliceblue;
+    color:  rgb(249, 6, 6);
+}
 .flex_buttons_down{
     display: flex;
-    p{
+    div{
+        width: 100%;
+        z-index: 1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -372,26 +386,31 @@ z-index:-1;
         box-shadow: 5px 5px 5px black;
     }
 }
+.flex_buttons_down div:hover{
+    transition: 0.6s;
+    background-color: aliceblue;
+    color:  rgb(249, 6, 6);
+}
 
 .superflex{
     display: flex;
-
+    margin-top: 1rem;
 }
 .suma{
-    background-color: rgb(249, 6, 6);
     box-shadow: 1px 1px 2px black;
+    padding: 0 1rem 0 1rem;
 }
 .ordago{
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
+    z-index: 1;
     div{
         z-index:1;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 2rem;
         padding: .5rem 1.25rem;
-        max-height: 5rem;
+        height: 100%;
         text-align: center;
         color: white;
         background-color: rgb(249, 6, 6);
@@ -399,4 +418,10 @@ z-index:-1;
         border-radius: .25rem;
         box-shadow: 5px 5px 5px black;
     }
+}
+.ordago div:hover{
+    transition: 0.6s;
+    background-color: aliceblue;
+    color:  rgb(249, 6, 6);
+    transform: scale(1.2)
 }

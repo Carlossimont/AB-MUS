@@ -7,10 +7,10 @@ function Header() {
   return (
     <header>
       <div>
-          <h1>AB MUS</h1>
+          <h1><Link to="/">AB MUS</Link></h1>
       </div>
       <div> 
-          <p>Login</p>
+          <p><Link to="/login">Login</Link></p>
           <p>Register</p>
       </div>
     </header>

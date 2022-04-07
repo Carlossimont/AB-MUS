@@ -47,17 +47,18 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                     <div className='avatares'>
                         <p>Avatares</p>
                         <div>
-                            <div><img src="public\img\Pj_1\1_Normal_pj1.png" alt="" /></div>
-                            <div><img src="public\img\Pj_2\1_Normal_pj2.png" alt="" /></div>
-                            <div><img src="public\img\Pj_3\1_Normal_pj3.png" alt="" /></div>
-                            <div><img src="public\img\Pj_4\1_Normal_pj4.png" alt="" /></div>
+                            {/* hay que hacer un map con un array de personajes */}
+                            <div><img src="img\Pj_1\1_Normal_pj1.png" alt="" /></div> 
+                            <div><img src="img\Pj_2\1_Normal_pj2.png" alt="" /></div>
+                            <div><img src="img\Pj_3\1_Normal_pj3.png" alt="" /></div>
+                            <div><img src="img\Pj_4\1_Normal_pj4.png" alt="" /></div>
                         </div>
 
                     </div>    
                     </div> : <div>
                             <p>CARGANDO JUGADORES</p>
                         
-                            <progress class="nes-progress" value={`${users.length*25}`} max="100"></progress>
+                            <progress className="nes-progress" value={`${users.length*25}`} max="100"></progress>
                     
                         </div>}
             </div>

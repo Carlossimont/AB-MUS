@@ -4,6 +4,9 @@ header{
 }
 header div{
     display: flex;
+    color: #FFFFFF;
+    text-shadow: 0 0 1px #FFF, 0 0 2px #FFF, 0 0 3px #FFF, 
+    0 0 5px #ff18f7, 0 0 10px #ff18f7, 0 0 15px #ff18f7, 0 0 20px #ff18f7, 0 0 40px #ff18f7;
 }
 header p{
     color: aliceblue;
@@ -16,6 +19,7 @@ header h1{
     display: flex;
     font-family:VT323;
     color: violet;
-    font-size: 40px;
+    font-size: 60px;
     margin-top: 1rem;
+    margin-left: 2rem;
 }

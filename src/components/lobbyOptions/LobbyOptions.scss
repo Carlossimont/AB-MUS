@@ -5,16 +5,17 @@
     left:50px;
     display: flex;
     flex-direction: column;
-    font-size: 50px;
     color: white;
+    div{
+        font-size: 70px;
+    }
 }
 .set1{
-    text-shadow:5px 5px 10px black;
+    text-shadow:5px 5px 10px #ff18f7;
     transition: text-shadow ease-in .2s;
 }
-
 .set1:hover{
-    text-shadow:5px 5px 10px goldenrod;
+    text-shadow:5px 5px 10px #ff18f7;
 }
 .set a{
     text-decoration: none;

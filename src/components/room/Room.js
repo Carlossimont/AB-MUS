@@ -1,5 +1,5 @@
 import tapete from "./img/tapete.jpg";
-import tapetepixel from "./img/tapetepixel.png";
+import tapetepixel from "./img/Table4.png";
 import "./room.scss";
 import Teams from "../teams/Teams";
 import { useState, useEffect } from "react";
@@ -8,9 +8,10 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import erlang from "./img/erlang.png";
 import B1 from "./img/B1.png";
 import F000 from "./img/F000.png";
-import suelo from "./img/suelo.png";
+import suelo from "./img/suelo_piedra.png";
+import Marcador from '../marcador/Marcador'
 
-function Room({ user, room }) {
+function Room({ user, room}) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
   let palos = ["O", "C", "E", "B"];
   let [ready, setReady] = useState(false);
@@ -671,7 +672,7 @@ function Room({ user, room }) {
       console.log(e);
     }
   };
-
+  
   const callSignal = async (contador) => {
     try {
       await connection.invoke("Call", bet, contador);
@@ -698,8 +699,9 @@ function Room({ user, room }) {
   };
 
   return (
-    <div style={{ backgroundImage: `url(${suelo})` }} id="background">
-      {game ? (
+    <div style={{ backgroundImage: `url(${suelo})` }} className="background">
+      <Marcador/>
+      {!game ? (
         <Teams
           joinRoom={joinRoom}
           user={user}
@@ -719,15 +721,15 @@ function Room({ user, room }) {
             <div className="tablero">
               <div className="jugador-activo">
                 <div className="avatar t1 avatar-activo">
-                  <img src="" alt="" />
+                  <img src="img\Pj_1\1_Normal_pj1.png" alt="" />
                   <p>{deskPlayers[0]}</p>
                 </div>
                 {true ? (
                   <div className="flexbuttons">
                     {myChair === playerThree && round === -1 ? (
                       <div className="prenohaymus">
-                        <div onClick={() => barajar()}>barajar</div>
-                        <div onClick={() => repartir()}>repartir</div>
+                        <div className="mus_buttons" onClick={() => barajar()}>barajar</div>
+                        <div className="mus_buttons" onClick={() => repartir()}>repartir</div>
                       </div>
                     ) : (
                       <></>
@@ -768,16 +770,16 @@ function Room({ user, room }) {
                         <div className="superflex">
                           <div>
                             <div className="flex_buttons_up">
-                              <div onClick={() => sumBet(1)}><p>+1</p></div>
-                              <div onClick={() => sumBet(5)}><p>+5</p></div>
+                              <div onClick={() => sumBet(1)}>+1</div>
+                              <div onClick={() => sumBet(5)}>+5</div>
                               <div  className="flex_buttons_up" onClick={() => envido()}>
-                                <p>Envido</p>
-                                <p className="suma">{bet}</p>
+                                <span>Envido</span>
+                                <span className="suma">{bet}</span>
                               </div>
                             </div>
                             <div  className="flex_buttons_down">
-                              <div onClick={() => sumBet(-1)}><p>BORRAR</p></div>
-                              <div onClick={() => changeTurn(playerThree, round)}><p>PASAR</p></div>
+                              <div onClick={() => sumBet(-1)}>BORRAR</div>
+                              <div onClick={() => changeTurn(playerThree, round)}>PASAR</div>
                             </div>
                           </div>
                           <div className="ordago">
@@ -789,32 +791,28 @@ function Room({ user, room }) {
                     ) : round > 1 && flagBet ? (
                       <>
                         <div className="postnohaymus">
+                        <div className="superflex">
                           <div>
-                            <div onClick={() => sumBet(1)}>
-                              <h1>+1</h1>
-                            </div>
-                            <div onClick={() => sumBet(5)}>
-                              <h1>+5</h1>
-                            </div>
-                          </div>
-                          <div>
-                            <div>
-                              <div onClick={() => envido()}>
-                                <h2>Quiero</h2>
+                            <div className="flex_buttons_up">
+                              <div onClick={() => sumBet(1)}>+1</div>
+                              <div onClick={() => sumBet(5)}>+5</div>
+                              <div  className="flex_buttons_up" onClick={() => envido()}>
+                                <span>ENVIDO</span>
+                                <span className="suma">{bet}</span>
                               </div>
-                              <p className="suma">{bet}</p>
                             </div>
-                            <div onClick={() => sumBet(-1)}>
-                              <h2>BORRAR</h2>
+                            <div  className="flex_buttons_down">
+                              <div onClick={() => sumBet(-1)}>BORRAR</div>
+                              <div>QUIERO</div>
+                              <div onClick={() => changeTurn(playerThree, round)}>NO QUIERO</div>
                             </div>
                           </div>
-                          <div onClick={() => fold()}>
-                            <h1>NO QUIERO</h1>
-                          </div>
-                          <div>
-                            <h2>ÓRDAGO</h2>
+                          <div className="ordago">
+                            <div><p>ÓRDAGO</p></div>
                           </div>
                         </div>
+                          
+                      </div>
                       </>
                     ) : (
                       <></>
@@ -826,17 +824,17 @@ function Room({ user, room }) {
               </div>
 
               <div className="avatar t2 avatar-oponente-dr">
-                <img src={"/img/2_Normal_pj2.png"} alt="" />
+                <img src="img\Pj_2\1_Normal_pj2.png" alt="" />
                 <p>{deskPlayers[1]}</p>
               </div>
 
               <div className="avatar t1 avatar-compa">
-                <img src={"/img/1_Normal_pj3.png"} alt="" />
+                <img src="img\Pj_3\1_Normal_pj3.png" alt="" />
                 <p>{deskPlayers[2]}</p>
               </div>
 
               <div className="avatar t2 avatar-oponente-iz">
-                <img src={"/img/pj1_normal.png"} alt="" />
+                <img src="img\Pj_4\1_Normal_pj4.png" alt="" />
                 <p>{deskPlayers[3]}</p>
               </div>
 
@@ -882,9 +880,9 @@ function Room({ user, room }) {
                 )}
               </div>
 
-              <div className="info">{roundName}</div>
-              <div>Impar: {contadorOddTeam}</div>
-              <div>Par: {contadorParTeam}</div>
+              <div className="info"><p>{roundName}</p></div>
+              {/* <div>Impar: {contadorOddTeam}</div>
+              <div>Par: {contadorParTeam}</div> */}
               <div className="mesa">
                 <img src={tapetepixel} alt="" />
               </div>
@@ -974,6 +972,7 @@ function Room({ user, room }) {
             </div>
           </div>
         </div>
+        
       )}
       <Chat
         closeConnection={closeConnection}
