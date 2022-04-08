@@ -4,17 +4,19 @@ import fondogif2 from './img/fondogif2.gif';
 import './Lobby.scss'
 import Header from '../header/Header'
 
-function Lobby({content, options, chat, infobox}) {
+function Lobby({content, options, chat, infobox, rules, marcador}) {
 
     return (
         
         <div style={{backgroundImage: `url(${fondogif2})`}} id="background">
             <Header/>
             <div>
+                {rules}
                 {content}
                 {options}
                 {infobox}
                 {chat}
+                {marcador}
      
             </div>
         </div>

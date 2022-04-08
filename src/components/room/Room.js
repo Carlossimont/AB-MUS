@@ -1,5 +1,5 @@
 import tapete from "./img/tapete.jpg";
-import tapetepixel from "./img/tapetepixel.png";
+import tapetepixel from "./img/Table4.png";
 import "./room.scss";
 import Teams from "../teams/Teams";
 import { useState, useEffect } from "react";
@@ -8,9 +8,10 @@ import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import erlang from "./img/erlang.png";
 import B1 from "./img/B1.png";
 import F000 from "./img/F000.png";
-import suelo from "./img/suelo.png";
+import suelo from "./img/suelo_piedra.png";
+import Marcador from '../marcador/Marcador'
 
-function Room({ user, room }) {
+function Room({ user, room}) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
   let palos = ["O", "C", "E", "B"];
   let [ready, setReady] = useState(false);
@@ -886,7 +887,7 @@ function Room({ user, room }) {
       console.log(e);
     }
   };
-
+  
   const callSignal = async (contador) => {
     try {
       await connection.invoke("Call", bet, contador);
@@ -913,7 +914,8 @@ function Room({ user, room }) {
   };
 
   return (
-    <div style={{ backgroundImage: `url(${suelo})` }} id="background">
+    <div style={{ backgroundImage: `url(${suelo})` }} className="background">
+      <Marcador/>
       {!game ? (
         <Teams
           joinRoom={joinRoom}
@@ -1210,6 +1212,7 @@ function Room({ user, room }) {
             </div>
           </div>
         </div>
+        
       )}
       <Chat
         closeConnection={closeConnection}

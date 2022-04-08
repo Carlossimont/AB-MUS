@@ -8,15 +8,15 @@ function Login() {
         <div className="loginboxcontainer">
             <div className="loginbox">
                 
-                    <div>
+                    <div className='size_font'>
                         <p>User login</p>
                         <input type="text" />
                     </div>
-                    <div>
+                    <div className='size_font'>
                         <p>Password</p>
                         <input type="password" />
                     </div>
-                    <div className="sendbutton"><Link to="/createroom">Access</Link></div>
+                    <div className="sendbutton"><Link to="/createroom">Login</Link></div>
             </div>
         </div>
 

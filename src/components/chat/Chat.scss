@@ -3,11 +3,11 @@
     right: 5px;
     bottom: 5px;
     background-color: rgb(168, 144, 113);
-
 }
 .message-container{
     background-color: white;
-    height: 22rem;
+    width: 25rem;
+    height: 18rem;
     padding: 1rem 0.5rem 1rem 1rem;
     text-align: end;
     overflow: scroll;
@@ -16,3 +16,10 @@
     background-color: rgb(95, 172, 240);
     margin-bottom: 2px;
 }
+.input_msg{
+    color: black;
+}
+.send_button{
+    color: black;
+}
+

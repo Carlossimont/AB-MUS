@@ -2,7 +2,6 @@ import fondo_login from './img/fondo_login.jpg'
 import {Link} from 'react-router-dom'
 import './Createroom.scss'
 
-
 function CreateRoom({user,setUser,room,setRoom}) {
     return (
         <div>
@@ -18,7 +17,7 @@ function CreateRoom({user,setUser,room,setRoom}) {
                     <input type="text" onChange={(b)=>setRoom(b.target.value)} value={room}/>
                     </div>
                     
-                    <div className="okbutton"><Link to="/room">OK</Link></div>
+                    <div className="sendbutton"><Link to="/room">OK</Link></div>
                 </div>
             </div>  
         </div>
