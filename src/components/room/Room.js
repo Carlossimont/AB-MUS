@@ -10,8 +10,11 @@ import B1 from "./img/B1.png";
 import F000 from "./img/F000.png";
 import suelo from "./img/suelo_piedra.png";
 import Marcador from '../marcador/Marcador'
-
-function Room({ user, room}) {
+import bocadillo_1 from './img/Bocadillo_1.png'
+import bocadillo_2 from './img/Bocadillo_2.png'
+import bocadillo_3 from './img/Bocadillo_3.png'
+import bocadillo_4 from './img/Bocadillo_4.png'
+function Room({user, room}) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
   let palos = ["O", "C", "E", "B"];
   let [ready, setReady] = useState(false);
@@ -600,7 +603,7 @@ function Room({ user, room}) {
   const joinRoom = async (user, room) => {
     try {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:5001/chat")
+        .withUrl("https://localhost:44360/chat")
         .configureLogging(LogLevel.Information)
         .build();
 
@@ -935,6 +938,28 @@ function Room({ user, room}) {
           <div className="team2">
             <div className="tablero">
               <div className="jugador-activo">
+
+                  <div className="superflex2">
+                    <div className="flex_buttons_up2">
+                      <div>2 Reyes</div>
+                      <div>3 Reyes</div>
+                    </div>
+                    <div className="flex_buttons_up2">
+                      <div>2 Ases</div>
+                      <div>3 Ases</div>
+                    </div>
+                    <div className="flex_buttons_down2">
+                      <div>Duplex</div>
+                      <div>31</div>
+                      <div>Pedrete</div>
+                    </div>
+                  </div>
+
+
+
+
+
+
                 <div className="avatar t1 avatar-activo">
                   <img src="/img/Pj_2/1_Normal_pj2.png" alt="" />
                   <p>{deskPlayers[0]}</p>
@@ -985,7 +1010,7 @@ function Room({ user, room}) {
                           <></>
                         )}
 
-                        {round === 2 && round === 3 && round === 8 ? (
+                        {round === 2 || round === 3 || round === 8 ? (
                           <div className="postnohaymus">
                             <div className="superflex">
                               <div>
@@ -1120,7 +1145,7 @@ function Room({ user, room}) {
                 )}
               </div>
 
-              <div className="info">{roundName}</div>
+              <div className="info"><p>{roundName}</p></div>
               <div>Red: {contadorRedTeam}</div>
               <div>Blue: {contadorBlueTeam}</div>
               <div className="mesa">
@@ -1209,6 +1234,24 @@ function Room({ user, room}) {
               <div className="mazo4">
                 <img src={"/img/" + mazoPos[3] + ".png"} alt="" />
               </div>
+
+              <div className='bocadillo team1_pj1'>
+                <img src={bocadillo_1} alt="" />
+                <div className="texto_bocadillo text1_pj1">Llevo pares</div>
+              </div>
+              <div className='bocadillo team1_pj2'>
+                <img src={bocadillo_2} alt="" />
+                <div className="texto_bocadillo text1_pj2">Llevo pares</div>
+              </div>
+              <div className='bocadillo team2_pj1'>
+                <img src={bocadillo_3} alt="" />
+                <div className="texto_bocadillo text2_pj1">Llevo pares</div>
+              </div>
+              <div className='bocadillo team2_pj2'>
+                <img src={bocadillo_4} alt="" />
+                <div className="texto_bocadillo text2_pj2">Llevo pares</div>
+              </div>  
+
             </div>
           </div>
         </div>
@@ -1220,6 +1263,7 @@ function Room({ user, room}) {
         messages={messages}
         setMessage={setMessage}
         message={message}
+        user={user}
       ></Chat>
     </div>
   );
