@@ -76,16 +76,20 @@ function Room({user, room}) {
   let [betTeam, setBetTeam] = useState("white");
   let [secondBet, setSecondBet] = useState(0);
   let [foldNum, setFoldNum] = useState(-1);
-  let [boolJuego,setBoolJuego] = useState([]);
-  let [boolPares,setBoolPares] = useState([]);
-  let [tengoPares,setTengoPares] = useState(false);
-  let [tengoJuego,setTengoJuego] = useState(false);
+  let [boolJuego, setBoolJuego] = useState([]);
+  let [boolPares, setBoolPares] = useState([]);
+  let [tengoPares, setTengoPares] = useState(false);
+  let [tengoJuego, setTengoJuego] = useState(false);
+
+  let [blueFold, setBlueFold] = useState(false);
+  let [redFold, setRedFold] = useState(false);
+  let [contadorFold, setContadorFold] = useState(0);
 
   let [check, setCheck] = useState("nada");
 
   const [connection, setConnection] = useState();
   const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState(["Edu", "Maren", "Carlos", "Asier"]);
+  const [users, setUsers] = useState([]);
   let playersAux = [];
 
   useEffect(() => {
@@ -134,7 +138,6 @@ function Room({user, room}) {
       setBaraja(barajaAux);
     }
   }, [game]);
-
 
   useEffect(() => {
     console.log(players);
@@ -284,8 +287,19 @@ function Room({user, room}) {
   }, [deckHands]);
 
   useEffect(() => {
+    debugger;
     if (turno === 4) {
       setTurno(0);
+    }
+    if (turno === myChair) {
+      if (round === 5 || round === 7) {
+        if (!boolPares[myChair]) {
+          changeTurn(playerThree, round);
+        }
+        if (!boolJuego[myChair]) {
+          changeTurn(playerThree, round);
+        }
+      }
     }
   }, [turno]);
 
@@ -462,8 +476,6 @@ function Room({user, room}) {
     if (round === 1) {
       setMyDiscards(myCards);
     }
-    console.log(myChair);
-    console.log(playerThree);
     if (myChair === playerThree) {
       if (round === 2) {
         recibirCartas(deckHands);
@@ -479,13 +491,37 @@ function Room({user, room}) {
       }
     }
 
+    console.log("SETEA TODA LA MIERDA");
     setBet(2);
     setSecondBet(0);
     setShowAnswer(false);
     setBetTeam("white");
     setFlagBet(false);
+    setContadorFold(0);
+    if (round !== 5) {
+      setTengoPares(false);
+    }
+    if (round !== 7) {
+      setTengoJuego(false);
+    }
     //TODO: aaaa
   }, [round]);
+
+  useEffect(() => {
+    if (blueFold) {
+      console.log("sumamos el fold al contador " + round);
+      setContadorRedTeam(contadorRedTeam + contadorFold);
+    }
+    setBlueFold(false);
+  }, [blueFold]);
+
+  useEffect(() => {
+    if (redFold) {
+      console.log("sumamos el fold al contador " + round);
+      setContadorBlueTeam(contadorBlueTeam + contadorFold);
+    }
+    setRedFold(false);
+  }, [redFold]);
 
   function call() {
     switch (round) {
@@ -522,41 +558,43 @@ function Room({user, room}) {
     }
   }, [foldNum]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let count = 0;
-    if (round > -1 ) {
-      boolPares.forEach((booleano,i)=>{
+    if (round > -1) {
+      boolPares.forEach((booleano, i) => {
         if (booleano) {
-          if (i===myChair) {
+          if (i === myChair) {
+            console.log("SETEO TENGO PARES");
             setTengoPares(true);
           } else {
             count++;
           }
         }
-      })
+      });
     }
-    if (count===4) {
+    if (count === 4) {
       noPares();
     }
-  },[boolPares])
+  }, [boolPares]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let count = 0;
-    if (round === 4 ) {
-      boolJuego.forEach((booleano,i)=>{
+    if (round === 4) {
+      boolJuego.forEach((booleano, i) => {
         if (booleano) {
-          if (i===myChair) {
+          if (i === myChair) {
+            console.log("SETEO TENGO JUEGO");
             setTengoJuego(true);
           } else {
             count++;
           }
         }
-      })
+      });
     }
-    if (count===4) {
+    if (count === 4) {
       noJuego();
     }
-  },[boolJuego])
+  }, [boolJuego]);
 
   function fold() {
     switch (round) {
@@ -667,15 +705,14 @@ function Room({user, room}) {
       });
 
       connection.on("Fold", (contador, team) => {
+        console.log("alguien foldea");
         if (team === "blue") {
-          setContadorBlueTeam(contadorBlueTeam + contador);
+          setContadorFold(contador);
+          setRedFold(true);
         } else {
-          setContadorRedTeam(contadorRedTeam + contador);
+          setContadorFold(contador);
+          setBlueFold(true);
         }
-        setBet(2);
-        setSecondBet(1);
-        setFlagBet(false);
-        //setFoldNum(foldNum + 1);  si alguien no quiere hacemos nextround desde el back
       });
 
       connection.on("Call", (contador) => {
@@ -890,7 +927,7 @@ function Room({user, room}) {
       console.log(e);
     }
   };
-  
+
   const callSignal = async (contador) => {
     try {
       await connection.invoke("Call", bet, contador);
@@ -918,7 +955,12 @@ function Room({user, room}) {
 
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} className="background">
-      <Marcador/>
+      <Marcador
+        contadorBlueTeam={contadorBlueTeam}
+        contadorRedTeam={contadorRedTeam}
+        contadorGamesBlueTeam={contadorGamesBlueTeam}
+        contadorGamesRedTeam={contadorGamesRedTeam}
+      />
       {!game ? (
         <Teams
           joinRoom={joinRoom}
@@ -970,8 +1012,18 @@ function Room({user, room}) {
                       <div className="flexbuttons">
                         {myChair === playerThree && round === -1 ? (
                           <div className="prenohaymus">
-                            <div className="mus_buttons" onClick={() => barajar()}>barajar</div>
-                            <div className="mus_buttons" onClick={() => repartir()}>repartir</div>
+                            <div
+                              className="mus_buttons"
+                              onClick={() => barajar()}
+                            >
+                              barajar
+                            </div>
+                            <div
+                              className="mus_buttons"
+                              onClick={() => repartir()}
+                            >
+                              repartir
+                            </div>
                           </div>
                         ) : (
                           <></>
@@ -1010,7 +1062,11 @@ function Room({user, room}) {
                           <></>
                         )}
 
-                        {round === 2 || round === 3 || round === 8 ? (
+                        {(round === 2 ||
+                        round === 3 ||
+                        round === 8 ||
+                        tengoJuego ||
+                        tengoPares) ? (
                           <div className="postnohaymus">
                             <div className="superflex">
                               <div>
@@ -1145,9 +1201,9 @@ function Room({user, room}) {
                 )}
               </div>
 
-              <div className="info"><p>{roundName}</p></div>
-              <div>Red: {contadorRedTeam}</div>
-              <div>Blue: {contadorBlueTeam}</div>
+              <div className="info">
+                <p>{roundName}</p>
+              </div>
               <div className="mesa">
                 <img src={tapetepixel} alt="" />
               </div>
@@ -1255,7 +1311,6 @@ function Room({user, room}) {
             </div>
           </div>
         </div>
-        
       )}
       <Chat
         closeConnection={closeConnection}
