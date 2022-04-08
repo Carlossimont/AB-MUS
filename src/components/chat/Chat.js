@@ -18,13 +18,13 @@ const Chat = ({users,user,messages,message,setMessage,closeConnection,sendMessag
 
     return (
     <div className="moverchat">
-        <div className='fondo_chat_superior'><button onClick={()=>closeConnection()}><a href='../createroom'>Leave Room</a></button></div>
+        <div className='fondo_chat_superior'><button className='send_button' onClick={()=>{closeConnection(); window.location.href = '../createroom'}}>Leave Room</button></div>
         
         
         <div className="message-container">
             {messages.map((m,index)=>
-            <div>
-                <div key={index} className="user-message">
+            <div className={m.user === user ? "user-me": "user-you" }>
+                <div key={index} className={m.user === user ? "user-message": "user-message2" }>
                     <div className="bg-primary">{m.message}</div>
                     <div className="from-user"><span>{m.user}</span></div>
 
