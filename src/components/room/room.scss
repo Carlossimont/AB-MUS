@@ -16,11 +16,11 @@ z-index:0;
 }
 .mesa img{
     position: absolute;
-    max-width: 50rem;
+    max-width: 46rem;
     top: 0;
     left: 0;
-    right: 30rem;
-    bottom: 8rem;
+    right: 29rem;
+    bottom: 1rem;
     margin: auto;
 }
 #background{
@@ -36,6 +36,10 @@ background-repeat: inherit;
     text-align: center;
     align-items: center;
     flex-direction: column;
+    p{
+        background-color: rgb(103, 102, 102);
+        font-size: 25px;
+    }
 }
 .avatar img{
     max-width: 100px;
@@ -436,9 +440,11 @@ background-repeat: inherit;
 .texto_bocadillo{
     position: absolute;
     display: flex;
+    justify-content: center;
+    font-size: 30px;
     top: 50%;
     left: 50%;
-    font-size: 30px;
+    transform: translate(-50%, -50%);
 }
 
 
@@ -495,5 +501,30 @@ background-repeat: inherit;
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
+}
+
+.team1_pj1{
+    z-index: 9999999999999999999;
+    position:absolute;
+    left: 24rem;
+    top:33rem;
+}
+.team1_pj2{
+    z-index: 9999999999999999999;
+    position:absolute;
+    left: 7rem;
+    top:19rem;
+}
+.team2_pj1{
+    z-index: 9999999999999999999;
+    position:absolute;
+    left: 22rem;
+    top:8rem;
+}
+.team2_pj2{
+    z-index: 9999999999999999999;
+    position:absolute;
+    left: 37rem;
+    top:19rem;
 }
 
