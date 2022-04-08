@@ -16,7 +16,7 @@ function Login() {
                         <p>Password</p>
                         <input type="password" />
                     </div>
-                    <div className="sendbutton"><Link to="/createroom">Login</Link></div>
+                    <Link to="/createroom"><div className="sendbutton">Login</div></Link>
             </div>
         </div>
 

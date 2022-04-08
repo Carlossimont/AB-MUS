@@ -17,7 +17,7 @@ function CreateRoom({user,setUser,room,setRoom}) {
                     <input type="text" onChange={(b)=>setRoom(b.target.value)} value={room}/>
                     </div>
                     
-                    <div className="sendbutton"><Link to="/room">OK</Link></div>
+                    <Link to="/room"><div className="sendbutton">OK</div></Link>
                 </div>
             </div>  
         </div>

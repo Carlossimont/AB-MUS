@@ -1,7 +1,7 @@
 import { useState,useEffect,useRef } from 'react';
 import './Chat.scss'
 
-const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=> {
+const Chat = ({users,user,messages,message,setMessage,closeConnection,sendMessage})=> {
 
  function functionSend(){
     sendMessage(message);
@@ -18,19 +18,23 @@ const Chat = ({users,messages,message,setMessage,closeConnection,sendMessage})=>
 
     return (
     <div className="moverchat">
-        <button onClick={()=>closeConnection()}>Leave Room</button>
+        <div className='fondo_chat_superior'><button onClick={()=>closeConnection()}><a href='../createroom'>Leave Room</a></button></div>
+        
         
         <div className="message-container">
             {messages.map((m,index)=>
-             <div key={index} className="user-message">
-                <div className="message bg-primary">{m.message}</div>
-                <div className="from-user">{m.user}</div>   
+            <div>
+                <div key={index} className="user-message">
+                    <div className="bg-primary">{m.message}</div>
+                    <div className="from-user"><span>{m.user}</span></div>
+
+                </div> 
              </div>
             )}
             <div ref={messagesEndRef}/>
            
         </div>
-        <div>
+        <div className='display_flex_chat'>
             <input className="input_msg" type="text" name="" id="" onChange={(m)=>setMessage(m.target.value)} value={message} />
             <button className="send_button" onClick={()=>functionSend()}>Send</button> 
         </div>
