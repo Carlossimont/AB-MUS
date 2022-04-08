@@ -13,13 +13,47 @@
     overflow: scroll;
 }
 .bg-primary{
-    background-color: rgb(95, 172, 240);
-    margin-bottom: 2px;
+    // display: inline-block;
+    // font-size: 25px;
+    // justify-content: end;
+    // background-color: rgb(182, 221, 255);
+    // margin-bottom: 2px;
+    // padding: 3px;
+    // border-radius: 4px;
 }
 .input_msg{
+    width: 100%;
     color: black;
 }
 .send_button{
     color: black;
 }
+.user-message{
+    display:inline-block;
+    flex-direction: column;
+    flex-wrap:unset;
+    width: auto;
+    font-size: 25px;
+    justify-content: end;
+    background-color: rgb(182, 221, 255);
+    margin-bottom: 2px;
+    padding: 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+.from-user{
+    font-size:10px;
+}
+.display_flex_chat{
+    display: flex;
+}
+.fondo_chat_superior{
+    background-color: rgb(118, 190, 253);
+
+    a{
+        text-decoration: none;
+        
+    }
+}
+
 

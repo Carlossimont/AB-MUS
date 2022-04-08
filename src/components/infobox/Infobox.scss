@@ -2,8 +2,8 @@
     position: relative;
     left: 5rem;
     bottom: 20rem;
-    width: 300px;
-    height: 200px;
+    width: 400px;
+    height: 300px;
 }
 .fondo_infobox{
     background-color: rgb(135, 10, 122);
@@ -19,6 +19,11 @@
     color: black;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
+}
+.flex_infobox{
+    display: flex;
+    justify-content: space-around;
+    div{
+        font-size:25px;
+    }
 }

@@ -8,7 +8,15 @@ function Infobox() {
             <div className='fondo_infobox'></div>
             
             <div className='texto_infobox'>
-                <h1>WELCOME</h1>
+                <h1>WELCOME LOGIN NAME</h1>
+                <div className='flex_infobox'>
+                    <div>
+                        PARTIDAS GANADAS
+                    </div>
+                    <div>
+                        ÚLTIMAS PARTIDAS
+                    </div>
+                </div>
             </div>
         </div>
     )
