@@ -9,12 +9,12 @@ import erlang from "./img/erlang.png";
 import B1 from "./img/B1.png";
 import F000 from "./img/F000.png";
 import suelo from "./img/suelo_piedra.png";
-import Marcador from '../marcador/Marcador'
-import bocadillo_1 from './img/Bocadillo_1.png'
-import bocadillo_2 from './img/Bocadillo_2.png'
-import bocadillo_3 from './img/Bocadillo_3.png'
-import bocadillo_4 from './img/Bocadillo_4.png'
-function Room({user, room}) {
+import Marcador from "../marcador/Marcador";
+import bocadillo_1 from "./img/Bocadillo_1.png";
+import bocadillo_2 from "./img/Bocadillo_2.png";
+import bocadillo_3 from "./img/Bocadillo_3.png";
+import bocadillo_4 from "./img/Bocadillo_4.png";
+function Room({ user, room }) {
   let numeros = [1, 2, 3, 4, 5, 6, 7, 10, 11, 12];
   let palos = ["O", "C", "E", "B"];
   let [ready, setReady] = useState(false);
@@ -40,6 +40,7 @@ function Room({user, room}) {
   let [deckHands, setDeckHands] = useState([], [], [], []); //creo que debería ser [[],[],[],[]] pero así funciona asi k...sssshhh
   let [ordenRonda, setOrdenRonda] = useState([]);
   let [turno, setTurno] = useState(-1);
+  let [arrayTurnos,setArrayTurnos] = useState([false,false,false,false])
   let [changeRepartir, setChangeRepartir] = useState(false);
   let [round, setRound] = useState(3);
   let [roundName, setRoundName] = useState("Mus");
@@ -94,24 +95,25 @@ function Room({user, room}) {
 
   useEffect(() => {
     if (round > 0) {
-      setSecondBet(1);
+      setSecondBet(2);
+    }
+    if (round === 5 && !tengoPares) {
+      setShowAnswer(false);
+    }
+    if (round === 7 && !tengoPares) {
+      setShowAnswer(false);
     }
   }, [showAnswer]);
 
   useEffect(() => {
     if (betTeam !== "white") {
       setFlagBet(true);
-      console.log("mi equipo");
-      console.log(myTeam);
-      console.log("equipo entra");
-      console.log(betTeam);
       if (myTeam !== betTeam) {
         //si mi equipo es el que NO apuesta abrimos los botones al resto;
         setShowAnswer(true);
       } else {
         setShowAnswer(false);
       }
-      console.log(flagBet);
     }
   }, [betTeam]);
 
@@ -200,7 +202,27 @@ function Room({user, room}) {
 
       case 9:
         setRoundName("Contando...");
-        setTurno(playerThree + 1);
+        setTurno(playerThree);
+        break;
+
+      case 10: //contar mayor
+        setTurno(playerThree);
+        break;
+
+      case 11: //contar peque
+        setTurno(playerThree);
+        break;
+
+      case 12: //contar par
+        setTurno(playerThree);
+        break;
+
+      case 13: //contar juego
+        setTurno(playerThree);
+        break;
+
+      case 14: //boton siguiente juego
+        setTurno(playerThree);
         break;
 
       default:
@@ -287,19 +309,52 @@ function Room({user, room}) {
   }, [deckHands]);
 
   useEffect(() => {
-    debugger;
+    let arrayTurnosAux = [...arrayTurnos];
+    let posiAux = myChair;
+    for (let i = 0; i < 4; i++) {
+      if (posiAux === turno) {
+        arrayTurnosAux[posiAux]=true;
+      }else {
+        arrayTurnosAux[posiAux]=false;
+      }
+      posiAux++;
+      if (posiAux === 4) {
+        posiAux = 0;
+      }
+    }
+    setArrayTurnos(arrayTurnosAux);
     if (turno === 4) {
       setTurno(0);
     }
     if (turno === myChair) {
-      if (round === 5 || round === 7) {
-        if (!boolPares[myChair]) {
-          changeTurn(playerThree, round);
-        }
-        if (!boolJuego[myChair]) {
+      debugger;
+      if (round === 4 || round === 5) {
+        if (!boolPares[ordenRonda.indexOf(user)]) {
           changeTurn(playerThree, round);
         }
       }
+      if (round === 6 || round === 7) {
+        if (!boolJuego[ordenRonda.indexOf(user)]) {
+          changeTurn(playerThree, round);
+        }
+      }
+
+      if (round === 9) {
+        levantarCartas(deckHands);
+      }
+      if (round === 10) {
+        contadorMayor(contadorMayor);
+      }
+      if (round === 11) {
+        contadorPeque(contadorMayor);
+      }
+      if (round === 12) {
+        contadorPares(contadorPares);
+      }
+      if (round === 13) {
+        contadorJuego(contadorJuego);
+      }
+
     }
   }, [turno]);
 
@@ -338,30 +393,9 @@ function Room({user, room}) {
     }
   }, [barajaDescartes]);
 
-  // switch (round) {
-  //   case 2:
-  //     setContadorMayor(contador);
-  //     changeRound(2);
-  //     break;
+  function levantarCartas(){
 
-  //   case 3:
-  //     setContadorPeque(contador);
-  //     changeRound(3);
-  //     break;
-
-  //   case 5:
-  //     setContadorPares(contador);
-  //     changeRound(5);
-  //     break;
-
-  //   case 7:
-  //     setContadorJuego(contador);
-  //     changeRound(7);
-  //     break;
-
-  //   default:
-  //     console.log("no entra una puta variable en async");
-  //     break;
+  }
 
   useEffect(() => {
     if (contador > -1) {
@@ -447,7 +481,7 @@ function Room({user, room}) {
     if (num < 0) {
       setSecondBet(2);
     } else {
-      setSecondBet(bet + num);
+      setSecondBet(secondBet + num);
     }
   }
 
@@ -487,13 +521,19 @@ function Room({user, room}) {
         hayJuego(deckHands);
       }
       if (round === 9) {
+        console.log("contadores");
+        console.log(contadorMayor);
+        console.log(contadorPeque);
+        console.log(contadorPares);
+        console.log(contadorJuego);
+        console.log(contadorPunto);
         countAll(deckHands);
       }
     }
 
     console.log("SETEA TODA LA MIERDA");
     setBet(2);
-    setSecondBet(0);
+    setSecondBet(2);
     setShowAnswer(false);
     setBetTeam("white");
     setFlagBet(false);
@@ -563,7 +603,7 @@ function Room({user, room}) {
     if (round > -1) {
       boolPares.forEach((booleano, i) => {
         if (booleano) {
-          if (i === myChair) {
+          if (i === ordenRonda.indexOf(user)) {
             console.log("SETEO TENGO PARES");
             setTengoPares(true);
           } else {
@@ -572,8 +612,10 @@ function Room({user, room}) {
         }
       });
     }
-    if (count === 4) {
-      noPares();
+    if (playerThree === myChair) {
+      if (count === 4) {
+        noPares();
+      }
     }
   }, [boolPares]);
 
@@ -582,7 +624,7 @@ function Room({user, room}) {
     if (round === 4) {
       boolJuego.forEach((booleano, i) => {
         if (booleano) {
-          if (i === myChair) {
+          if (i === ordenRonda.indexOf(user)) {
             console.log("SETEO TENGO JUEGO");
             setTengoJuego(true);
           } else {
@@ -591,8 +633,10 @@ function Room({user, room}) {
         }
       });
     }
-    if (count === 4) {
-      noJuego();
+    if (playerThree === myChair) {
+      if (count === 4) {
+        noJuego();
+      }
     }
   }, [boolJuego]);
 
@@ -625,14 +669,10 @@ function Room({user, room}) {
   }
 
   useEffect(() => {
-    console.log("cambio de chair");
     if (myChair > -1) {
-      console.log("cambio de chair bien");
       if (myChair % 2 === 0) {
-        console.log("seteo team blue");
         setMyTeam("blue");
       } else {
-        console.log("seteo team red");
         setMyTeam("red");
       }
     }
@@ -760,10 +800,11 @@ function Room({user, room}) {
     let mazo = myChair;
     if (playerThree !== -1) {
       for (let i = 0; i < 4; i++) {
+        //TODO: esta mal esto???miro si orden es 4 antes de hacer el ++
+        orden++;
         if (orden === 4) {
           orden = 0;
         }
-        orden++;
         ordenRondaAux.push(players[orden]);
       }
       for (let i = 0; i < 4; i++) {
@@ -810,6 +851,15 @@ function Room({user, room}) {
     console.log("entra nomus");
     try {
       await connection.invoke("NoMus");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const betSecondBet = async () => {//TODO: ASIER
+    console.log("entra betsecondbet");
+    try {
+      await connection.invoke("SecondBet", contador, bet, secondBet);
     } catch (e) {
       console.log(e);
     }
@@ -955,12 +1005,6 @@ function Room({user, room}) {
 
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} className="background">
-      <Marcador
-        contadorBlueTeam={contadorBlueTeam}
-        contadorRedTeam={contadorRedTeam}
-        contadorGamesBlueTeam={contadorGamesBlueTeam}
-        contadorGamesRedTeam={contadorGamesRedTeam}
-      />
       {!game ? (
         <Teams
           joinRoom={joinRoom}
@@ -976,11 +1020,17 @@ function Room({user, room}) {
           players={players}
         />
       ) : (
-        <div className="flex">
-          <div className="team2">
-            <div className="tablero">
-              <div className="jugador-activo">
-
+        <>
+          <Marcador
+            contadorBlueTeam={contadorBlueTeam}
+            contadorRedTeam={contadorRedTeam}
+            contadorGamesBlueTeam={contadorGamesBlueTeam}
+            contadorGamesRedTeam={contadorGamesRedTeam}
+          />
+          <div className="flex">
+            <div className="team2">
+              <div className="tablero">
+                <div className="jugador-activo">
                   <div className="superflex2">
                     <div className="flex_buttons_up2">
                       <div>2 Reyes</div>
@@ -997,320 +1047,331 @@ function Room({user, room}) {
                     </div>
                   </div>
 
-
-
-
-
-
-                <div className="avatar t1 avatar-activo">
-                  <img src="/img/Pj_2/1_Normal_pj2.png" alt="" />
-                  <p>{deskPlayers[0]}</p>
-                </div>
-                {!flagBet ? (
-                  <>
-                    {myChair === turno ? (
-                      <div className="flexbuttons">
-                        {myChair === playerThree && round === -1 ? (
-                          <div className="prenohaymus">
-                            <div
-                              className="mus_buttons"
-                              onClick={() => barajar()}
-                            >
-                              barajar
-                            </div>
-                            <div
-                              className="mus_buttons"
-                              onClick={() => repartir()}
-                            >
-                              repartir
-                            </div>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                        {round === 0 ? (
-                          <div className="prenohaymus">
-                            <div
-                              className="mus_buttons"
-                              onClick={() => changeTurn(playerThree, round)}
-                            >
-                              Mus
-                            </div>
-                            <div
-                              className="mus_buttons"
-                              onClick={() => noMus()}
-                            >
-                              No hay mus
-                            </div>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-
-                        {round === 1 && discNum > 0 ? ( //meter condicion de que se haya descartado de una carta minimo
-                          <div
-                            className="mus_buttons"
-                            onClick={() => dropMyCards()}
-                          >
-                            Descartar
-                          </div>
-                        ) : round === 1 && discNum === 0 ? (
-                          <div className="mus_buttons">
-                            Debes descartarte de una mínimo
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-
-                        {(round === 2 ||
-                        round === 3 ||
-                        round === 8 ||
-                        tengoJuego ||
-                        tengoPares) ? (
-                          <div className="postnohaymus">
-                            <div className="superflex">
-                              <div>
-                                <div className="flex_buttons_up">
-                                  <div onClick={() => sumBet(1)}>+1</div>
-                                  <div onClick={() => sumBet(5)}>+5</div>
-                                  <div
-                                    className="flex_buttons_up"
-                                    onClick={() => envido()}
-                                  >
-                                    <span>Envido</span>
-                                    <span className="suma">{bet}</span>
-                                  </div>
-                                </div>
-                                <div className="flex_buttons_down">
-                                  <div onClick={() => sumBet(-1)}>BORRAR</div>
-                                  <div
-                                    onClick={() =>
-                                      changeTurn(playerThree, round)
-                                    }
-                                  >
-                                    PASAR
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="ordago">
-                                <div>
-                                  <p>ÓRDAGO</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ) : showAnswer ? (
-                  <>
-                    <div className="flexbuttons">
-                      <div className="postnohaymus">
-                        <div className="superflex">
-                          <div>
-                            <div className="flex_buttons_up">
-                              <div onClick={() => sumSecondBet(1)}>+1</div>
-                              <div onClick={() => sumSecondBet(5)}>+5</div>
+                  <div className={`avatar avatar-activo ${myTeam === "red" ? "t2" : "t1"} ${arrayTurnos[0] ? "shadow" : ""}`}>
+                  {/* +  */}
+                    <img src="/img/Pj_1/normal.png" alt="" />
+                    <p>{deskPlayers[0]}</p>
+                  </div>
+                  {!flagBet ? (
+                    <>
+                      {myChair === turno ? (
+                        <div className="flexbuttons">
+                          {myChair === playerThree && round === -1 ? (
+                            <div className="prenohaymus">
                               <div
-                                className="flex_buttons_up"
-                                onClick={() => sumSecondBet(0)}
+                                className="mus_buttons"
+                                onClick={() => barajar()}
                               >
-                                <span>SUBO</span>
-                                <span className="suma">{secondBet}</span>
+                                barajar
+                              </div>
+                              <div
+                                className="mus_buttons"
+                                onClick={() => repartir()}
+                              >
+                                repartir
                               </div>
                             </div>
-                            <div className="flex_buttons_down">
-                              <div onClick={() => sumSecondBet(-1)}>BORRAR</div>
-                              <div onClick={() => call()}>QUIERO</div>
-                              <div onClick={() => fold()}>NO QUIERO</div>
+                          ) : (
+                            <></>
+                          )}
+                          {round === 0 ? (
+                            <div className="prenohaymus">
+                              <div
+                                className="mus_buttons"
+                                onClick={() => changeTurn(playerThree, round)}
+                              >
+                                Mus
+                              </div>
+                              <div
+                                className="mus_buttons"
+                                onClick={() => noMus()}
+                              >
+                                No hay mus
+                              </div>
                             </div>
-                          </div>
-                          <div className="ordago">
+                          ) : (
+                            <></>
+                          )}
+
+                          {round === 1 && discNum > 0 ? ( //meter condicion de que se haya descartado de una carta minimo
+                            <div
+                              className="mus_buttons"
+                              onClick={() => dropMyCards()}
+                            >
+                              Descartar
+                            </div>
+                          ) : round === 1 && discNum === 0 ? (
+                            <div className="mus_buttons">
+                              Debes descartarte de una mínimo
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+
+                          {round === 2 ||
+                          round === 3 ||
+                          round === 8 ||
+                          tengoJuego ||
+                          tengoPares ? (
+                            <div className="postnohaymus">
+                              <div className="superflex">
+                                <div>
+                                  <div className="flex_buttons_up">
+                                    <div onClick={() => sumBet(1)}>+1</div>
+                                    <div onClick={() => sumBet(5)}>+5</div>
+                                    <div
+                                      className="flex_buttons_up"
+                                      onClick={() => envido()}
+                                    >
+                                      <span>Envido</span>
+                                      <span className="suma">{bet}</span>
+                                    </div>
+                                  </div>
+                                  <div className="flex_buttons_down">
+                                    <div onClick={() => sumBet(-1)}>BORRAR</div>
+                                    <div
+                                      onClick={() =>
+                                        changeTurn(playerThree, round)
+                                      }
+                                    >
+                                      PASAR
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="ordago">
+                                  <div>
+                                    <p>ÓRDAGO</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : showAnswer ? (
+                    <>
+                      <div className="flexbuttons">
+                        <div className="postnohaymus">
+                          <div className="superflex">
                             <div>
-                              <p>ÓRDAGO</p>
+                              <div className="flex_buttons_up">
+                                <div onClick={() => sumSecondBet(1)}>+1</div>
+                                <div onClick={() => sumSecondBet(5)}>+5</div>
+                                <div
+                                  className="flex_buttons_up"
+                                  onClick={() => sumSecondBet(0)}
+                                >
+                                  <span>SUBO</span>
+                                  <span className="suma">{secondBet}</span>
+                                </div>
+                              </div>
+                              <div className="flex_buttons_down">
+                                <div onClick={() => sumSecondBet(-1)}>
+                                  BORRAR
+                                </div>
+                                <div onClick={() => call()}>QUIERO</div>
+                                <div onClick={() => fold()}>NO QUIERO</div>
+                              </div>
+                            </div>
+                            <div className="ordago">
+                              <div>
+                                <p>ÓRDAGO</p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                
+                <div className={`avatar avatar-oponente-dr ${myTeam === "red" ? "t1" : "t2"} ${arrayTurnos[1] ? "shadow" : ""}`}>
+                  <img src={"/img/Pj_2/normal.png"} alt="" />
+                  <p>{deskPlayers[1]}</p>
+                </div>
+
+                <div className={`avatar avatar-compa ${myTeam === "red" ? "t2" : "t1"} ${arrayTurnos[2] ? "shadow" : ""}`}>
+                  <img src={"/img/Pj_3/normal.png"} alt="" />
+                  <p>{deskPlayers[2]}</p>
+                </div>
+
+                <div className={`avatar avatar-oponente-iz ${myTeam === "red" ? "t1" : "t2"} ${arrayTurnos[3] ? "shadow" : ""}`}>
+                  <img src={"/img/Pj_4/normal.png"} alt="" />
+                  <p>{deskPlayers[3]}</p>
+                </div>
+
+                <div className="cards2 cartas-oponente-iz">
+                  {round > -1 ? (
+                    <>
+                      <div className="card-contri">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contri">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contri">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contri">
+                        <img src={"/img/000.png"} />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+
+                <div className="cards3 cartas-compa">
+                  {round > -1 ? (
+                    <>
+                      <div className="card-compa">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-compa">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-compa">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-compa">
+                        <img src={"/img/000.png"} />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+
+                <div className="info">
+                  <p>{roundName}</p>
+                </div>
+                <div className="mesa">
+                  <img src={tapetepixel} alt="" />
+                </div>
+
+                <div className="cards1 cartas-activo">
+                  {round === 1 ? (
+                    <>
+                      <div className="card p1">
+                        <img
+                          src={"/img/" + myDiscards[0] + ".png"}
+                          onClick={() => discardOneCard(0)}
+                          alt=""
+                        />
+                      </div>
+                      <div className="card p1">
+                        <img
+                          src={"/img/" + myDiscards[1] + ".png"}
+                          onClick={() => discardOneCard(1)}
+                          alt=""
+                        />
+                      </div>
+                      <div className="card p1">
+                        <img
+                          src={"/img/" + myDiscards[2] + ".png"}
+                          onClick={() => discardOneCard(2)}
+                          alt=""
+                        />
+                      </div>
+                      <div className="card p1">
+                        <img
+                          src={"/img/" + myDiscards[3] + ".png"}
+                          onClick={() => discardOneCard(3)}
+                          alt=""
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="card p1">
+                        <img src={"/img/" + myCards[0] + ".png"} alt="" />
+                      </div>
+                      <div className="card p1">
+                        <img src={"/img/" + myCards[1] + ".png"} alt="" />
+                      </div>
+                      <div className="card p1">
+                        <img src={"/img/" + myCards[2] + ".png"} alt="" />
+                      </div>
+                      <div className="card p1">
+                        <img src={"/img/" + myCards[3] + ".png"} alt="" />
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="cards2  cartas-oponente-dr">
+                  {round > -1 ? (
+                    <>
+                      <div className="card-contrd">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contrd">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contrd">
+                        <img src={"/img/000.png"} />
+                      </div>
+                      <div className="card-contrd">
+                        <img src={"/img/000.png"} />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+
+                <div className="mazo1">
+                  <img src={"/img/" + mazoPos[0] + ".png"} alt="" />
+                </div>
+                <div className="mazo2">
+                  <img src={"/img/" + mazoPos[1] + ".png"} alt="" />
+                </div>
+                <div className="mazo3">
+                  <img src={"/img/" + mazoPos[2] + ".png"} alt="" />
+                </div>
+                <div className="mazo4">
+                  <img src={"/img/" + mazoPos[3] + ".png"} alt="" />
+                </div>
+                {false ? (
+                  <>
+                    <div className="bocadillo team1_pj1">
+                      <img src={bocadillo_1} alt="" />
+                      <div className="texto_bocadillo text1_pj1">
+                        Llevo pares
+                      </div>
+                    </div>
+                    <div className="bocadillo team1_pj2">
+                      <img src={bocadillo_2} alt="" />
+                      <div className="texto_bocadillo text1_pj2">
+                        Llevo pares
+                      </div>
+                    </div>
+                    <div className="bocadillo team2_pj1">
+                      <img src={bocadillo_3} alt="" />
+                      <div className="texto_bocadillo text2_pj1">
+                        Llevo pares
+                      </div>
+                    </div>
+                    <div className="bocadillo team2_pj2">
+                      <img src={bocadillo_4} alt="" />
+                      <div className="texto_bocadillo text2_pj2">
+                        Llevo pares
+                      </div>
                     </div>
                   </>
                 ) : (
                   <></>
                 )}
               </div>
-
-              <div className="avatar t2 avatar-oponente-dr">
-                <img src={"/img/Pj_2/1_Normal_pj2.png"} alt="" />
-                <p>{deskPlayers[1]}</p>
-              </div>
-
-              <div className="avatar t1 avatar-compa">
-                <img src={"/img/Pj_3/1_Normal_pj3.png"} alt="" />
-                <p>{deskPlayers[2]}</p>
-              </div>
-
-              <div className="avatar t2 avatar-oponente-iz">
-                <img src={"/img/Pj_4/1_Normal_pj4.png"} alt="" />
-                <p>{deskPlayers[3]}</p>
-              </div>
-
-              <div className="cards2 cartas-oponente-iz">
-                {round > -1 ? (
-                  <>
-                    <div className="card-contri">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contri">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contri">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contri">
-                      <img src={"/img/000.png"} />
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-
-              <div className="cards3 cartas-compa">
-                {round > -1 ? (
-                  <>
-                    <div className="card-compa">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-compa">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-compa">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-compa">
-                      <img src={"/img/000.png"} />
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-
-              <div className="info">
-                <p>{roundName}</p>
-              </div>
-              <div className="mesa">
-                <img src={tapetepixel} alt="" />
-              </div>
-
-              <div className="cards1 cartas-activo">
-                {round === 1 ? (
-                  <>
-                    <div className="card p1">
-                      <img
-                        src={"/img/" + myDiscards[0] + ".png"}
-                        onClick={() => discardOneCard(0)}
-                        alt=""
-                      />
-                    </div>
-                    <div className="card p1">
-                      <img
-                        src={"/img/" + myDiscards[1] + ".png"}
-                        onClick={() => discardOneCard(1)}
-                        alt=""
-                      />
-                    </div>
-                    <div className="card p1">
-                      <img
-                        src={"/img/" + myDiscards[2] + ".png"}
-                        onClick={() => discardOneCard(2)}
-                        alt=""
-                      />
-                    </div>
-                    <div className="card p1">
-                      <img
-                        src={"/img/" + myDiscards[3] + ".png"}
-                        onClick={() => discardOneCard(3)}
-                        alt=""
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="card p1">
-                      <img src={"/img/" + myCards[0] + ".png"} alt="" />
-                    </div>
-                    <div className="card p1">
-                      <img src={"/img/" + myCards[1] + ".png"} alt="" />
-                    </div>
-                    <div className="card p1">
-                      <img src={"/img/" + myCards[2] + ".png"} alt="" />
-                    </div>
-                    <div className="card p1">
-                      <img src={"/img/" + myCards[3] + ".png"} alt="" />
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className="cards2  cartas-oponente-dr">
-                {round > -1 ? (
-                  <>
-                    <div className="card-contrd">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contrd">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contrd">
-                      <img src={"/img/000.png"} />
-                    </div>
-                    <div className="card-contrd">
-                      <img src={"/img/000.png"} />
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-
-              <div className="mazo1">
-                <img src={"/img/" + mazoPos[0] + ".png"} alt="" />
-              </div>
-              <div className="mazo2">
-                <img src={"/img/" + mazoPos[1] + ".png"} alt="" />
-              </div>
-              <div className="mazo3">
-                <img src={"/img/" + mazoPos[2] + ".png"} alt="" />
-              </div>
-              <div className="mazo4">
-                <img src={"/img/" + mazoPos[3] + ".png"} alt="" />
-              </div>
-
-              <div className='bocadillo team1_pj1'>
-                <img src={bocadillo_1} alt="" />
-                <div className="texto_bocadillo text1_pj1">Llevo pares</div>
-              </div>
-              <div className='bocadillo team1_pj2'>
-                <img src={bocadillo_2} alt="" />
-                <div className="texto_bocadillo text1_pj2">Llevo pares</div>
-              </div>
-              <div className='bocadillo team2_pj1'>
-                <img src={bocadillo_3} alt="" />
-                <div className="texto_bocadillo text2_pj1">Llevo pares</div>
-              </div>
-              <div className='bocadillo team2_pj2'>
-                <img src={bocadillo_4} alt="" />
-                <div className="texto_bocadillo text2_pj2">Llevo pares</div>
-              </div>  
-
             </div>
           </div>
-        </div>
+        </>
       )}
       <Chat
         closeConnection={closeConnection}
