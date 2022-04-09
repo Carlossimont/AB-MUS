@@ -48,10 +48,10 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                         <p>Avatares</p>
                         <div>
                             {/* hay que hacer un map con un array de personajes */}
-                            <div><img src="img\Pj_1\1_Normal_pj1.png" alt="" /></div> 
-                            <div><img src="img\Pj_2\1_Normal_pj2.png" alt="" /></div>
-                            <div><img src="img\Pj_3\1_Normal_pj3.png" alt="" /></div>
-                            <div><img src="img\Pj_4\1_Normal_pj4.png" alt="" /></div>
+                            <div><img src="img\Pj_1\normal.png" alt="" /></div> 
+                            <div><img src="img\Pj_2\normal.png" alt="" /></div>
+                            <div><img src="img\Pj_3\normal.png" alt="" /></div>
+                            <div><img src="img\Pj_4\normal.png" alt="" /></div>
                         </div>
 
                     </div>    
