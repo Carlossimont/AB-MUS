@@ -4,8 +4,8 @@ function Infobox() {
 
     return (
 
-        <div className='infobox'>
-            <div className='fondo_infobox'></div>
+        <div className='i'>
+            {/* <div className='fondo_infobox'></div>
             
             <div className='texto_infobox'>
                 <h1>WELCOME LOGIN NAME</h1>
@@ -17,7 +17,7 @@ function Infobox() {
                         ÚLTIMAS PARTIDAS
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
