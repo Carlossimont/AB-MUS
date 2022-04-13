@@ -27,7 +27,7 @@ function Room({ user, room }) {
     "Player3",
     "Player4",
   ]);
-  let [player, setOnePlayer] = useState("");
+  let [onePlayer, setOnePlayer] = useState({});
   let [myChair, setMyChair] = useState(-1);
   let [number, setNumber] = useState("");
   let [name, setName] = useState("");
@@ -37,10 +37,10 @@ function Room({ user, room }) {
   let [deskPlayers, setDeskPlayers] = useState([]);
   let [baraja, setBaraja] = useState([]);
   let [barajaDescartes, setBarajaDescartes] = useState([]);
-  let [deckHands, setDeckHands] = useState([], [], [], []); //creo que debería ser [[],[],[],[]] pero así funciona asi k...sssshhh
+  let [deckHands, setDeckHands] = useState([], [], [], []);
   let [ordenRonda, setOrdenRonda] = useState([]);
   let [turno, setTurno] = useState(-1);
-  let [arrayTurnos,setArrayTurnos] = useState([false,false,false,false])
+  let [arrayTurnos, setArrayTurnos] = useState([false, false, false, false]);
   let [changeRepartir, setChangeRepartir] = useState(false);
   let [round, setRound] = useState(3);
   let [roundName, setRoundName] = useState("Mus");
@@ -81,10 +81,21 @@ function Room({ user, room }) {
   let [boolPares, setBoolPares] = useState([]);
   let [tengoPares, setTengoPares] = useState(false);
   let [tengoJuego, setTengoJuego] = useState(false);
+  let [playerAvatar, setPlayerAvatar] = useState("");
+  let [avatar, setAvatar] = useState("");
+  let [avatares, setAvatares] = useState(["", "", "", ""]);
+  let [deskAvatares, setDeskAvatares] = useState([]);
+  let [othersCards, setOthersCards] = useState([
+    ["000", "000", "000", "000"],
+    ["000", "000", "000", "000"],
+    ["000", "000", "000", "000"],
+  ]);
+  let [playingHands, setPlayingHands] = useState([[], [], [], []]);
 
   let [blueFold, setBlueFold] = useState(false);
   let [redFold, setRedFold] = useState(false);
   let [contadorFold, setContadorFold] = useState(0);
+  let [newJuego,setNewJuego] = useState(false);
 
   let [check, setCheck] = useState("nada");
 
@@ -94,6 +105,7 @@ function Room({ user, room }) {
   let playersAux = [];
 
   useEffect(() => {
+    if (showAnswer) {
     if (round > 0) {
       setSecondBet(2);
     }
@@ -103,9 +115,11 @@ function Room({ user, room }) {
     if (round === 7 && !tengoPares) {
       setShowAnswer(false);
     }
+  }
   }, [showAnswer]);
 
   useEffect(() => {
+    console.log("envida el equipo " + betTeam);
     if (betTeam !== "white") {
       setFlagBet(true);
       if (myTeam !== betTeam) {
@@ -119,6 +133,7 @@ function Room({ user, room }) {
 
   useEffect(() => {
     let deskPlayersAux = [];
+    let deskAvataresAux = [];
     let pos = myChair;
     let barajaAux = [];
     if (game) {
@@ -127,10 +142,12 @@ function Room({ user, room }) {
           pos = 0;
         }
         deskPlayersAux[i] = players[pos];
+        deskAvataresAux[i] = avatares[pos];
         pos++;
         console.log(deskPlayersAux);
       }
       setDeskPlayers(deskPlayersAux);
+      setDeskAvatares(deskAvataresAux);
       palos.forEach((p) => {
         numeros.forEach((n) => {
           barajaAux.push(p + n);
@@ -141,6 +158,48 @@ function Room({ user, room }) {
     }
   }, [game]);
 
+  useEffect(()=>{
+    let barajaAux = [];
+    if (newJuego) {
+    palos.forEach((p) => {
+      numeros.forEach((n) => {
+        barajaAux.push(p + n);
+      });
+    });
+    console.log(barajaAux);
+    setBaraja(barajaAux);
+    setMyCards([]);
+    setBarajaDescartes([]);
+    setDeckHands([],[],[],[]);
+    setOrdenRonda([]);
+    setChangeRepartir(false);
+    setBet(2);
+    setContadorMayor(1);
+    setContadorPeque(1);
+    setContadorPares(0);
+    setContadorJuego(0);
+    setContadorPunto(1);
+    setMazoPos(["F000","F000","F000","F000"]);
+    setContador(-1);
+    setAnswer(false);
+    setDiscNum(0);
+    setOthersDiscards([]);
+    setArrayDescartes([]);
+    setFlagBet(false);
+    setShowAnswer(false);
+    setBetTeam('white');
+    setSecondBet(0);
+    setFoldNum(-1);
+    setBoolJuego([]);
+    setBoolPares([]);
+    setTengoJuego(false);
+    setTengoPares(false);
+    setCheck('nada');
+    setRound(-1);
+    setNewJuego(false);
+  }
+  },[newJuego])
+
   useEffect(() => {
     console.log(players);
     let playersAux = [...players];
@@ -148,7 +207,13 @@ function Room({ user, room }) {
     setPlayers(playersAux);
   }, [number]);
 
+  function setRoundMal(ronda){
+      setRound(ronda)
+  }
+
   useEffect(() => {
+    setTurno(-5);
+    console.log("primero nombres de ronda");
     switch (round) {
       case -1:
         setRoundName("Repartiendo...");
@@ -166,6 +231,9 @@ function Room({ user, room }) {
         break;
 
       case 2:
+        if (myChair === playerThree) {
+          nuevaMano();
+        }
         setRoundName("Mayor");
         setTurno(playerThree + 1);
         break;
@@ -201,46 +269,63 @@ function Room({ user, room }) {
         break;
 
       case 9:
+        debugger;
         setRoundName("Contando...");
         setTurno(playerThree);
         break;
 
       case 10: //contar mayor
-        setTurno(playerThree);
+        if (myChair === playerThree) {
+          console.log(contadorMayor +' '+ contadorRedTeam +' '+ contadorBlueTeam);
+          accountantMayor(
+            deckHands,
+            contadorMayor,
+            contadorRedTeam,
+            contadorBlueTeam
+          );
+        }
         break;
 
       case 11: //contar peque
-        setTurno(playerThree);
+        if (myChair === playerThree) {
+          console.log(contadorPeque +' '+ contadorRedTeam +' '+ contadorBlueTeam);
+          accountantPeque(
+            deckHands,
+            contadorPeque,
+            contadorRedTeam,
+            contadorBlueTeam
+          );
+        }
         break;
 
       case 12: //contar par
-        setTurno(playerThree);
+        if (myChair === playerThree) {
+          console.log(contadorPares +' '+ contadorRedTeam +' '+ contadorBlueTeam);
+          pares(deckHands, contadorPares, contadorRedTeam, contadorBlueTeam);
+        }
         break;
 
       case 13: //contar juego
-        setTurno(playerThree);
+        if (myChair === playerThree) {
+          console.log(contadorJuego +' '+ contadorRedTeam +' '+ contadorBlueTeam);
+          juego(deckHands, contadorJuego, contadorRedTeam, contadorBlueTeam);
+        }
         break;
 
-      case 14: //boton siguiente juego
-        setTurno(playerThree);
+      case 14: //boton siguiente punto
+        if (myChair === playerThree) {
+          console.log(contadorPunto +' '+ contadorRedTeam +' '+ contadorBlueTeam);
+          punto(deckHands, contadorPunto, contadorRedTeam, contadorBlueTeam);
+        }
         break;
-
+      case 15:
+        console.log("RONDA FINAAAAAAAAAAAAAAAAAAAAAL");
+        break;
       default:
         alert("Ha entrado default en switch de ronda");
         break;
     }
   }, [round]);
-
-  // useEffect(() => {
-  //   let barajaAux = [];
-  //   palos.forEach((p) => {
-  //     numeros.forEach((n) => {
-  //       barajaAux.push(p + n);
-  //     });
-  //   });
-  //   console.log(barajaAux);
-  //   setBaraja(barajaAux);
-  // }, []);
 
   function barajar() {
     console.log("entra barajar");
@@ -266,13 +351,6 @@ function Room({ user, room }) {
     console.log("acaba barajar");
     setCheck("barajar");
   }
-
-  // useEffect(() => {
-  //   if (check == "nada") {
-  //     if (check == "barajar") {
-  //     }
-  //   }
-  // }, [check]);
 
   function repartir() {
     console.log("entra repartir");
@@ -309,52 +387,67 @@ function Room({ user, room }) {
   }, [deckHands]);
 
   useEffect(() => {
-    let arrayTurnosAux = [...arrayTurnos];
-    let posiAux = myChair;
-    for (let i = 0; i < 4; i++) {
-      if (posiAux === turno) {
-        arrayTurnosAux[posiAux]=true;
-      }else {
-        arrayTurnosAux[posiAux]=false;
+    if (turno > -1) {
+      let arrayTurnosAux = [];
+      let posiAux = myChair;
+      for (let i = 0; i < 4; i++) {
+        if (posiAux === turno) {
+          arrayTurnosAux.push(true);
+        } else {
+          arrayTurnosAux.push(false);
+        }
+        posiAux++;
+        if (posiAux === 4) {
+          posiAux = 0;
+        }
       }
-      posiAux++;
-      if (posiAux === 4) {
-        posiAux = 0;
+      setArrayTurnos(arrayTurnosAux);
+
+      if (turno === 4) {
+        setTurno(0);
       }
-    }
-    setArrayTurnos(arrayTurnosAux);
-    if (turno === 4) {
-      setTurno(0);
-    }
-    if (turno === myChair) {
       debugger;
-      if (round === 4 || round === 5) {
-        if (!boolPares[ordenRonda.indexOf(user)]) {
-          changeTurn(playerThree, round);
+      if (turno === myChair) {
+        if (round === 4 || round === 5) {
+          if (!boolPares[ordenRonda.indexOf(user)]) {
+            changeTurn(playerThree, round);
+          }
+        }
+        if (round === 6 || round === 7) {
+          if (!boolJuego[ordenRonda.indexOf(user)]) {
+            changeTurn(playerThree, round);
+          }
+        }
+
+        if (round === 9) {
+          levantarCartas(deckHands);
+        }
+        if (round === 10) {
+          accountantMayor(
+            deckHands,
+            contadorMayor,
+            contadorRedTeam,
+            contadorBlueTeam
+          );
+        }
+        if (round === 11) {
+          accountantPeque(
+            deckHands,
+            contadorPeque,
+            contadorRedTeam,
+            contadorBlueTeam
+          );
+        }
+        if (round === 12) {
+          pares(deckHands, contadorPares, contadorRedTeam, contadorBlueTeam);
+        }
+        if (round === 13) {
+          juego(deckHands, contadorJuego, contadorRedTeam, contadorBlueTeam);
+        }
+        if (round === 14) {
+          punto(deckHands, contadorPunto, contadorRedTeam, contadorBlueTeam);
         }
       }
-      if (round === 6 || round === 7) {
-        if (!boolJuego[ordenRonda.indexOf(user)]) {
-          changeTurn(playerThree, round);
-        }
-      }
-
-      if (round === 9) {
-        levantarCartas(deckHands);
-      }
-      if (round === 10) {
-        contadorMayor(contadorMayor);
-      }
-      if (round === 11) {
-        contadorPeque(contadorMayor);
-      }
-      if (round === 12) {
-        contadorPares(contadorPares);
-      }
-      if (round === 13) {
-        contadorJuego(contadorJuego);
-      }
-
     }
   }, [turno]);
 
@@ -393,36 +486,57 @@ function Room({ user, room }) {
     }
   }, [barajaDescartes]);
 
-  function levantarCartas(){
-
-  }
-
   useEffect(() => {
+    debugger;
     if (contador > -1) {
       switch (round) {
         case 2:
           setContadorMayor(contador);
-          changeRound(2);
+          if (playerThree === myChair) {
+            changeRound(2);
+          }
           break;
 
         case 3:
           setContadorPeque(contador);
+          if (playerThree === myChair) {
           changeRound(3);
+          }
+          break;
+
+        case 4:
+          setContadorPares(contador);
+          if (playerThree === myChair) {
+          changeRound(5);
+          }
           break;
 
         case 5:
           setContadorPares(contador);
+          if (playerThree === myChair) {
           changeRound(5);
+          }
+          break;
+
+        case 6:
+          setContadorJuego(contador);
+          if (playerThree === myChair) {
+          changeRound(8);
+          }
           break;
 
         case 7:
           setContadorJuego(contador);
-          changeRound(7);
+          if (playerThree === myChair) {
+          changeRound(8);
+          }
           break;
 
         case 8:
           setContadorPunto(contador);
+          if (playerThree === myChair) {
           changeRound(8);
+          }
           break;
 
         default:
@@ -451,10 +565,9 @@ function Room({ user, room }) {
     }
   }, [arrayDescartes]);
 
-  function addDiscardArray(array) {
+  function addDiscardArray(array) {//viene de un conecction.on no pilla el array
     setArrayDescartes(array);
     console.log("recibo cartas");
-    //TODO: esto peta, no rellena el array con el array que viene, se queda solo con el ultimo
   }
 
   useEffect(() => {
@@ -468,7 +581,6 @@ function Room({ user, room }) {
   }, [myDiscards]);
 
   function sumBet(num) {
-    //puede fallar el num
     if (num < 0) {
       setBet(2);
     } else {
@@ -477,7 +589,6 @@ function Room({ user, room }) {
   }
 
   function sumSecondBet(num) {
-    //puede fallar el num
     if (num < 0) {
       setSecondBet(2);
     } else {
@@ -505,12 +616,15 @@ function Room({ user, room }) {
   }, [othersDiscards]);
 
   useEffect(() => {
+    
     console.log("nueva ronda");
     console.log(round);
     if (round === 1) {
       setMyDiscards(myCards);
     }
+    console.log("primero postre");
     if (myChair === playerThree) {
+      //ESTO LO HACE SOLO EL POSTRE
       if (round === 2) {
         recibirCartas(deckHands);
       }
@@ -527,10 +641,13 @@ function Room({ user, room }) {
         console.log(contadorPares);
         console.log(contadorJuego);
         console.log(contadorPunto);
-        countAll(deckHands);
+        // countAll(deckHands);
       }
     }
+    setAllNull();
+  }, [round]);
 
+  function setAllNull() {
     console.log("SETEA TODA LA MIERDA");
     setBet(2);
     setSecondBet(2);
@@ -538,28 +655,91 @@ function Room({ user, room }) {
     setBetTeam("white");
     setFlagBet(false);
     setContadorFold(0);
-    if (round !== 5) {
+    if (round !== 5 && round !== 4) {
       setTengoPares(false);
     }
-    if (round !== 7) {
+    if (round !== 7 && round !== 6) {
       setTengoJuego(false);
     }
-    //TODO: aaaa
-  }, [round]);
+  }
 
   useEffect(() => {
-    if (blueFold) {
+    // if (blueFold) {
       console.log("sumamos el fold al contador " + round);
       setContadorRedTeam(contadorRedTeam + contadorFold);
-    }
+      switch (round) {
+        case 2:
+          setContadorMayor(0);
+          break;
+
+        case 3:
+          setContadorPeque(0);
+          break;
+
+        case 4:
+          setContadorPares(0);
+          break;
+
+        case 5:
+          setContadorPares(0);
+          break;
+
+        case 6:
+          setContadorJuego(0);
+          break;
+
+        case 7:
+          setContadorJuego(0);
+          break;
+
+        case 8:
+          setContadorPunto(1);
+          break;
+
+        default:
+          break;
+      }
+    // }
     setBlueFold(false);
   }, [blueFold]);
 
   useEffect(() => {
-    if (redFold) {
+    // if (redFold) {
       console.log("sumamos el fold al contador " + round);
       setContadorBlueTeam(contadorBlueTeam + contadorFold);
-    }
+      switch (round) {
+        case 2:
+          setContadorMayor(0);
+          break;
+
+        case 3:
+          setContadorPeque(0);
+          break;
+
+        case 4:
+          setContadorPares(0);
+          break;
+
+        case 5:
+          setContadorPares(0);
+          break;
+
+        case 6:
+          setContadorJuego(0);
+          break;
+
+        case 7:
+          setContadorJuego(0);
+          break;
+
+        case 8:
+          setContadorPunto(1);
+          break;
+
+        default:
+          break;
+      }
+    // }
     setRedFold(false);
   }, [redFold]);
 
@@ -573,11 +753,19 @@ function Room({ user, room }) {
         callSignal(contadorPeque);
         break;
 
-      case 5:
+      case 4:
+        callSignal(contadorPares);
+        break;
+
+      case 6:
         callSignal(contadorPares);
         break;
 
       case 7:
+        callSignal(contadorJuego);
+        break;
+
+      case 8:
         callSignal(contadorJuego);
         break;
 
@@ -621,7 +809,7 @@ function Room({ user, room }) {
 
   useEffect(() => {
     let count = 0;
-    if (round === 4) {
+    if (round > -1) {
       boolJuego.forEach((booleano, i) => {
         if (booleano) {
           if (i === ordenRonda.indexOf(user)) {
@@ -650,8 +838,16 @@ function Room({ user, room }) {
         foldSignal(contadorPeque, 3);
         break;
 
+      case 4:
+        foldSignal(contadorPares, 5);
+        break;
+
       case 5:
         foldSignal(contadorPares, 5);
+        break;
+
+      case 6:
+        foldSignal(contadorJuego, 7);
         break;
 
       case 7:
@@ -678,6 +874,29 @@ function Room({ user, room }) {
     }
   }, [myChair]);
 
+  useEffect(() => {
+    let playingHandsAux = [];
+    let count = myChair;
+    if (round === 9) {
+      for (let i = 0; i < 3; i++) {
+        count++;
+        if (count === 4) {
+          count = 0;
+        }
+        playingHandsAux.push(playingHands[count]);
+      }
+      setOthersCards(playingHandsAux);
+    }
+  }, playingHands);
+
+  useEffect(() => {
+    let avataresAux = [...avatares];
+    console.log(avatares);
+    avataresAux[playerAvatar] = avatar;
+    console.log(avataresAux);
+    setAvatares(avataresAux);
+  }, [playerAvatar]);
+
   const joinRoom = async (user, room) => {
     try {
       const connection = new HubConnectionBuilder()
@@ -699,18 +918,30 @@ function Room({ user, room }) {
         setNumber(playerNumber);
       });
 
+      connection.on("ReceivePlayerAvatar", (playerNum, avatar) => {
+        console.log("recibo jug" + playerNum + "avatr" + avatar);
+        setAvatar(avatar);
+        setPlayerAvatar(playerNum);
+      });
+
       connection.on("NewTurn", (num) => {
-        //ddddddddddddhdhdedvbeifvbefbvebrvibewrbivewirb
         setTurno(num);
       });
 
       connection.on("NextRound", (ronda) => {
-        console.log("entra nextround desde signalr");
-        setRound(ronda);
+        console.log("entra nextround desde signalr " + ronda);
+        setRoundMal(ronda);
       });
 
       connection.on("NoMus", () => {
         setRound(2);
+      });
+
+      connection.on("NextJuego",(player3)=>{
+        setNewJuego(true);
+        setPlayerThree(player3);
+        console.log(player3);
+        setTurno(player3);
       });
 
       connection.on("Bet", (bet, team) => {
@@ -722,13 +953,6 @@ function Room({ user, room }) {
         setMyCards(handCards);
         console.log(handCards);
       });
-
-      // connection.on("Accountant", () => {
-      //   if (myChair === playerThree) {
-      //     console.log("entra por postre ");
-      //     countAll();
-      //   }
-      // });
 
       connection.on("StartGame", (player3) => {
         setGame(true);
@@ -745,7 +969,7 @@ function Room({ user, room }) {
       });
 
       connection.on("Fold", (contador, team) => {
-        console.log("alguien foldea");
+        console.log("equipo"+ team+" foldea");
         if (team === "blue") {
           setContadorFold(contador);
           setRedFold(true);
@@ -757,16 +981,23 @@ function Room({ user, room }) {
 
       connection.on("Call", (contador) => {
         setContador(contador);
-        setBet(2);
-        setSecondBet(1);
-        setFlagBet(false);
       });
 
-      connection.on("boolPares", (bool) => {
+      connection.on("TeamAccountants", (contadorRed, contadorBlue) => {
+        console.log('rojo' + contadorRed + 'blue' + contadorBlue);
+        setContadorBlueTeam(contadorBlue);
+        setContadorRedTeam(contadorRed);
+      });
+
+      connection.on("LevantarCartas", (deck) => {
+        setPlayingHands(deck);
+      });
+
+      connection.on("BoolPares", (bool) => {
         setBoolPares(bool);
       });
 
-      connection.on("boolJuego", (bool) => {
+      connection.on("BoolJuego", (bool) => {
         setBoolJuego(bool);
       });
 
@@ -774,7 +1005,7 @@ function Room({ user, room }) {
         addDiscardArray(arrayDesc);
         // let arrayDescAux = [...othersDiscards];
         // console.log('recibo cartas');
-        // arrayDescAux.push(arrayDesc);//TODO: esto peta, no rellena el array con el array que viene, se queda solo con el ultimo
+        // arrayDescAux.push(arrayDesc);
         // console.log(arrayDescAux);
         // setOthersDiscards(arrayDescAux);
       });
@@ -800,7 +1031,6 @@ function Room({ user, room }) {
     let mazo = myChair;
     if (playerThree !== -1) {
       for (let i = 0; i < 4; i++) {
-        //TODO: esta mal esto???miro si orden es 4 antes de hacer el ++
         orden++;
         if (orden === 4) {
           orden = 0;
@@ -823,21 +1053,6 @@ function Room({ user, room }) {
     }
   }, [playerThree]);
 
-  // useEffect(()=>{
-  //   if (myChair===playerThree) {
-  //     console.log('soy postre');
-
-  //     // sleep(500).then(()=>{
-  //     //   repartir();
-  //     // })
-  //     repartir().then(()=>{
-  //       sendDeckHands(deckHands);
-  //     })
-
-  //     console.log(deckHands)
-  //   }
-  // },[ordenRonda])
-
   const sendDeckHands = async (hands) => {
     console.log("entra senddeckhands");
     try {
@@ -856,7 +1071,7 @@ function Room({ user, room }) {
     }
   };
 
-  const betSecondBet = async () => {//TODO: ASIER
+  const betSecondBet = async (contador, bet, secondBet) => {
     console.log("entra betsecondbet");
     try {
       await connection.invoke("SecondBet", contador, bet, secondBet);
@@ -891,12 +1106,30 @@ function Room({ user, room }) {
     }
   };
 
+  const levantarCartas = async (manos) => {
+    try {
+      await connection.invoke("LevantarCartas", manos);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const setPlayer = async (playerNumber) => {
     try {
       console.log("entra a app.js setPlayer");
       await connection.invoke("SetPlayer", playerNumber);
     } catch (e) {
       console.log(e + "setplayererror");
+    }
+  };
+
+  const setOneAvatar = async (avatarNum) => {
+    try {
+      console.log("entra a setAvatar");
+      console.log("mando a signal avatar" + avatarNum);
+      await connection.invoke("SetAvatar", avatarNum);
+    } catch (e) {
+      console.log(e + " setavatarererror");
     }
   };
 
@@ -918,9 +1151,28 @@ function Room({ user, room }) {
     }
   };
 
-  const countAll = async (deck) => {
+  const nuevaMano = async () => {
     try {
-      await connection.invoke("AccountantMayor", deck);
+      await connection.invoke("NuevaMano");
+    } catch (e) {
+      console.log(e + " nueva mano");
+    }
+  };
+
+  const teamAccountants = async (
+    deck,
+    contadorMayor,
+    contadorRedTeam,
+    contadorBlueTeam
+  ) => {
+    try {
+      await connection.invoke(
+        "TeamAccountants",
+        deck,
+        contadorMayor,
+        contadorRedTeam,
+        contadorBlueTeam
+      );
     } catch (e) {
       console.log(e + " accountant mayor");
     }
@@ -1003,6 +1255,47 @@ function Room({ user, room }) {
     }
   };
 
+  const accountantMayor = async (deck, contadorUno, red, blue) => {
+    try {
+      console.log("entra accountant maayor");
+      await connection.invoke("AccountantMayor", deck, contadorUno, red, blue);
+    } catch (e) {
+      console.log(e + "acc mayor");
+    }
+  };
+
+  const accountantPeque = async (deck, contador, red, blue) => {
+    try {
+      await connection.invoke("AccountantPeque", deck, contador, red, blue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const pares = async (deck, contador, red, blue) => {
+    try {
+      await connection.invoke("Pares", deck, contador, red, blue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const juego = async (deck, contador, red, blue) => {
+    try {
+      await connection.invoke("Juego", deck, contador, red, blue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const punto = async (deck, contador, red, blue) => {
+    try {
+      await connection.invoke("Punto", deck, contador, red, blue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div style={{ backgroundImage: `url(${suelo})` }} className="background">
       {!game ? (
@@ -1018,6 +1311,7 @@ function Room({ user, room }) {
           setReady={setReady}
           ready={ready}
           players={players}
+          setOneAvatar={setOneAvatar}
         />
       ) : (
         <>
@@ -1047,9 +1341,15 @@ function Room({ user, room }) {
                     </div>
                   </div>
 
-                  <div className={`avatar avatar-activo ${myTeam === "red" ? "t2" : "t1"} ${arrayTurnos[0] ? "shadow" : ""}`}>
-                  {/* +  */}
-                    <img src="/img/Pj_1/normal.png" alt="" />
+                  <div
+                    className={`avatar avatar-activo ${
+                      myTeam === "red" ? "t2" : "t1"
+                    } ${arrayTurnos[0] ? "shadow" : ""}`}
+                  >
+                    <img
+                      src={"/img/Pj_" + deskAvatares[0] + "/normal.png"}
+                      alt=""
+                    />
                     <p>{deskPlayers[0]}</p>
                   </div>
                   {!flagBet ? (
@@ -1164,7 +1464,9 @@ function Room({ user, room }) {
                                 <div onClick={() => sumSecondBet(5)}>+5</div>
                                 <div
                                   className="flex_buttons_up"
-                                  onClick={() => sumSecondBet(0)}
+                                  onClick={() =>
+                                    betSecondBet(contador, bet, secondBet)
+                                  }
                                 >
                                   <span>SUBO</span>
                                   <span className="suma">{secondBet}</span>
@@ -1191,36 +1493,58 @@ function Room({ user, room }) {
                     <></>
                   )}
                 </div>
-                
-                <div className={`avatar avatar-oponente-dr ${myTeam === "red" ? "t1" : "t2"} ${arrayTurnos[1] ? "shadow" : ""}`}>
-                  <img src={"/img/Pj_2/normal.png"} alt="" />
+
+                <div
+                  className={`avatar avatar-oponente-dr ${
+                    myTeam === "red" ? "t1" : "t2"
+                  } ${arrayTurnos[1] ? "shadow" : ""}`}
+                >
+                  <img
+                    src={"/img/Pj_" + deskAvatares[1] + "/normal.png"}
+                    alt=""
+                  />
                   <p>{deskPlayers[1]}</p>
                 </div>
 
-                <div className={`avatar avatar-compa ${myTeam === "red" ? "t2" : "t1"} ${arrayTurnos[2] ? "shadow" : ""}`}>
-                  <img src={"/img/Pj_3/normal.png"} alt="" />
+                <div
+                  className={`avatar avatar-compa ${
+                    myTeam === "red" ? "t2" : "t1"
+                  } ${arrayTurnos[2] ? "shadow" : ""}`}
+                >
+                  <img
+                    src={"/img/Pj_" + deskAvatares[2] + "/normal.png"}
+                    alt=""
+                  />
                   <p>{deskPlayers[2]}</p>
                 </div>
 
-                <div className={`avatar avatar-oponente-iz ${myTeam === "red" ? "t1" : "t2"} ${arrayTurnos[3] ? "shadow" : ""}`}>
-                  <img src={"/img/Pj_4/normal.png"} alt="" />
+                <div
+                  className={`avatar avatar-oponente-iz ${
+                    myTeam === "red" ? "t1" : "t2"
+                  } ${arrayTurnos[3] ? "shadow" : ""}`}
+                >
+                  <img
+                    src={"/img/Pj_" + deskAvatares[3] + "/normal.png"}
+                    alt=""
+                  />
                   <p>{deskPlayers[3]}</p>
                 </div>
 
                 <div className="cards2 cartas-oponente-iz">
                   {round > -1 ? (
                     <>
+                      {/* // hacer .map */}
                       <div className="card-contri">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[2][3] + ".png"} />
                       </div>
                       <div className="card-contri">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[2][2] + ".png"} />
                       </div>
                       <div className="card-contri">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[2][1] + ".png"} />
                       </div>
                       <div className="card-contri">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[2][0] + ".png"} />
                       </div>
                     </>
                   ) : (
@@ -1232,16 +1556,16 @@ function Room({ user, room }) {
                   {round > -1 ? (
                     <>
                       <div className="card-compa">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[1][3] + ".png"} />
                       </div>
                       <div className="card-compa">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[1][2] + ".png"} />
                       </div>
                       <div className="card-compa">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[1][1] + ".png"} />
                       </div>
                       <div className="card-compa">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[1][0] + ".png"} />
                       </div>
                     </>
                   ) : (
@@ -1309,16 +1633,16 @@ function Room({ user, room }) {
                   {round > -1 ? (
                     <>
                       <div className="card-contrd">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[0][0] + ".png"} />
                       </div>
                       <div className="card-contrd">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[0][1] + ".png"} />
                       </div>
                       <div className="card-contrd">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[0][2] + ".png"} />
                       </div>
                       <div className="card-contrd">
-                        <img src={"/img/000.png"} />
+                        <img src={"/img/" + othersCards[0][3] + ".png"} />
                       </div>
                     </>
                   ) : (
@@ -1385,5 +1709,3 @@ function Room({ user, room }) {
   );
 }
 export default Room;
-//viernes 1 de abril 783 lineas
-//martes  5 de abril 1072 lineas

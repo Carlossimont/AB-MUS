@@ -4,7 +4,7 @@ import './Teams.scss'
 import Chat from '../chat/Chat';
 
 
-function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users,players}) {
+function Teams({setOneAvatar,joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users,players}) {
     //ngOnInit
     useEffect(()=>{
         joinRoom(user,room);
@@ -13,6 +13,10 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
     function assignChair(chairNum){
         setPlayer(chairNum);
         setMyChair(chairNum);
+    }
+
+    function assignAvatar(avatarNum){
+        setOneAvatar(avatarNum);
     }
 
     const isReady = async () => {
@@ -48,10 +52,10 @@ function Teams({joinRoom,room,user,setMyChair,myChair,setPlayer,connection,users
                         <p>Avatares</p>
                         <div>
                             {/* hay que hacer un map con un array de personajes */}
-                            <div><img src="img\Pj_1\normal.png" alt="" /></div> 
-                            <div><img src="img\Pj_2\normal.png" alt="" /></div>
-                            <div><img src="img\Pj_3\normal.png" alt="" /></div>
-                            <div><img src="img\Pj_4\normal.png" alt="" /></div>
+                            <div onClick={()=>assignAvatar(1)}><img src="img\Pj_1\normal.png" alt="" /></div> 
+                            <div onClick={()=>assignAvatar(2)}><img src="img\Pj_2\normal.png" alt="" /></div>
+                            <div onClick={()=>assignAvatar(3)}><img src="img\Pj_3\normal.png" alt="" /></div>
+                            <div onClick={()=>assignAvatar(4)}><img src="img\Pj_4\normal.png" alt="" /></div>
                         </div>
 
                     </div>    

@@ -8,16 +8,13 @@ function Marcador({contadorBlueTeam,contadorRedTeam,contadorGamesBlueTeam,contad
             <div className='marcador_flex'>
                 <div>
                     <p className='team_azul'>TEAM BLUE</p>
-                    <p>{contadorGamesBlueTeam} juegos</p>
                 </div>
                 <div>
                     <p className='team_rojo'>TEAM RED</p>
-                    <p>{contadorGamesRedTeam} juegos</p>
                 </div>
             </div>
             
             <div className='marcador_juegos'>
-                <hr></hr>
                 <div className='marcador_flex_2'>
                     <div className='marcador_azul'>{contadorBlueTeam}</div>
                     <div className='marcador_rojo'>{contadorRedTeam}</div> 
